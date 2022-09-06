@@ -54,6 +54,16 @@
         autoplaySpeed: 5000,
         prevArrow: '<div class="slick-prev"><i class="far fa-angle-left"></i></div>',
         nextArrow: '<div class="slick-next"><i class="far fa-angle-right"></i></div>',
+        responsive: [
+            
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                }
+            },
+        ]
     });
     $(".feedback-list").slick({
         dots:true,
@@ -64,6 +74,7 @@
         autoplay: true,
         speed: 1500,
         autoplaySpeed: 5000,
+
         
     });
     $(".partner-list").slick({

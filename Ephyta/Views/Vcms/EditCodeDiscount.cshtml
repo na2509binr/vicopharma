@@ -1,0 +1,48 @@
+﻿@model Ephyta.ViewModel.CodeDiscountViewModel
+@{
+    ViewBag.Title = "Cập nhật mã giảm giá";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Sửa mã giảm giá</h2>
+<a class="btn quick-link" href="@Url.Action("ListCodeDiscount","Vcms")"><i class="far fa-list mr-1"></i> Danh sách mã giảm giá</a>
+<div class="box_content px-300">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.DiscountCode.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Fullname)</td>
+                <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Fullname)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Price)</td>
+                <td class="form_text">@Html.TextBoxFor(model => model.Price, new { @class = "input-number form_control" })</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Active)</td>
+                <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Active)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Cập nhật" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+@*@Html.Action("ListCodeDiscount", "Vcms")*@
+@section scripts
+{
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script>
+        $(function () {
+            $(".input-number").maskMoney({
+                precision: 0,
+                thousands: ','
+            });
+        });
+
+    </script>
+}

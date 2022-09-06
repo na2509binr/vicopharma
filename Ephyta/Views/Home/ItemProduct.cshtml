@@ -1,0 +1,81 @@
+﻿
+@model Ephyta.ViewModel.ItemProductViewModel
+
+@{
+    var discount = 100 - Convert.ToInt32((Model.Product.SaleOff / Model.Product.Price) * 100);
+    int date = int.Parse(DateTime.Now.ToString("dd")) - int.Parse(Model.Product.CreateDate.ToString("dd"));
+
+    //DateTime ngaydang = Convert.ToDateTime(Model.Product.CreateDate.ToString("dd/MM/yyyy"));
+    //DateTime ngaytra = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy"));
+
+
+
+    DateTime ngaydang = Convert.ToDateTime(Model.Product.CreateDate);
+    DateTime hientai = Convert.ToDateTime(DateTime.Now);
+
+    TimeSpan Time = hientai - ngaydang;
+    int TongSoNgay = Time.Days;
+
+    var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+}
+<div class="product-item">
+    <div class="img">
+        <a href="@Url.Action("ProductDetail", "Home" , new { url = Model.Product.Url})">
+            @if (Model.Product.ListImage != null)
+            {
+                <img src="@img" data-src="@Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0])" class="lazyload" />
+            }
+            else
+            {
+                <img src="~/Content/images/no-image.jpg" />
+            }
+        </a>
+        <div class="icon">
+            <div class="add-checkout">
+                <a href="javascript;;" onclick="addToCart(@Model.Product.Id,'checkout')"><i class="fal fa-shopping-bag"></i></a>
+            </div>
+
+            <div class="add-cart">
+                <a href="javascript:;" onclick="addToCart(@Model.Product.Id,'add')">
+                    <i class="far fa-cart-plus"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="name">
+            <a href="@Url.Action("ProductDetail", "Home" , new { url = Model.Product.Url})">@Model.Product.Name</a>
+            <div class="price">
+                @if (Model.Product.SaleOff > 0)
+                {
+                    <div class="new-price">@Html.DisplayFor(m => Model.Product.SaleOff)</div>
+                    <div class="old-price">@Html.DisplayFor(m => Model.Product.Price)</div>
+                }
+                else if (Model.Product.Price > 0)
+                {
+                    <div class="new-price ">@Html.DisplayFor(m => Model.Product.Price)</div>
+                }
+                else
+                {
+                    <div class="new-price">Liên hệ</div>
+                }
+            </div>
+            <div class="star">
+                <span class="rating mr-2" data-default-rating="@Model.Rating" disabled></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tag">
+        @if (TongSoNgay < 30)
+        {
+            <div class="tag-new">new</div>
+
+        }
+        @if (Model.Product.SaleOff > 0)
+        {
+            <div class="tag-discout">-@discount%</div>
+        }
+    </div>
+</div>

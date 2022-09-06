@@ -1,0 +1,88 @@
+﻿@model Ephyta.ViewModel.CategoryAticleViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = Model.Category.TitleMeta ?? Model.Category.CategoryName;
+    ViewBag.Description = Model.Category.DescriptionMeta ?? Model.Category.CategoryName;
+
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleCategory", new { url = Model.Category.Url });
+
+    if (Model.Articles.Any())
+    {
+        var fa = Model.Articles.First();
+
+        if (fa.Image != null)
+        {
+            ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", fa.Image);
+        }
+    }
+
+}
+<div class="bg-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fal fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Category.CategoryName</li>
+        </ol>
+    </div>
+</div>
+<div class="page-article">
+    <div class="container py-lg-5 py-3">
+        <div class="row row-gutter-8 mt-lg-3">
+            <div class="col-sm-12 col-lg-9">
+                <div class="bg-radius no-shadow">
+                    <h1 class="name-category m-0 text-center">@Model.Category.CategoryName</h1>
+                </div>
+                @if (Model.Articles.Any())
+                {
+                    <div class="bg-radius mt-3 px-3 pb-lg-4">
+                        @foreach (var article in Model.Articles)
+                        {
+                            <div class="article-item">
+                                <div class="item-img">
+                                    <a href="@Url.Action("ArticleDetail", new { url = article.Url })">
+                                        @if (article.Image != null)
+                                        {
+                                            <img src="@Path.Combine("/images/articles",article.Image)" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/no-image.jpg" />
+                                        }
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <div class="name">
+                                        <a href="@Url.Action("ArticleDetail", new { url = article.Url })">@article.Subject</a>
+                                    </div>
+                                    <div class="date">
+                                        <i class="fal fa-calendar-alt mr-2"></i>
+                                        @article.CreateDate.ToString("dd/MM/yy");
+                                    </div>
+                                    <div class="des">@article.Description</div>
+                                    <a href="@Url.Action("ArticleDetail", new { url = article.Url })" class="btn btn-style">
+                                        <i class="fal fa-chevron-circle-right mr-1"></i>
+                                        Xem thêm
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Articles.PageCount > 1)
+                        {
+                            <div id="contentPager" class=" mt-lg-5 mt-3 ">
+                                @Html.PagedListPager(Model.Articles, page => Url.Action("ArticleCategory", new { url = Model.Category.Url, page }))
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class=" mt-lg-4 mt-3  alert alert-info small">Nội dung hiện chưa được cập nhật.Vui lòng quay lại sau !!!</p>
+                }
+            </div>
+            <div class="col-sm-12 col-lg-3 mt-lg-0 mt-3" data-aos="fade-up" data-aos-duration="800">
+                @Html.Action("MenuArticle")
+            </div>
+        </div>
+    </div>
+
+</div>

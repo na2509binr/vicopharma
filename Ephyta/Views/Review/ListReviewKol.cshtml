@@ -1,0 +1,185 @@
+﻿@model Ephyta.ViewModel.ListReviewKolViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách đánh giá KOL";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .vscomp-ele {
+        max-width: 450px;
+    }
+</style>
+
+<h2>Danh sách đánh giá cần duyệt</h2>
+@*@if (ViewBag.Result == "success")
+        {
+            <div id="AlertBox" class="alert alert-success"><strong>Thêm mới sản phẩm thành công</strong></div>
+        }
+        @if (ViewBag.Result == "update")
+        {
+            <div id="AlertBox" class="alert alert-success"><strong>Cập nhật sản phẩm thành công</strong></div>
+    }*@
+
+
+<a class="btn quick-link" href="@Url.Action("ReviewKol")"><i class="fal fa-plus-circle mr-1"></i>Thêm mới đánh giá</a>
+<div class="box_content">
+    <form action="@Url.Action("ListReviewKol")" method="get">
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label>Danh mục</label>
+                <select name="ProductId" class="filter-product form_control w300" placeholder="Chọn sản phẩm" required="">
+                    <option value="" disabled selected>Chọn sản phẩm</option>
+                    @foreach (var product in Model.Products)
+                    {
+                        <option value="@product.Id">@product.Name</option>
+                    }
+                </select>
+            </div>
+
+            @*<div class="col-3">
+                    <label>Sắp xếp</label>
+                    <select class="form_control" name="Sort">
+                        <option value="date-desc">Mới nhất</option>
+                        <option value="date-asc" @if (Model.Sort == "date-asc") { @Html.Raw("selected='selected'") }>Cũ nhất</option>
+                        <option value="sort-asc" @if (Model.Sort == "sort-asc") { @Html.Raw("selected='selected'") }>STT nhỏ nhất</option>
+                        <option value="sort-desc" @if (Model.Sort == "sort-desc") { @Html.Raw("selected='selected'") }>STT lớn nhất</option>
+                        <option value="hot-asc" @if (Model.Sort == "hot-asc") { @Html.Raw("selected='selected'") }>Sản phẩm nổi bật</option>
+                    </select>
+                </div>*@
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn-search">Tìm kiếm</button>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.ReviewKols.TotalItemCount</strong>Đánh giá</p>
+    <form id="productList">
+        <table class="list_table tablecenter table-striped">
+            <tbody>
+                <tr>
+                    <th style="width: 20px">STT</th>
+                    <th style="">Tên video</th>
+
+                    <th style="">Hình ảnh</th>
+                    <th>Đường dẫn link youtube</th>
+                    <th style="width: 100px">Sản phẩm đánh giá</th>
+
+                    <th style="width: 50px">Hoạt động</th>
+                    <th style="width: 70px;">@*<button type="button" class="btn quick-link" style="background-color: #004767; margin: 0 auto; padding: 10px 15px;" onclick="updateAllProduct()">Cập nhật tất cả</button>*@</th>
+                </tr>
+                @foreach (var review in Model.ReviewKols)
+                {
+                    <tr data-id="@review.Id">
+                        <td>
+                            @*<input type="hidden" name="ReviewsId" value="@review.Id" />*@
+                            @*<input type="number" name="Sort" id="Sort" min="0" value="@product.Sort" class="form_control" style="width: 60px" />*@
+                            @review.Id
+                        </td>
+                        <td>
+                            @review.Name
+                            <br />
+
+                        </td>
+
+                        <td>
+                            @if (review.Image != null)
+                            {
+                                <img src="@Path.Combine("/images/reviewKols/", review.Image)?w=50" alt="" />
+
+                            }
+                            else
+                            {
+                                @:NO PICTURE
+                            }
+                        </td>
+
+                        <td>
+                            @review.VideoLink
+                        </td>
+
+                        <td>
+                            <a href="@Url.Action("ProductDetail", "Home" , new { url = review.Product.Url})">
+                                @review.Product.Name
+                            </a>
+                        </td>
+
+                        @*<td>@Html.EditorFor(a => product.Quantity)</td>*@
+                        <td>
+                            @Html.EditorFor(a => review.Active, new { htmlAttributes = new { id = "Active" } })
+                        </td>
+                        <td>
+                            @*<p><a href="javascript:;" onclick="updateInfo(@product.Id)">Cập nhật</a></p>
+                                @Html.ActionLink("Sửa", "UpdateProduct", new { proId = product.Id })
+                                - <a href="javascript:;" onclick="deleteProduct('@product.Id')" class="red-warring">Xóa</a>*@
+                            <p><a href="javascript:;" onclick="updateInfo(@review.Id)" class="font-weight-bold">Cập nhật</a></p>
+                            <a href="javascript:;" onclick="deleteReview('@review.Id')" class="red-warring">Xóa</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.ReviewKols.PageCount > 1)
+                {
+                    <tr>
+                        @*<td colspan="9">@Html.PagedListPager(Model.Products, page => Url.Action("ListProduct", new { page, catId = Model.CategoryId, name = Model.Name }))</td>*@
+                        <td colspan="9">@Html.PagedListPager(Model.ReviewKols, page => Url.Action("ListReviewKol", new { page, productId = Model.ProductId, name = Model.Name }))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+
+        function deleteReviewKol(id) {
+            if (confirm("Bạn có chắc chắn muốn xóa đánh giá này không?")) {
+                $.post("/Review/DeleteReviewKol", { reviewId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa bài viết thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+
+        function updateInfo(id) {
+            var elm = $('tr[data-id="' + id + '"]');
+            var active = elm.find("input#Active").prop("checked");
+            $.post("/Review/QuickUpdateReviewKol", { proId: id, active },
+                function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Cập nhật thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            position: 'bottom-right',
+                            icon: 'error',
+                        })
+                        window.location.reload();
+                    };
+                });
+        }
+    </script>
+
+    <script>
+        VirtualSelect.init({
+            ele: 'select.filter-product',
+            multiple: false,
+            search: true,
+        });
+    </script>
+}

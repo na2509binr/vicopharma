@@ -1,0 +1,303 @@
+﻿@model Ephyta.ViewModel.ProductDetailViewModel
+@using Ephyta.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+@{
+    ViewBag.Title = Model.Product.TitleMeta ?? Model.Product.Name;
+    ViewBag.Description = Model.Product.DescriptionMeta ?? Model.Product.Description;
+
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductDetail", new { url = Model.Product.Url });
+
+    if (Model.Product.ListImage != null)
+    {
+        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0]);
+    }
+    var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+
+}
+<link href="~/Content/jquery.nice-number.css" rel="stylesheet" />
+<div class="bg-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("ProductCategory", new { url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.Name</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
+        </ol>
+    </div>
+</div>
+
+
+<section class="product-detail">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row ">
+                    <div class="col-md-2 col-12 order-1 order-md-0">
+                        @if (Model.Product.ListImage != null)
+                        {
+                            var arr = Model.Product.ListImage.Split(',');
+                            <ul class="nav-img ul-block">
+                                @foreach (var item in arr)
+                                {
+                                    <li>
+                                        <img data-src="@Path.Combine("/images/products/", item)" class="lazyload" src="@img" />
+
+                                    </li>
+
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div class="col-md-10 col-12 order-0 order-md-1">
+                        @if (Model.Product.ListImage != null)
+                        {
+                            var arr = Model.Product.ListImage.Split(',');
+                            <div class="box-img-detail">
+                                <div class="product-img-list">
+                                    @foreach (var item in arr)
+                                    {
+                                        <div class="item">
+                                            <a href="@Path.Combine("/images/products/", item)" data-fancybox="gallery">
+                                                <img data-src="@Path.Combine("/images/products/", item)?w=600" alt="@Model.Product.Name" class="img-responsive lazyload" src="@img" />
+                                            </a>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <h1 class="name-product">@Model.Product.Name</h1>
+                    <div class="product-info-rating d-flex">
+                        <span class="rating mr-2" data-default-rating="@Model.Rating" disabled></span>
+                        <div class="see-more">
+                            <span>Xem</span>
+                            <a href="#reviews-customers">@Model.Reviews.Count() đánh giá từ khách đã mua hàng</a>
+                        </div>
+                    </div>
+                    <div class="price-detail">
+                        <div class="content">
+                            @if (Model.Product.SaleOff != null)
+                            {
+                                <div class="new-price">@Convert.ToInt32(Model.Product.SaleOff).ToString("N0")đ</div>
+                                <div class="old-price d-inline-block"> @Convert.ToInt32(Model.Product.Price).ToString("N0")đ</div>
+
+                            }
+                            else if (Model.Product.Price != null)
+                            {
+                                <div class="new-price">@Convert.ToInt32(Model.Product.Price).ToString("N0")đ</div>
+                            }
+                            else
+                            {
+                                <div class="new-price d-inline-block">LIÊN HỆ</div>
+                            }
+                        </div>
+                    </div>
+                    <form id="formBookProduct" class="formAddCart">
+                        <input type="hidden" name="ProductId" value="@Model.Product.Id" />
+                        <div class="quantity">
+
+                            <div class="product-count">
+                                <input type="text" value="1" min="1" id="number" name="quantity" class="nice-number" maxlength="4" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <button type="submit" class="btn-order">Thêm vào giỏ hàng</button>
+                        </div>
+                    </form>
+
+                    <div class="product-des">
+
+                        <div class="content">@Html.Raw(Model.Product.Description)</div>
+                        <hr />
+                        @if (Model.Product.Use != null)
+                        {
+                            <div class="howtouse">
+                                <span><b>Cách dùng</b>@Model.Product.Use</span>
+                            </div>
+
+                        }
+                        @if (Model.Product.Specifications != null)
+                        {
+                            <div class="specifications">
+                                <span><b>Quy cách</b>@Model.Product.Specifications</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="buy-now" onclick="addToCart(@Model.Product.Id,'checkout')">
+                        <i class="fal fa-shopping-bag"></i>
+                        Mua ngay
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="product-detail-content " id="thong-tin-san-pham">
+            <div class="title title-global">THÔNG TIN SẢN PHẨM</div>
+            <div class="content-detail mt-4">
+                <div class="content">
+                    @Html.Raw(Model.Product.Intro)
+                </div>
+                <div class="see-open active mt-3">Xem thêm <i class="fas fa-angle-double-right"></i></div>
+                <div class="see-close mt-3">
+                    Thu gọn <i class="fas fa-angle-double-right"></i></a>
+                </div>
+            </div>
+        </div>
+        @if (Model.Product.Usermanual != null)
+        {
+            <div class="user-manual">
+                <div class="title title-global collapsed" data-toggle="collapse" data-target="#tab-1">
+                    HƯỚNG DẪN SỬ DỤNG
+                    <i class="far fa-chevron-down down"></i>
+                    <i class="far fa-chevron-up up"></i>
+                </div>
+                <div class="content-detail mt-4 collapse" id="tab-1">
+                    @Html.Raw(Model.Product.Usermanual)
+                </div>
+
+            </div>
+        }
+
+        @if (Model.ReviewKols.Any())
+        {
+            <div class="product-review mt-4">
+                <div class="title title-global mb-2">KOl review</div>
+                <div class="product-review-list owl-carousel">
+                    @foreach (var item in Model.ReviewKols)
+                    {
+                        <div class="product-review-item">
+                            <div class="item">
+                                @if (item.VideoLink != null && item.VideoLink != "")
+                                {
+                                    <div class="embed-responsive embed-responsive-16by9 video-item">
+                                        @Html.ShowYoutubeLazy(item.VideoLink, 600, 400)
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (item.Image != null)
+                                    {
+                                        <img src="@Path.Combine("/images/reviewKols/", item.Image)" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/no-image.jpg" />
+                                    }
+                                }
+                                <div class="name">
+                                    @item.Name
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+        }
+    </div>
+</section>
+
+
+<section class="related-products mb-4">
+    <div class="container">
+        <div class="title title-global">SẢN PHẨM LIÊN QUAN</div>
+        <div class="row mt-4 row-mb-10">
+            @foreach (var item in Model.Products)
+            {
+                <div class="col-lg-3 col-6">
+                    @Html.Partial("_ItemProduct", item)
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="product-hot">
+    <div class="container">
+        <div class="title title-global">Sản phẩm bán chạy nhất</div>
+        <div class="row mt-4 row-mb-10">
+            @foreach (var item in Model.ProductHot)
+            {
+                <div class="col-lg-3 col-6">
+                    @*@Html.Partial("_ItemProduct", item)*@
+                    @Html.Action("ItemProduct", "Home", new { id = item.Id })
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="reviews-customers mt-5" id="reviews-customers">
+    <div class="container">
+        <div class="top">
+            <div class="title">ĐÁNH GIÁ TỪ KHÁCH HÀNG ĐÃ MUA</div>
+            <div class="right">
+                <div class="reviews-star">
+                    <div class="d-flex align-items-center">
+                        <div class="number">@Model.Rating</div>
+                        <div class="rating mr-2" data-default-rating="@Model.Rating" disabled></div>
+                    </div>
+                    <span>Theo @Model.Reviews.Count() đánh giá</span>
+                </div>
+                <div class="btn-comment">
+                    <a href="@Url.Action("FormComment", new{url = Model.Product.Url})" data-fancybox data-type="ajax" data-touch="false">
+                        VIẾT ĐÁNH GIÁ
+                        <img src="~/Content/images/pen.png" class="ml-2" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="reviews-list" class="content">
+            @Html.Action("GetReview", "Home", new { id = Model.Product.Id })
+        </div>
+    </div>
+</section>
+
+@*@Html.Action("FormComment")*@
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery.nice-number.js"></script>
+    <script language="javascript" type="text/javascript">
+
+        $(document).ready(function () {
+
+            $(document).on("click", "#contentPager a[href]", function () {
+
+                $.ajax({
+
+                    url: $(this).attr("href"),
+
+                    type: 'GET',
+
+                    cache: false,
+
+                    success: function (result) {
+
+                        $('#reviews-list').html(result);
+                        var t = $('#reviews-list').position().top; //lấy vị trí của phần trang web gán cho biến t
+                        $('html,body').stop().animate({ scrollTop: t }); //cuộn trang đến phần với biến t
+                    }
+
+                });
+
+                return false;
+
+            });
+
+        });
+
+    </script>
+    <script>
+        ProductDetailJs();
+    </script>
+}

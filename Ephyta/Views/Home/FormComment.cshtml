@@ -1,0 +1,310 @@
+﻿@model Ephyta.ViewModel.CommentFormViewModel
+
+<div class="reviews-form">
+
+    @*@if (ViewBag.Result == "success")
+    {
+        <div id="AlertBox" class="alert alert-success"><strong>Hệ thống đã ghi nhận đánh giá của bạn</strong></div>
+    }*@
+
+    <h3 class="heading"> Đánh giá từ Khách Hàng</h3>
+    <p class="sub-heading">
+        Chia sẻ cảm nhận của bạn về sản phẩm đã mua. Lưu ý: Đánh giá có thể bị thu hồi nếu có nội
+        dung không phù hợp.
+    </p>
+    <div class="reviews-form__product">
+        <div class="item">
+            <div class="wrapper">
+                <div class="thumbnail">
+                    @if (Model.Product.ListImage != null)
+                    {
+                        <img src="@Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0])" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/no-image.jpg" />
+                    }
+                </div>
+                <div class="content">
+                    <h2>@Model.Product.Name</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="reviews-comment" id="reviews_comment" action="" method="post" enctype="multipart/form-data">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <input type="hidden" value="@Model.Product.Id" name="Review.ProductId" />
+
+        <div class="grid">
+            <div class="grid-column">
+                <label>Tên của bạn</label>
+                <div class="form_text">
+                    @Html.TextBoxFor(model => model.Review.Name, new { @class = "form-control", placeholder = "Tên của bạn" })
+                    @Html.ValidationMessageFor(model => model.Review.Name)
+                </div>
+            </div>
+            <div class="grid-column">
+                <label>Đại chỉ Email</label>
+                <div class="form_text">
+                    @Html.TextBoxFor(model => model.Review.Email, new { @class = "form-control", placeholder = "Địa chỉ email" })
+                    @Html.ValidationMessageFor(model => model.Review.Email)
+                </div>
+
+            </div>
+
+            <div class="grid-column">
+                <label>Đánh giá của bạn:</label>
+                <div class="form-ratings">
+                    <div class="ratings">
+                        <span class="star active" data-value="1">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        <span class="star active" data-value="2">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        <span class="star active" data-value="3">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        <span class="star active" data-value="4">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        <span class="star active" data-value="5">
+                            <i class="fas fa-star"></i>
+                        </span>
+                    </div>
+                    <input type="hidden" id="star-review" name="Review.StarReview" value="5" />
+                </div>
+            </div>
+            <div class="grid-column">
+                <label>Nội dung</label>
+                <div class="form_text">
+                    @Html.TextAreaFor(model => model.Review.Content, new { @class = "form-control", rows = 3, placeholder = "Nội dung" })
+                    @Html.ValidationMessageFor(model => model.Review.Content)
+                </div>
+
+            </div>
+            <div class="grid-column">
+                <label>Ảnh đại diện</label>
+                <div class="form_text">
+                    @*<input name="Review.ImageAvata" type="file" />*@
+                    <div class="alert alert-info">
+                        <label class="btn-fileupload" for="fileavata">+</label>
+                        <input type="file" id="fileavata" name="files[]" accept="image/*"  placeholder="+" />
+                        <ul id="ImageAvata" class="ul-block ml-4">
+                            @if (Model.Review.ImageAvata != null)
+                            {
+                                var i = 1;
+                                var arrPic = Model.Review.ImageAvata.Split(',');
+                                foreach (var item in arrPic)
+                                {
+                                    <li>
+                                        <input type="hidden" name="ImageAvata" value="@item" />
+                                        <img src="@Path.Combine("/images/reviews/",item)?w=80&h=80&mode=crop" alt="" />
+                                        <a href="javascript:;" class="delete" id="@i" onclick="delavata( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
+                                    </li>
+                                    i = i + 1;
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-column">
+                <label>Danh sách ảnh sản phẩm review</label>
+                <div class="form_text">
+                    <div class="alert alert-info">
+                        <label class="btn-fileupload" for="fileupload">+</label>
+                        <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" placeholder="+" />
+                        <ul id="ListImages" class="ul-block ml-4">
+                            @if (Model.Review.ListImage != null)
+                            {
+                                var i = 1;
+                                var arrPic = Model.Review.ListImage.Split(',');
+                                foreach (var item in arrPic)
+                                {
+                                    <li>
+                                        <input type="hidden" name="Pictures" value="@item" />
+                                        <img src="@Path.Combine("/images/reviews/",item)?w=80&h=80&mode=crop" alt="" />
+                                        <a href="javascript:;" id="@i" onclick="delfile( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
+                                    </li>
+                                    i = i + 1;
+                                }
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="grid-column text-center">
+                <button type="submit">Gửi đánh giá</button>
+                @*<div class="form_text">
+                        <ul id="ListImages">
+                                @if (Model.Review.ListImage != null)
+                                {
+                                    var i = 1;
+                                    var arrPic = Model.Review.ListImage.Split(',');
+                                    foreach (var item in arrPic)
+                                    {
+                                        <li>
+                                            <input type="hidden" name="Pictures" value="@item" />
+                                            <img src="@Path.Combine("/images/reviews/",item)?w=80&h=80&mode=crop" alt="" />
+                                            <a href="javascript:;" id="@i" onclick="delfile( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
+                                        </li>
+                                        i = i + 1;
+                                    }
+                                }
+                            </ul>
+                    </div>*@
+            </div>
+        </div>
+    </form>
+
+</div>
+@*<script src="~/Scripts/ckeditor/ckeditor.js"></script>*@
+@Scripts.Render("~/bundles/jquery", "~/bundles/jqueryval", "~/bundles/jqueryui")
+<script src="https://code.jquery.com/jquery-migrate-3.3.0.min.js"></script>
+<script src="~/Scripts/multi-upload/jquery.iframe-transport.js"></script>
+<script src="~/Scripts/multi-upload/jquery.fileupload.js"></script>
+<script src="~/Scripts/jquery.toast.js"></script>
+<script>
+
+
+
+    $(function () {
+        $("#ListImages").sortable();
+        $("#ListImages").disableSelection();
+
+        $("#ImageAvata").sortable();
+        $("#ImageAvata").disableSelection();
+    });
+
+    $("#fileavata").fileupload({
+        add: function (e, data) {
+            $("#ImageAvata .delete").click();
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#ImageAvata .thumb-img-box").length;
+            if (totalImg >= 1) {
+                uploadErrors.push("Chỉ đăng tối đa 1 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=reviews&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('#ImageAvata').append('<li><input type="hidden" name="ImageAvata" value ="' + file.name + '" /><img src="/images/reviews/' + file.name + '?w=80&h=80"/><a href="javascript:;" class="delete" id="' + i + '" onclick="delavata(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+            });
+            i = i + 1;
+
+        },
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+    var i = 1;
+    $("#fileupload").fileupload({
+        add: function (e, data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#ListImages .thumb-img-box").length;
+            if (totalImg >= 6) {
+                uploadErrors.push("Chỉ đăng tối đa 6 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=reviews&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/reviews/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+            });
+            i = i + 1;
+            $("#progress").fadeOut(2000);
+        },
+        start: function () {
+            $("#progress .progress-bar").css("width", "0");
+            $("#progress").show();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#progress .progress-bar").css("width", progress + "%");
+        }
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    function delfile(divid) {
+        if (confirm('Bạn có chắc xóa ảnh này?')) {
+            $('#' + divid).parent().fadeOut().remove();
+        }
+    }
+    function delavata(divid) {
+     
+            $('#' + divid).parent().fadeOut().remove();
+    }
+
+    const ratingStars = document.querySelectorAll(".form-ratings span");
+    ratingStars.forEach((star, clickedIdx) => {
+        star.addEventListener("click", () => {
+            /*ratingStars.classList.remove("active")*/
+            document.getElementById('star-review').value = clickedIdx + 1;
+            /* console.log(clickedIdx+1)*/
+
+            ratingStars.forEach((otherStart, ortherIdx) => {
+
+                otherStart.classList.remove("active")
+
+                if (ortherIdx <= clickedIdx) {
+                    otherStart.classList.add("active")
+                }
+            });
+        });
+    });
+
+
+    $("#reviews_comment").on("submit", function (e) {
+        e.preventDefault();
+        /*   if($(this).valid()) {*/
+        if ($(this).valid()) {
+            $.post("/Home/FormComment", $(this).serialize(), function (data) {
+                if (data.status) {
+                    $.toast({
+                        heading: 'Hệ thống đã ghi nhận đánh giá của bạn',
+                        text: data.msg,
+                        icon: 'success'
+                    })
+                    $(".reviews-form .fancybox-close-small").click();
+                    $("#reviews_comment").trigger("reset");
+                } else {
+                    $.toast({
+                        heading: 'Gửi đánh giá không thành công',
+                        text: data.msg,
+                        icon: 'error'
+                    })
+                }
+            });
+        }
+    });
+</script>

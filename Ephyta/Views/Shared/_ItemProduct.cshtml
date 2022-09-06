@@ -1,0 +1,64 @@
+﻿@model Ephyta.Models.Product
+@using Ephyta.Models
+@{
+    var discount = 100 - Convert.ToInt32((Model.SaleOff / Model.Price) * 100);
+    int date = int.Parse(DateTime.Now.ToString("dd")) - int.Parse(Model.CreateDate.ToString("dd"));
+
+    var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+
+    
+}
+
+<div class="product-item">
+    <div class="img">
+        <a href="@Url.Action("ProductDetail", "Home" , new { url = Model.Url})">
+            @if (Model.ListImage != null)
+            {
+                <img src="@img" data-src="@Path.Combine("/images/products/", Model.ListImage.Split(',')[0])" class="lazyload" />
+            }
+            else
+            {
+                <img src="~/Content/images/no-image.jpg" />
+            }
+        </a>
+    </div>
+    <div class="body">
+        <div class="name">
+            <a href="@Url.Action("ProductDetail", "Home" , new { url = Model.Url})">@Model.Name</a>
+            <div class="price">
+                @if (Model.SaleOff > 0)
+                {
+                    <div class="new-price">@Html.DisplayFor(m => Model.SaleOff)</div>
+                    <div class="old-price">@Html.DisplayFor(m => Model.Price)</div>
+                }
+                else if (Model.Price > 0)
+                {
+                    <div class="new-price ">@Html.DisplayFor(m => Model.Price)</div>
+                }
+                else
+                {
+                    <div class="new-price">Liên hệ</div>
+                }
+            </div>
+            <div class="star">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="tag">
+        @if (date < 3)
+        {
+            <div class="tag-new">new</div>
+
+        }
+        @if (Model.SaleOff > 0)
+        {
+            <div class="tag-discout">-@discount%</div>
+        }
+    </div>
+</div>

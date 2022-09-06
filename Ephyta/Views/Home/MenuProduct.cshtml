@@ -1,0 +1,32 @@
+﻿@model Ephyta.ViewModel.MenuProductViewModel
+@{
+    var a = 1;
+}
+<div class="bg-radius box-category-left">
+    <h2 class="title-category">
+        LỌC SẢN PHẨM
+    </h2>
+    @foreach (var category in Model.ProductCategories.Where(l => l.ParentId == null))
+    {
+        <div class="drop-menu drop-menu--category">
+            <div class="text-uppercase pr-2">
+                <a href="@Url.Action("ProductCategory", new { url = category.Url})">
+                    @category.Name
+                </a>
+            </div>
+            @if (Model.ProductCategories.Any(l => l.ParentId == category.Id))
+            {
+                <i class="fal fa-angle-down drop-icon" id="arrow-@a" type="button" data-toggle="collapse" data-target="#drop-@a" onclick="LoadChild(@a)" aria-expanded="false"></i>
+                <div class="collapse @if (category.Id == Model.ParentId) { @Html.Raw("show")} " id="drop-@a">
+                    <div class="drop-child">
+                        @foreach (var child in Model.ProductCategories.Where(l => l.ParentId == category.Id))
+                        {
+                            <a href="@Url.Action("ProductCategory", new { url = child.Url })">  @child.Name</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+        a++;
+    }
+</div>

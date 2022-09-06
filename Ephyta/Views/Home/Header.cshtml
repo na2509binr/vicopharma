@@ -1,0 +1,239 @@
+﻿@model Ephyta.ViewModel.HeaderViewModel
+@using Ephyta.Models
+
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    var i = 1;
+}
+
+<div class="top-header">
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <div class="left">
+                <a href="tel:@config.Hotline">
+                    <i class="fas fa-phone-alt"></i>
+                    @config.Hotline
+                </a>
+                <a href="mailto:@config.Email">
+                    <i class="far fa-envelope"></i>
+                    @config.Email
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<header class="header">
+    <div class="container">
+        <div class="header-center">
+            <a href="/">
+                <img src="@Path.Combine("/images/configs/",config.Image)" />
+            </a>
+            <form action="@Url.Action("Search")" method="get" class="header-search">
+                <input type="text" name="keywords" class="form-control" placeholder="Tìm sản phẩm mong muốn" />
+                <button type="submit" class="btn-search">
+                    <i class="far fa-search"></i>
+                </button>
+            </form>
+
+            <div class="d-flex align-items-end">
+                <div class="search-mobi" onclick="showSearch();">
+                    <i class="far fa-search"></i>
+                </div>
+
+                <ul class="ul-block header-social mr-4">
+                    <li>
+                        <a href="@config.Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="~/Content/images/tiktok.png" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@config.Youtube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="shopping-cart">
+                    @Html.Action("CartSummary", "ShoppingCart")
+                </div>
+                <div class="mobi-bar">
+                    <div class="hamburger" onclick="showMenuMobi()">
+                        <span class="line"></span>
+                        <span class="line"></span>
+                        <span class="line"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="container position-relative header-pc" id="header-pc">
+            <div class="d-flex justify-content-between">
+                <ul class="menu-list ul-block">
+                    <li>
+                        <a href="/">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                    @foreach (var category in Model.ProductCategories.Where(l => l.ParentId == null))
+                    {
+                        <li>
+                            <a href="@Url.Action("ProductCategory", new { url = category.Url })">@category.Name</a>
+                            @if (Model.ProductCategories.Any(l => l.ParentId == category.Id))
+                            {
+                                <ul class="ul-block menu-child">
+                                    <li class="megaMenu_title">
+                                        @{ i = 1; }
+                                        @foreach (var child in Model.ProductCategories.Where(l => l.ParentId == category.Id))
+                                        {
+                                            <ul class="ul-block">
+                                                <li class="category-child @if(i == 1) { @Html.Raw("text-bold")}" data-id="category-@child.Id">
+                                                    <a href="@Url.Action("ProductCategory", new { url = child.Url })">@child.Name</a>
+                                                </li>
+                                            </ul>
+                                            i++;
+                                        }
+                                    </li>
+                                    <li class="product-menu">
+                                        @{ i = 1; }
+                                        @foreach (var child in Model.ProductCategories.Where(l => l.ParentId == category.Id))
+                                        {
+                                            <ul class="ul-block @if(i == 1) { @Html.Raw("d-flex")}" id="category-@child.Id">
+                                                @foreach (var product in Model.Products.Where(l => l.ProductCategoryId == child.Id).Take(5))
+                                                {
+                                                    <li>
+                                                        @Html.Action("ItemProduct", "Home", new { id = product.Id })
+                                                    </li>
+
+                                                }
+                                                @if (Model.Products.Where(l => l.ProductCategoryId == child.Id).Count() > 4)
+                                                {
+                                                    <li class="header-see-all">
+                                                        <a href="@Url.Action("ProductCategory", new { url = child.Url })">Xem tất cả</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                            i++;
+                                        }
+                                    </li>
+                                </ul>
+                            }
+                        </li>
+
+                    }
+                </ul>
+                <ul class="ul-block category-article-menu">
+                    @foreach (var category in Model.ArticleCategories.Where(l => l.TypePost == TypePost.Introduce && l.ParentId == null))
+                    {
+                        <li>
+                            <a href="@Url.Action("Articlecategory", new { url = category.Url })">@category.CategoryName</a>
+                        </li>
+                    }
+                    @foreach (var category in Model.ArticleCategories.Where(l => l.TypePost == TypePost.Article && l.ParentId == null))
+                    {
+                        <li>
+                            <a href="@Url.Action("Articlecategory", new { url = category.Url })">@category.CategoryName</a>
+                            <ul class="ul-block">
+                                @foreach (var child in Model.ArticleCategories.Where(l => l.ParentId == category.Id))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Articlecategory", new { url = child.Url })">@child.CategoryName</a>
+                                    </li>
+
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <!-- ==== START: ICON scroll -->
+        <div class="scrollIcon">
+            <div class="scrollIcon-box" onclick="javascript:scrollHeaderMenu('header-pc');">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <!-- START:: MENU MOBILE  -->
+
+        <div class="menu-mobi">
+            <div class="close-menu-mobi" onclick="showMenuMobi()">
+                <i class="fas fa-times"></i>
+            </div>
+            <ul class="ul-block">
+                <li>
+                    <a href="/">Trang chủ</a>
+                </li>
+                @foreach (var category in Model.ArticleCategories.Where(l => l.ParentId == null && l.TypePost == TypePost.Introduce))
+                {
+                    <li>
+                        <a href="@Url.Action("Articlecategory", new { url = category.Url })">@category.CategoryName</a>
+                        @if (Model.ProductCategories.Any(l => l.ParentId == category.Id))
+                        {<span class="right-icon" onclick="javascript:showHideListMenuMobile(this);">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                            <ul class="ul-block" style="display: none;">
+                                @foreach (var child in Model.ArticleCategories.Where(l => l.ParentId == category.Id))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Articlecategory", new { url = child.Url })">@child.CategoryName</a>
+                                    </li>
+
+                                }
+                            </ul>
+                        }
+                    </li>
+
+                }
+
+                @foreach (var category in Model.ProductCategories.Where(l => l.ParentId == null))
+                {
+                    <li>
+                        <a href="@Url.Action("ProductCategory", new { url = category.Url })">@category.Name</a>
+                        @if (Model.ProductCategories.Any(l => l.ParentId == category.Id))
+                        {<span class="right-icon" onclick="javascript:showHideListMenuMobile(this);">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                            <ul class="ul-block" style="display: none;">
+                                @foreach (var child in Model.ProductCategories.Where(l => l.ParentId == category.Id))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ProductCategory", new { url = child.Url })">@child.Name</a>
+                                    </li>
+
+                                }
+                            </ul>
+                        }
+
+                    </li>
+                }
+                @foreach (var category in Model.ArticleCategories.Where(l => l.ParentId == null && l.TypePost == TypePost.Article))
+                {
+                    <li>
+                        <a href="@Url.Action("Articlecategory", new { url = category.Url })">@category.CategoryName</a>
+                        @if (Model.ArticleCategories.Any(l => l.ParentId == category.Id))
+                        {<span class="right-icon" onclick="javascript:showHideListMenuMobile(this);">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                            <ul class="ul-block" style="display: none;">
+                                @foreach (var child in Model.ArticleCategories.Where(l => l.ParentId == category.Id))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Articlecategory", new { url = child.Url })">@child.CategoryName</a>
+                                    </li>
+
+                                }
+                            </ul>
+                        }
+                    </li>
+
+                }
+            </ul>
+        </div>
+    </div>
+</header>

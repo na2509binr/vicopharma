@@ -1,0 +1,88 @@
+﻿@using System.Collections
+@using Ephyta.Models
+@model Ephyta.Models.District
+@{
+    ViewBag.Title = "Cập nhật Quận huyện";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Cập nhật Quận huyện</h2>
+<div class="box_content mt-0">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(a => a.CityId)
+        if (Model != null)
+        {
+            @Html.HiddenFor(model => model.Id)
+        }
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+                <td class="form_text">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
+                <td class="form_text">
+                    @Html.EditorFor(model => model.Sort)
+                    @Html.ValidationMessageFor(model => model.Sort)
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Active)</td>
+                <td class="form_text">
+                    @Html.CheckBoxFor(model => model.Active, new { @checked = "checked" }) Có/Không
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" value="Cập nhật" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+<h2>Danh sách quận huyện</h2>
+
+<table class="list_table">
+    <tr>
+        <th>STT</th>
+        <th>Quận huyện</th>
+        <th>Hoạt động</th>
+        <th></th>
+    </tr>
+    @foreach (var district in (IEnumerable<District>)ViewBag.Districts)
+    {
+        <tr data-id="@district.Id">
+            <td>@district.Sort</td>
+            <td>@district.Name</td>
+            <td>@Html.DisplayFor(a => district.Active)</td>
+            <td>
+                @Html.ActionLink("Sửa", "AddOrUpdateDistrict", new { districtId = district.Id, cityId = district.CityId }, new { data_fancybox = "", data_type = "iframe" }) -
+                <a href="javascript:;" onclick="deleteDistrict('@district.Id')">Xóa</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@section scripts
+{
+    <script>
+        function deleteDistrict(id) {
+            if (confirm("Bạn có chắc chắn xóa quận huyện này không?")) {
+                $.post("/Vcms/DeleteDistrict", { district: id }, function (data) {
+                    if (data) {
+                        alert("Bạn xóa Quận huyện thành công");
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    } else {
+                        alert("Quá trình thực hiện xảy ra lỗi. Hãy thử lại.");
+                    }
+                });
+            }
+        }
+    </script>
+}

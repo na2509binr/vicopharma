@@ -1,0 +1,94 @@
+﻿@using Ephyta.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head xmlns="http://www.w3.org/1999/xhtml" prefix="og:http://ogp.me/ns# fb:http://www.facebook.com/2008/fbml">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@Html.Raw(ViewBag.Description)" />
+    @*<meta name="keywords" content="@ViewBag.Keywords" />*@
+    <link rel="canonical" href="@ViewBag.Canonical" />
+    <meta name="robots" content="index,follow" />
+    @if (config.Image != null)
+    {
+        <link rel="shortcut icon" href="@Path.Combine("/images/configs/", config.Image)?w=128&h=128">
+    }
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@ViewBag.Title">
+    <meta property="og:description" content="@Html.Raw(ViewBag.Description)">
+    <meta property="og:url" content="@Request.Url">
+    <meta property="og:site_name" content="@ViewBag.Title">
+    <meta property="og:image" content="@ViewBag.ImagShare" />
+    <meta property="og:image:alt" content="@ViewBag.Title" />
+
+    <link rel="preload" href="~/webfonts/fa-light-300.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="preload" href="~/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="preload" href="~/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="preload" href="~/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="preload" href="~/webfonts/Fester-Bold.woff2" as="font" type="font/otf" crossorigin="">
+    <link rel="preload" href="~/webfonts/Lato-Bold_2.woff2" as="font" type="font/ttf" crossorigin="">
+    <link rel="preload" href="~/webfonts/Lato-Regular_2.woff2" as="font" type="font/ttf" crossorigin="">
+
+    @*<link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">*@
+    @Styles.Render("~/Content/css")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @if (config.GoogleAnalytics != null)
+    {
+        @Html.Raw(config.GoogleAnalytics)
+    }
+</head>
+<body>
+    @Html.Action("Header", "Home")
+    @RenderBody()
+    @Html.Action("Footer", "Home")
+    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/jqueryval", "~/bundles/jqueryui")
+    @RenderSection("scripts", false)
+
+    <script type="text/javascript">
+        window.WebFontConfig = {
+            google: { families: ["Quicksand:300,400,500,700&display=swap"] }
+        };
+        (function () {
+            const wf = document.createElement("script");
+            wf.src = "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js";
+            wf.type = "text/javascript";
+            wf.async = "true";
+            wf.defer = "true";
+            const s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(wf, s);
+        })();
+    </script>
+    @*<script type="application/ld+json">
+        {
+            "@@context": "http://schema.org",
+            "@@type": "Organization",
+            "url": "https://.vn",
+            "logo": "https://.vn/images/configs/2020/12/15/132524974851697664.png",
+            "sameAs" : [
+                "@config.Facebook",
+                "@config.Twitter",
+                "@config.Youtube",
+                "@config.Instagram"
+            ],
+            "address": {
+                "@@type": "PostalAddress",
+                "streetAddress": "S Số 20N3, tổ 57, phường Thịnh Quang, quận Đống Đa",
+                "addressRegion": "HN",
+                "postalCode": "100000",
+                "addressCountry": "VN"
+            }
+        }
+    </script>*@
+
+    @if (config.LiveChat != null)
+    {
+        @Html.Raw(config.LiveChat)
+    }
+</body>
+</html>

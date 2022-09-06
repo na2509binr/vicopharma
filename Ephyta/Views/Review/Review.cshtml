@@ -1,0 +1,156 @@
+﻿@model Ephyta.ViewModel.InsertReviewViewModel
+@{
+    ViewBag.Title = "Thêm đánh giá của khách hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .vscomp-ele {
+        max-width: unset;
+    }
+</style>
+<h2>Thêm mới đánh giá</h2>
+<a class="btn quick-link" href="@Url.Action("ListReview")"><i class="far fa-list mr-1"></i> Danh sách đánh giá khách hàng</a>
+<div class="box_content">
+    @using (Html.BeginForm("Review", "Review", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+    <table class="form_table">
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.ProductId)</td>
+            <td class="form_text">
+                <select name="ProductId" class="filter-product form_control w300" placeholder="Chọn sản phẩm" required="">
+                    <option value="" disabled selected>Chọn sản phẩm</option>
+                    @foreach (var product in Model.Products)
+                    {
+                        <option value="@product.Id">@product.Name</option>
+                    }
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.Name)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Review.Name)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.Email)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Review.Email)</td>
+        </tr>
+
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.ImageAvata)</td>
+            <td class="form_text">
+                @Html.TextBoxFor(model => model.Review.ImageAvata, new { type = "file" })<span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.Content)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Review.Content)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.ListImage)</td>
+            <td class="form_text">
+                <div class="alert alert-info">
+                    <p class="btn btn-success fileinput-button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>Chọn ảnh...</span>
+                        <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" />
+                    </p><br />
+                    - Chọn ảnh để upload: (gif, png, jpg, jpeg < 4MB)<br />
+                    - Ảnh đầu tiên sẽ là ảnh đại diện<br />
+                </div>
+                <div id="progress" class="progress">
+                    <div class="progress-bar progress-bar-success"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <ul id="ListImages"></ul>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Review.Active)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Review.Active, new { @checked = "checked" })</td>
+        </tr>
+
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <input type="submit" class="btn quick-link" value="Thêm mới" />
+            </td>
+        </tr>
+    </table>
+    }
+</div>
+
+@section scripts{
+    <script>
+        VirtualSelect.init({
+            ele: 'select.filter-product',
+            multiple: false,
+            search: true,
+        });
+
+        $(function () {
+            $("#ListImages").sortable();
+            $("#ListImages").disableSelection();
+        });
+        var i = 1;
+        $("#fileupload").fileupload({
+            add: function (e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                    uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+                }
+                if (data.originalFiles[0]["size"] > 4000000) {
+                    uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+                }
+                var totalImg = $("#ListImages .thumb-img-box").length;
+                if (totalImg >= 6) {
+                    uploadErrors.push("Chỉ đăng tối đa 6 ảnh");
+                }
+                if (uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                    return false;
+                } else {
+                    data.submit();
+                }
+                return true;
+            },
+            url: "/Uploader/Upload?folder=reviews&r=" + Math.random(),
+            dataType: "json",
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/reviews/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+                });
+                i = i + 1;
+                $("#progress").fadeOut(2000);
+            },
+            start: function () {
+                $("#progress .progress-bar").css("width", "0");
+                $("#progress").show();
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $("#progress .progress-bar").css("width", progress + "%");
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        function delfile(divid) {
+            if (confirm('Bạn có chắc xóa ảnh này?')) {
+                $('#' + divid).parent().fadeOut().remove();
+            }
+        }
+
+
+    </script>
+
+
+
+
+}

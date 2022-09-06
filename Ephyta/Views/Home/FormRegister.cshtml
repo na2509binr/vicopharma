@@ -1,0 +1,34 @@
+﻿@model Ephyta.Models.Register
+
+
+<div class="register-form">
+    <form action="" id="register_form">
+        <div class="title">ĐĂNG KÝ THÔNG TIN</div>
+        <div class="sub-title">ĐỂ NHẬN CHƯƠNG TRÌNH KHUYẾN MÃI</div>
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Fullname, new { @class = "form-control", placeholder = "Họ và tên*" })
+            @Html.ValidationMessageFor(model => model.Fullname)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Mobile, new { @class = "form-control", placeholder = "Điện thoại*" })
+            @Html.ValidationMessageFor(model => model.Mobile)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Time, new { @class = "form-control", placeholder = "Khung giờ tư vấn" })
+            @Html.ValidationMessageFor(model => model.Time)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Product, new { @class = "form-control", placeholder = "Sản phẩm*" })
+            @Html.ValidationMessageFor(model => model.Product)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Note, new { @class = "form-control", placeholder = "Lưu ý" })
+            @Html.ValidationMessageFor(model => model.Note)
+        </div>
+        <div class="form-group text-center">
+            <input type="submit" class="btn send" name="Xác nhận" value="XÁC NHẬN" />
+        </div>
+    </form>
+</div>

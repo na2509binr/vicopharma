@@ -1,0 +1,172 @@
+﻿@model Ephyta.ViewModel.ListCodeDiscountViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách mã giảm giá";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{ var i = 1; }
+
+<h2>Danh sách mã giảm giá</h2>
+@*<div class="box_content mt-5">
+        <table class="list_table" id="list-admin">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <th>Mã code</th>
+                    <th>Số tiền giảm</th>
+                    <th>Số % giảm</th>
+                    <th>Loại mã giảm giá</th>
+                    <th>Thời gian hết hạn</th>
+                    <th>Hoạt động</th>
+                    <th></th>
+                </tr>
+                @foreach (var code in Model)
+                {
+                    <tr data-id="@code.Id">
+                        <td>@code.Id</td>
+                        <td>@code.Fullname</td>
+                        <td class="left">@Html.DisplayFor(model => code.Price) </td>
+                        <td class="">@code.Discount </td>
+                        <td>@Html.DisplayFor(a => code.TypeDiscount)</td>
+                        <td>@code.ExpDay</td>
+
+                        <td>@Html.DisplayFor(a => code.Active)</td>
+                        <td class="list-icon">
+                            @Html.ActionLink("Sửa", "EditCodeDiscount", new { codeId = code.Id }) - <a href="javascript:;" class="red-warring" onclick="DeleteCodeDiscount('@code.Id')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>*@
+
+
+<a class="btn quick-link" href="@Url.Action("Index","Vcms")"><i class="fal fa-home mr-1"></i>Về trang chính</a>
+<div class="box_content">
+    <div class="">
+        <form action="@Url.Action("ListCodeDiscount")" method="get">
+            <table class="form_table">
+                <tr>
+                    <td>Mã code</td>
+                    <td>@Html.TextBoxFor(a => a.Name, new { @class = "form_control" })</td>
+
+                </tr>
+                <tr>
+                    <td>Loại mã</td>
+                    <td>
+                        <select name="type" class="form_control">
+                            <option value="3">Tất cả</option>
+                            <option value="0" @if (Model.Status == 0) { @Html.Raw("selected=selected") }>Dùng 1 lần</option>
+                            <option value="1" @if (Model.Status == 1) { @Html.Raw("selected=selected") }>Dùng nhiêu lần</option>
+
+                        </select>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>Từ ngày</td>
+                    <td>@Html.TextBoxFor(a => a.FromDate, new { @class = "form_control datepicker" })</td>
+
+                </tr>
+                <tr>
+                    <td>Đến ngày</td>
+                    <td>@Html.TextBoxFor(a => a.ToDate, new { @class = "form_control datepicker" })</td>
+                </tr>
+                <tr>
+                    <td>Trạng thái mã giảm giá</td>
+                    <td>
+                        <select name="status" class="form_control">
+                            <option value="3">Tất cả mã giảm giá</option>
+                            <option value="0" @if (Model.Status == 0) { @Html.Raw("selected=selected") }>Chưa dùng</option>
+                            <option value="1" @if (Model.Status == 1) { @Html.Raw("selected=selected") }>Đã dùng</option>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hạn sử dụng</td>
+                    <td>
+                        <select name="hsd" class="form_control">
+                            <option value="0">Tất cả </option>
+                            <option value="1" @if (Model.HSD == 1) { @Html.Raw("selected=selected") }>Hết hạn</option>
+                            <option value="2" @if (Model.HSD == 2) { @Html.Raw("selected=selected") }>Còn hạn</option>
+
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Số đơn trên trang</td>
+                    <td>@Html.TextBoxFor(a => a.PageSize, new { @class = "form_control w100", type = "number", max = 200 })</td>
+
+                </tr>
+            </table>
+            <div>
+                <button type="submit" class="btn-search">TÌM KIẾM</button>
+            </div>
+        </form>
+    </div>
+    @*<p>Có tổng số <strong>@Model.DiscountCodes.TotalItemCount</strong> đơn hàng - <a href="@Url.Action("ExportCodeDiscount", new{fromDate = Model.FromDate, toDate = Model.ToDate, status = Model.Status , type = Model.Type})" class="btn-search">Xuất EXCEL</a></p>*@
+
+    <p>Có tổng số <strong>@Model.DiscountCodes.TotalItemCount</strong> mã code - <a href="@Url.Action("ExportCodeDiscount", new{fromDate = Model.FromDate, toDate = Model.ToDate, status = Model.Status , type = Model.Type, hsd = Model.HSD})" class="btn-search">Xuất EXCEL</a></p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <th>Mã code</th>
+                <th>Số tiền giảm</th>
+                <th>Số % giảm</th>
+                <th>Loại mã giảm giá</th>
+                <th>Thời gian hết hạn</th>
+                <th>Hoạt động</th>
+                <th></th>
+            </tr>
+            @foreach (var code in Model.DiscountCodes)
+            {
+                <tr data-id="@code.Id">
+                    <td>@code.Id</td>
+                    <td>@code.Fullname</td>
+                    <td class="left">@Html.DisplayFor(model => code.Price) </td>
+                    <td class="">@code.Discount </td>
+                    <td>@Html.DisplayFor(a => code.TypeDiscount)</td>
+                    <td>@code.ExpDay</td>
+
+                    <td>@Html.DisplayFor(a => code.Active)</td>
+                    <td class="list-icon">
+                        @Html.ActionLink("Sửa", "EditCodeDiscount", new { codeId = code.Id }) - <a href="javascript:;" class="red-warring" onclick="DeleteCodeDiscount('@code.Id')">Xóa</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.DiscountCodes.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="8">@Html.PagedListPager(Model.DiscountCodes, page => Url.Action("ListCodeDiscount", new { page, name = Model.Name }))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+        function DeleteCodeDiscount(id) {
+            if (confirm("Bạn có chắc chắn xóa mã giảm giá này không?")) {
+                $.post("/Vcms/DeleteCodeDiscount", { codeId: id }, function (data) {
+                    if (data) {
+                        alert("Xóa mã giảm giá thành công");
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        alert("Quá trình thực hiện không thành công");
+                    }
+                });
+            }
+        }
+    </script>
+}

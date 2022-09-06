@@ -1,0 +1,52 @@
+﻿@model Ephyta.ViewModel.SearchViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Tìm kiếm";
+}
+<div class="bg-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fal fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Từ khóa: @Model.Keywords </li>
+        </ol>
+    </div>
+</div>
+
+<div class="page-product">
+    <div class="container py-3">
+        <div class="row mt-3">
+            <div class="col-12 col-lg-3 order-lg-0 order-1 order-1 mt-lg-0 mt-3" data-aos="fade-up" data-aos-duration="800">
+                @Html.Action("MenuProduct")
+            </div>
+            <div class="col-12 col-lg-9 order-lg-1 order-0">
+                <h1 class="name-category">TỪ KHÓA: @Model.Keywords</h1>
+
+                @if (Model.Products.Any())
+                {
+                    <div class="row row-gutter-5">
+                        @foreach (var product in Model.Products)
+                        {
+                            <div class="col-lg-3">
+                                @Html.Action("ItemProduct", "Home", new { id = product.Id })
+                            </div>
+                        }
+
+                    </div>
+                    if (Model.Products.PageCount > 1)
+                    {
+                        <div id="contentPager" class=" mt-lg-5 mt-3 ">
+                            @Html.PagedListPager(Model.Products, page => Url.Action("Search", new { keywords = Model.Keywords, page }))
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class=" mt-lg-4 mt-3  alert alert-info small">Không tìm thấy sản phẩm nào theo từ khóa tìm kiếm. Vui lòng nhập từ khóa khác !!!</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

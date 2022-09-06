@@ -1,0 +1,126 @@
+﻿@model Ephyta.ViewModel.FooterViewModel
+@using Ephyta.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="footer-col">
+                    <div class="title-ft">về Ephyta</div>
+                    <ul class="ul-block">
+                        @foreach (var item in Model.ArticleCategories.Where(l => l.ParentId == null && l.TypePost == TypePost.Introduce))
+                        {
+                            <li>
+                                <a href="@Url.Action("Articlecategory", new { url = item.Url })">@item.CategoryName</a>
+                            </li>
+
+                        }
+                        @foreach (var item in Model.ArticleCategories.Where(l => l.ParentId == null && l.TypePost == TypePost.Article))
+                        {
+                            <li>
+                                <a href="@Url.Action("Articlecategory", new { url = item.Url })">@item.CategoryName</a>
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="footer-col">
+                    <div class="title-ft">Thông tin</div>
+                    <ul class="ul-block">
+                        <li>
+                            <a href="@Url.Action("AllProductCategory")">Sản phẩm</a>
+                        </li>
+                        @*<li>
+                            <a href="">Khuyến mãi</a>
+                        </li>
+                        <li>
+                            <a href="">Kiến thức về sản phẩm</a>
+                        </li>*@
+                        @foreach (var item in Model.ArticleCategories.Where(l => l.ParentId == null && l.TypePost == TypePost.Support))
+                        {
+                            <li>
+                                <a href="@Url.Action("Articlecategory", new { url = item.Url })">@item.CategoryName</a>
+                            </li>
+
+                        }
+                        <li>
+                            <a href="@Url.Action("Contact")">Liên hệ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="footer-col">
+                    <div class="title-ft">Hướng dẫn mua hàng</div>
+                    <ul class="ul-block">
+                        @foreach (var item in Model.Articles)
+                        {
+                            <li>
+                                <a href="@Url.Action("ArticleDetail", new { url = item.Url })">@item.Subject</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="footer-col">
+                    <div class="title-ft">Thông tin liên hệ</div>
+                    <ul class="ul-block">
+                        <li>
+                            <a href="mailto:@config.Hotline">Email: @config.Hotline</a>
+                        </li>
+                        <li>
+                            <a href="tel:@config.Hotline">Hotline: @config.Hotline</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-col mt-lg-3">
+                    <div class="title-ft">Liên kết mạng xã hội</div>
+                    <div class="footer-social">
+                        <a href="@config.Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="@config.Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="@config.Youtube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="footer-bottom">
+    <div class="container">
+        <div class="item">
+            <div class="content">
+                @Html.Raw(config.InfoFooter)
+            </div>
+        </div>
+        <div class="item add-nots">
+            <div class="footer-notify">
+                <span>
+                    *Lưu ý:  Tác dụng của sản phẩm có thể thay đổi tùy theo tình trạng thể chất mỗi
+                    người
+                </span>
+            </div>
+        </div>
+        <div class="item">
+            <a href="">
+                <img src="~/Content/images/bct.png" />
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="overlay-all" onclick="showMenuMobi()"></div>
+

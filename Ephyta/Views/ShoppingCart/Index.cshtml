@@ -1,0 +1,319 @@
+﻿@model Ephyta.ViewModel.CheckOutViewModel
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+    var count = 0;
+    var final = Model.CartTotal + Model.Order.ShipFee;
+}
+<link href="~/Content/jquery.nice-number.css" rel="stylesheet" />
+<link href="~/Content/tagmanager.css" rel="stylesheet" />
+
+
+<div class="bg-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb mb-0 px-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Giỏ hàng của bạn</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container padding-section mb-5">
+    @if (!Model.CartItems.Any())
+    {
+        <div class="alert bg-light my-lg-4 my-3 p-5">
+            <div class="text-center font-sm-14">
+                <img src="~/Content/images/img-main/empty-cart.png" class="img-fluid rounded m-auto" alt="Đơn hàng" /><br /><br />
+                Giỏ hàng của bạn đang trống. Hãy chọn sản phẩm!
+            </div>
+        </div>
+    }
+    else
+    {
+        @*<form action="/gio-hang/thanh-toan" class="" method="post" novalidate="novalidate">
+                @Html.ValidationSummary(true)
+                @Html.AntiForgeryToken()
+            </form>*@
+
+        <div class="row">
+            <div class="col-lg-7 order-lg-0 order-1">
+                <div class="title-cart">Thông tin nhận hàng</div>
+
+                <div class="form-checkout">
+                    <form action="/gio-hang/thanh-toan" class="" method="post" novalidate="novalidate">
+                        @Html.ValidationSummary(true)
+                        @Html.AntiForgeryToken()
+                        <input  name="tag-code" id="tag-code" type="hidden" value="" />
+                        <input type="hidden" name="ShipFee" id="shipp" value="" />
+                        <input type="hidden" name="PricesDiscount" id="PricesDiscount" value="" />
+
+                        <div class="form-row form-group">
+                            <div class="col">
+                                @Html.TextBoxFor(a => a.Order.CustomerInfo.Fullname, new { @class = "form-control", @placeholder = "Họ và tên" })
+                                @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Fullname)
+                            </div>
+                            <div class="col">
+                                @Html.TextBoxFor(a => a.Order.CustomerInfo.Mobile, new { @class = "form-control", @placeholder = "Số điện thoại" })
+                                @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Mobile)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Order.CustomerInfo.Email, new { @class = "form-control", @placeholder = "Email của bạn" })
+                            @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Email)
+                        </div>
+                        @*<div class="form-group">
+                            @Html.TextBoxFor(a => a.Order.CustomerInfo.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
+                            @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Address)
+                        </div>*@
+                        <div class="form-row form-group">
+                            <div class="col-md-4 mb-md-0 mb-3">
+                                @Html.DropDownListFor(a => a.CityId, Model.CitySelectList, "Chọn thành phố", new { @class = "form-control", data_item = "city", onchange = "updateShip(this.value)" })
+                                @Html.ValidationMessageFor(a => a.CityId)
+                            </div>
+                            <div class="col-md-4 mb-md-0 mb-3">
+                                @Html.DropDownListFor(a => a.DistrictId, Model.DistrictSelectList, "Chọn quận huyện", new { @class = "form-control", data_item = "district" })
+                                @Html.ValidationMessageFor(a => a.DistrictId)
+                            </div>
+                            <div class="col-md-4 mb-md-0 mb-3">
+                                @Html.DropDownListFor(a => a.WardId, Model.WardSelectList, "Chọn phường xã", new { @class = "form-control", data_item = "ward" })
+                                @Html.ValidationMessageFor(a => a.WardId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Order.CustomerInfo.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
+                            @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Address)
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="Body" id="Body" rows="4" placeholder="Lời nhắn (nếu có)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn">Xác nhận đặt hàng</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="col-lg-5 order-lg-1 order-0">
+                <div class="border-radius">
+                    <div class="title-cart">Giỏ hàng của bạn</div>
+                    <div class="list-cart">
+                        @foreach (var item in Model.CartItems)
+                        {
+                            var p = item.CartItems.Price ?? 0;
+                            var price = item.CartItems.Count * p;
+                            <div class="cart-item" data-row="@item.CartItems.RecordId">
+                                <a href="@Url.Action("ProductDetail", "Home", new { url = item.CartItems.Product.Url })" class="flex-shrink-0">
+                                    @if (item.CartItems.Product.ListImage != null)
+                                    {
+                                        <img src="@Path.Combine("/images/products/", item.CartItems.Product.ListImage.Split(',')[0])?w=100"
+                                             class="img-fluid" alt="@item.CartItems.Product.Name" />
+                                    }
+                                </a>
+
+                                <div class="content">
+                                    <div class="name">@item.CartItems.Product.Name</div>
+                                    <div class=" d-flex justify-content-between">
+                                        <div class="quantity">
+                                            <input type="hidden" name="RecordId" value="@item.CartItems.RecordId" />
+                                            <input type="number" id-value="@item.CartItems.RecordId" name="Quantity" required="" size="5" min="1" max="999" class="nice-number" value="@item.CartItems.Count">
+
+                                        </div>
+                                        <div class="cart-price d-flex align-items-center">
+                                            @if (item.CartItems.Product.SaleOff != null)
+                                            {
+                                                var Old = item.CartItems.Product.Price;
+                                                var priceOld = item.CartItems.Count * Old;
+
+                                                <input name="priceOld" type="hidden" value="@Old" />
+
+                                                <div class="price-old"><span data-price-old="@item.CartItems.RecordId">@Convert.ToDecimal(priceOld).ToString("N0")</span><sup>đ</sup></div>
+                                                <div class="price-new"><span data-cart-item="@item.CartItems.RecordId">@price.ToString("N0")</span><sup>đ</sup></div>
+
+
+                                            }
+                                            else if (item.CartItems.Product.Price != null)
+                                            {
+                                                <div class="price-new"><span data-cart-item="@item.CartItems.RecordId">@price.ToString("N0")</span><sup>đ</sup></div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="price-new">Liên hệ</div>
+
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="javascript:;" title="Xóa" class="remove-product d-flex align-items-center" style="color: dimgray" data-id="@item.CartItems.RecordId" onclick="javascript:removeProduct(this);">
+                                    <i class="fad fa-trash-alt"></i>XÓA
+                                </a>
+                            </div>
+
+                        }
+                    </div>
+
+                    <form class="discount-from" id="discount-from" action="">
+                       
+
+                        <input name="code-discount" id="Tags" type="text" value="" class="tm-input tm-tag-info"  />
+
+                        @*<span id="tag-error" class=" field-validation-error"></span>*@
+
+                        <button type="submit">Áp dụng</button>
+                    </form>
+
+                    <div class="checkout-content">
+                        <div class="total-value d-flex justify-content-between">
+                            <div class="span">Tổng giá trị đơn:</div>
+                            <input name="cart-total" type="hidden" value="@Model.CartTotal"/>
+                            <strong><span data-item="cart-total" data-amount="@Model.CartTotal">@Model.CartTotal.ToString("N0")<sup>đ</sup></span></strong>
+                        </div>
+                        <div class="shipFee d-flex justify-content-between">
+                            <div class="span">Phí giao hàng:</div>
+                            <strong><span data-item="ship-fee">@Model.Order.ShipFee.ToString("N0")</span><sup>đ</sup></strong>
+                        </div>
+                        <div class="discout d-flex justify-content-between">
+                            <div class="span">Giảm giá:</div>
+                            <strong><span data-item="prices-discount" id="prices-discount">0</span><sup>đ</sup></strong>
+                        </div>
+                    </div>
+                    <div class="total-price-checkout d-flex justify-content-between">
+                        <div class="span">Tổng thanh toán:</div>
+                        <strong><span data-item="final-total" id="finalPrices">@final.ToString("N0")</span><sup>đ</sup></strong>
+                    </div>
+                    <div class="keep-buying">
+                        <a href="/">
+                            <i class="far fa-arrow-left mr-2"></i>Tiếp tục mua hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+@*@Scripts.Render("~/bundles/jqueryui")*@
+@section scripts{
+
+    <script src="~/Scripts/jquery.nice-number.js"></script>
+    <script src="~/Scripts/tagmanager.js"></script>
+    <script>
+        CartJs();
+
+
+        $(function () {
+
+            
+
+           
+        });
+
+        window.onload = function () {
+            // If sessionStorage is storing default values (ex. name), exit the function and do not restore data
+            if (sessionStorage.getItem('name') == "") {
+                return;
+            }
+
+            // If values are not blank, restore them to the fields
+            var name = sessionStorage.getItem('name');
+            if (name !== null) $('#Order_CustomerInfo_Fullname').val(name);
+
+            var email = sessionStorage.getItem('email');
+            if (email !== null) $('#Order_CustomerInfo_Email').val(email);
+
+            var phone = sessionStorage.getItem('phone');
+            if (phone !== null) $('#Order_CustomerInfo_Mobile').val(phone);
+
+            var addess = sessionStorage.getItem('addess');
+            if (addess !== null) $('#Order_CustomerInfo_Address').val(addess);
+
+            
+
+            var city = sessionStorage.getItem('city');
+
+            if (city !== null) {
+                $('#CityId').val(city);
+
+                $("[data-item=city]").change()
+
+
+
+                var district = sessionStorage.getItem('district');
+                if (district !== null) {
+                    setTimeout(function () {
+                        $('#DistrictId').val(district);
+                        console.log(district)
+                    }, 1000);
+
+                    $("[data-item=district]").change()
+                    var ward = sessionStorage.getItem('ward');
+                    if (ward !== null) {
+                        setTimeout(function () {
+                            $('#WardId').val(ward);
+                            console.log(ward)
+                        }, 1000);
+                    }
+                }
+
+                //var items = [];
+                //items.push("<option value>Hãy chọn quận huyện</option>");
+
+                //if (city !== "") {
+                //    $.getJSON("/Base/GetDistrict", { city: id }, function (data) {
+                //        $.each(data, function (key, val) {
+                //            items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
+                //        });
+                //        $("[data-item=district]").html(items.join(""));
+                //    });
+                //} else {
+                //    $("[data-item=district]").html(items.join(""));
+                //}
+            }
+
+
+
+            var body = sessionStorage.getItem('body');
+            if (body !== null) $('#Body').val(body);
+
+            var code = sessionStorage.getItem('code');
+            if (code !== null) {
+
+
+                setTimeout(function () {
+                    $('#tag-code').val(code);
+                    UpdateCode(code)
+                }, 1500);
+            }
+
+        }
+
+        window.onbeforeunload = function () {
+            sessionStorage.setItem("name", $('#Order_CustomerInfo_Fullname').val());
+            sessionStorage.setItem("email", $('#Order_CustomerInfo_Email').val());
+            sessionStorage.setItem("phone", $('#Order_CustomerInfo_Mobile').val());
+            sessionStorage.setItem("addess", $('#Order_CustomerInfo_Address').val());
+            sessionStorage.setItem("city", $('#CityId').val());
+            sessionStorage.setItem("body", $('#Body').val());
+            sessionStorage.setItem("district", $('#DistrictId').val());
+            sessionStorage.setItem("ward", $('#WardId').val());
+           
+            //sessionStorage.setItem("subject", $('#inputSubject').val());
+            //sessionStorage.setItem("message", $('#inputMessage').val());
+        }
+
+        function updateShip(id) {
+            const cartTotal = $("[data-item='cart-total']").data("amount");
+            var final = parseFloat(cartTotal) + 30000;
+            var discount = Number($("#prices-discount").text().replace(/,/g, ''))
+            $.getJSON("/Base/GetShipFee", { id: id }, function (data) {
+                final = parseFloat(cartTotal) + data;
+                $("#shipp").val(data);
+                $("#finalPrices").text((final - discount).toLocaleString());
+                $("[ data-item='ship-fee']").text(data.toLocaleString());
+            });
+
+        }
+    </script>
+}

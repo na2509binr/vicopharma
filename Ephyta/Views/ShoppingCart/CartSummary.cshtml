@@ -1,0 +1,17 @@
+﻿@model Ephyta.ViewModel.CartSummaryViewModel
+
+<a href="@Url.Action("Index","ShoppingCart")" title="Giỏ hàng của bạn">
+    <div class="header-cart position-relative">
+        <i class="far fa-shopping-cart"></i>
+        <span id="itemshop">
+            @if (Model.Count < 100)
+            {
+                @Model.Count
+            }
+            else
+            {
+                @: 99+
+            }
+        </span>
+    </div>
+</a>

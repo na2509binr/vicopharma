@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Ephyta.Models.City>
+<h2>Danh sách thành phố</h2>
+<div class="box_content mt-0">
+    <table class="list_table">
+        <tr>
+            <th>STT</th>
+            <th>Thành phố</th>
+            <th>Quận huyện</th>
+            <th>Ship</th>
+            <th>Hoạt động</th>
+            <th></th>
+        </tr>
+        @foreach (var city in Model)
+        {
+            <tr style="background: #f0f0f0" data-id="@city.Id">
+                <td>@city.Sort</td>
+                <td>@city.Name</td>
+                <td>-</td>
+                <td>@city.ShipFee.ToString("N0") đ</td>
+                <td>@Html.DisplayFor(a => city.Active)</td>
+                <td>
+                    @Html.ActionLink("Thêm Quận huyện", "AddOrUpdateDistrict", new { cityId = city.Id }, new { data_fancybox = "", data_type = "iframe" }) -
+                    @Html.ActionLink("Sửa", "EditCity", new { cityId = city.Id }) -
+                    <a href="javascript:;" onclick="deleteCity('@city.Id')">Xóa</a>
+                </td>
+            </tr>
+            @*foreach (var district in city.Districts)
+                {
+                    <tr data-id="@district.Id">
+                        <td>@district.Sort</td>
+                        <td>-</td>
+                        <td>@district.Name</td>
+                        <td>@Html.DisplayFor(a => district.Active)</td>
+                        <td>
+                            @Html.ActionLink("Sửa", "AddOrUpdateDistrict", new { districtId = district.Id, cityId = city.Id }, new{ data_fancybox = "", data_type = "iframe" }) -
+                            <a href="javascript:;" onclick="deleteDistrict('@district.Id')">Xóa</a>
+                        </td>
+                    </tr>
+                }*@
+        }
+    </table>
+</div>
+<script type="text/javascript">
+    function deleteCity(id) {
+        if (confirm("Bạn có chắc chắn xóa thành phố này không?")) {
+            $.post("/Vcms/DeleteCity", { cityId: id }, function (data) {
+                if (data) {
+                    alert("Bạn xóa thành công thành phố này");
+                    $("tr[data-id='" + id + "']").fadeOut();
+                } else {
+                    alert("Quá trình thực hiện xảy ra lỗi. Hãy thử lại.");
+                }
+            });
+        }
+    }
+</script>

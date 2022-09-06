@@ -1,0 +1,159 @@
+﻿@using Ephyta.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    @*<meta name="viewport" content="width=device-width" />*@
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/admincss", "~/Content/themes/base/css")
+    <link href="~/Content/virtual-select.min.css" rel="stylesheet" />
+    <link href="~/Content/tooltip.min.css" rel="stylesheet" />
+    <link href="~/Scripts/multi-upload/jquery.fileupload.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="responsive">
+        <div class="app-header">
+            <div class="app-header__logo">
+                @*@if (config.Image != null)
+                    {
+                        <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="@Path.Combine("/images/configs/", config.Image)" /></a>
+                    }*@
+                <a href="@Url.Action("Index","Vcms")"><img class="logo-admin" src="@Path.Combine("/images/configs/", config.Image)" /></a>
+                <a id="btn-show" onclick="myFunction()"><i class="fal fa-bars"></i><i class="fal fa-times"></i></a>
+            </div>
+            <div class="app-header__content">
+                <div class="media mr-lg-5 mr-3 drop">
+                    <img class="mr-3 avatar" src="~/Content/admin/icon_profile.png" />
+                    <div class="media-body">
+                        <h5 class="mb-0">@User.Identity.Name</h5>
+                        Quản trị viên
+                    </div>
+                    <div class="content-drop">
+                        <a href="@Url.Action("LogOut","Vcms")"><i class="fal fa-sign-out-alt pr-1"></i> Đăng xuất</a>
+                        <a href="@Url.Action("ChangePassword","Vcms")"><i class="far fa-low-vision mr-1"></i>Đổi mật khẩu</a>
+                        <a href="@Url.Action("ConfigSite","Vcms")"><i class="far fa-info-circle"></i> Thông tin chung</a>
+                    </div>
+                </div>
+                <a id="help" class="drop" onclick="fbFunction()">
+                    <i class="fas fa-user-headset"></i>
+                    <div class="content-drop">Gửi yêu cầu cho chúng tôi</div>
+                </a>
+            </div>
+        </div>
+        <div id="left_menu_profile">
+            <div class="left_menu_profile">
+                <ul class="drop-bar">
+                    <li data-id="1">
+                        <a class="root expand mb-3" href="@Url.Action("Index","Vcms")">Tổng quan website</a>
+                    </li>
+                    <li data-id="2">
+                        <a class="root"><span>Admin</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div class="first">@Html.ActionLink("Đổi mật khẩu", "ChangePassword", "Vcms", null, new { @class = "text_link" })</div>
+                            @*<div>@Html.ActionLink("Quản lý admin", "CreateAdmin", "Vcms", null, new { @class = "text_link" })</div>*@
+                            <div>@Html.ActionLink("Thông tin chung", "ConfigSite", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Đăng xuất", "Logout", "Vcms", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="20">
+                        <a class="root"><span>Mã giảm giá</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Thêm số lượng lớn mã giảm giá", "CreateCodeAll", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Thêm mã giảm giá", "CodeDiscount", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách mã giảm giá", "ListCodeDiscount", "Vcms", null, new { @class = "text_link" })</div>
+
+                        </div>
+                    </li>
+                    <li data-id="30">
+                        <a class="root"><span>Quản lý Địa danh</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Quản lý địa danh", "City", "Vcms", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+
+                    <li data-id="3">
+                        <a class="root"><span>Quản lý Bài viết</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div class="first">@Html.ActionLink("Quản lý danh mục", "ArticleCategory", "Article", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Thêm mới bài viết", "Article", "Article", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách bài viết", "ListArticle", "Article", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="4">
+                        <a class="root"><span>Quản lý Sản phẩm</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div class="first">@Html.ActionLink("Quản lý danh mục", "ProductCategory", "Product", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Thêm mới sản phẩm", "Product", "Product", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách sản phẩm", "ListProduct", "Product", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+
+                    <li data-id="31">
+                        <a class="root"><span>Quản lý Đơn hàng</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div><a href="@Url.Action("ListOrder", "Order")" class="text_link">Tất cả Đơn hàng</a></div>
+                            <div><a href="@Url.Action("ReportProduct", "Order")" class="text_link">Thống kê theo sản phẩm</a></div>
+                        </div>
+                    </li>
+
+                    <li data-id="5">
+                        <a class="root"><span>Quản lý Quảng cáo</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div class="first">@Html.ActionLink("Thêm mới quảng cáo", "Banner", "Banner", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách quảng cáo", "ListBanner", "Banner", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="6">
+                        <a class="root"><span>Quản lý Phản hồi</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Thêm phản hồi", "Feedback", "Contact", null, new { @class = "text_link" })</div>
+                            <div class="first">@Html.ActionLink("Danh sách phản hồi", "ListFeeback", "Contact", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="6">
+                        <a class="root"><span>Quản lý đánh giá</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Đánh giá của khác hàng cần duyệt", "ListReviewFalse", "Review", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách đánh giá khách hàng", "ListReview", "Review", null, new { @class = "text_link" })</div>
+                            <div class="first">@Html.ActionLink("Thêm đánh giá KOL", "ReviewKol", "Review", null, new { @class = "text_link" })</div>
+                            <div class="first">@Html.ActionLink("Danh sách đánh giá KOL", "ListReviewKol", "Review", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="8">
+                        <a class="root"><span>Quản lý Liên hệ</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div class="first">@Html.ActionLink("Danh sách liên hệ", "ListContact", "Contact", null, new { @class = "text_link" })</div>
+                            <div class="first">@Html.ActionLink("Danh sách nhận tư vấn", "ListRegister", "Contact", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="content_center_right">
+            <div class="content_center_right">
+                @RenderBody()
+            </div>
+        </div>
+        @*@Html.Action("ContactUs", "Vcms")*@
+    </div>
+    @Scripts.Render("~/bundles/jquery", "~/bundles/jqueryval", "~/bundles/jqueryui")
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/Scripts/multi-upload/jquery.iframe-transport.js"></script>
+    <script src="~/Scripts/multi-upload/jquery.fileupload.js"></script>
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/jquery.toast.js"></script>
+    <script src="~/Scripts/ckeditor/adapters/jquery.js"></script>
+    <script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
+    <script src="~/Scripts/scriptAdmin.js"></script>
+    <script src="~/Scripts/virtual-select.min.js"></script>
+    <script src="~/Scripts/tooltip.min.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

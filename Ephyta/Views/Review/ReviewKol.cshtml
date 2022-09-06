@@ -1,0 +1,99 @@
+﻿@model Ephyta.ViewModel.InsertReviewKolViewModel
+@{
+    ViewBag.Title = "Thêm đánh giá của KOL";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .vscomp-ele {
+        max-width: unset;
+    }
+</style>
+<h2>Thêm mới đánh giá</h2>
+<a class="btn quick-link" href="@Url.Action("ListReviewKol")"><i class="far fa-list mr-1"></i> Danh sách đánh giá của KOL</a>
+<div class="box_content">
+    @using (Html.BeginForm("ReviewKol", "Review", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ReviewKol.ProductId)</td>
+                <td class="form_text">
+                    <select name="ProductId" class="filter-product form_control w300" placeholder="Chọn sản phẩm" required="">
+                        <option value="" disabled selected>Chọn sản phẩm</option>
+                        @foreach (var product in Model.Products)
+                        {
+                            <option value="@product.Id">@product.Name</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            @*<tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.Article.Author.Name)</td>
+                    <td class="form_text ">@Html.DropDownListFor(a => Model.Article.AuthorId, (SelectList)ViewBag.Authors, "Tác giả", new { @class = "form_control w300" })</td>
+                </tr>*@
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ReviewKol.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.ReviewKol.Name)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ReviewKol.Image)</td>
+                <td class="form_text">
+                    @Html.TextBoxFor(model => model.ReviewKol.Image, new { type = "file" })<span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+                </td>
+            </tr>
+
+            @*<tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Article.ImageIcon) <br /> (Áp dụng với bài viết dịch vụ)</td>
+                    <td class="form_text">
+                        @Html.TextBoxFor(model => model.Article.ImageIcon, new { type = "file" })<span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+                    </td>
+                </tr>*@
+
+
+            @*<tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Article.Description)</td>
+                    <td class="form_text">
+                        @Html.EditorFor(model => model.Article.Description)
+                        @Html.ValidationMessageFor(model => model.Article.Description)
+                    </td>
+                </tr>*@
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ReviewKol.VideoLink)</td>
+                <td class="form_text">@Html.EditorFor(model => model.ReviewKol.VideoLink)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ReviewKol.Active)</td>
+                <td class="form_text">@Html.CheckBoxFor(model => model.ReviewKol.Active, new { @checked = "checked" })</td>
+            </tr>
+            @*<tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Article.Home)</td>
+                    <td class="form_text">@Html.EditorFor(model => model.Article.Home)</td>
+                </tr>*@
+
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ReviewKol.Sort)</td>
+                <td class="form_text">@Html.EditorFor(model => model.ReviewKol.Sort)</td>
+            </tr>
+            @*<tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Article.ShowProductDetail)</td>
+                    <td class="form_text">@Html.EditorFor(model => model.Article.ShowProductDetail)</td>
+                </tr>*@
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Thêm mới" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+@section scripts{
+    <script>
+        VirtualSelect.init({
+            ele: 'select.filter-product',
+            multiple: false,
+            search: true,
+        });
+    </script>
+}

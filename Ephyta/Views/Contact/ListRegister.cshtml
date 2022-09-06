@@ -1,0 +1,74 @@
+﻿@model Ephyta.ViewModel.ListRegisterViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách liên hệ";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Danh sách liên hệ</h2>
+<a class="btn quick-link" href="@Url.Action("Index","Vcms")"><i class="fal fa-home mr-1"></i>Về trang chính</a>
+<div class="box_content">
+    <div class="form-search-list">
+        <form action="@Url.Action("ListRegister")" method="get" class="ml-0">
+            <p>
+                Tìm số điện thoại @Html.TextBoxFor(a => a.Phone, new { @class = "w300" })
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </p>
+        </form>
+    </div>
+    <p>Có tổng số <strong>@Model.Registers.TotalItemCount</strong> email liên hệ</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th style="width: 100px">Ngày gửi</th>
+                <th style="width: 150px">Tên</th>
+                <th>Điện thoại</th>
+                <th>Khung giờ tư vấn</th>
+                <th>Sản phẩm</th>
+                <th style="width: 400px">Lời nhắn</th>
+                <th style="width: 60px"></th>
+            </tr>
+            @foreach (var contact in Model.Registers)
+            {
+                <tr data-id="@contact.Id">
+                    <td>@contact.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <p><strong>@contact.Fullname</strong></p>
+                       
+                    </td>
+                   
+                    <td>@contact.Mobile</td>
+                    <td>@contact.Time</td>
+                    <td>@contact.Product</td>
+                    <td>
+                        @contact.Note
+                    </td>
+                    <td><a href="javascript:;" onclick="deletecontact('@contact.Id')">Xóa</a></td>
+                </tr>
+            }
+            @if (Model.Registers.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="8">@Html.PagedListPager(Model.Registers, page => Url.Action("ListRegister", new { page, phone = Model.Phone }))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function deletecontact(id) {
+            if (confirm("Bạn có chắc chắn xóa liên hệ này không?")) {
+                $.post("/Contact/DeleteRegister", { contactId: id }, function (data) {
+                    if (data) {
+                        alert("Xóa liên hệ thành công");
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        alert("Quá trình thực hiện không thành công");
+                    }
+                });
+            }
+        }
+    </script>
+}

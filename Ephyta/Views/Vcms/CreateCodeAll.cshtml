@@ -1,0 +1,73 @@
+﻿@model Ephyta.ViewModel.CodeDiscountViewModel
+@{
+    ViewBag.Title = "Thêm mới Mã giảm giá";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới mã giảm giá thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật  mã giảm giá thành công</strong></div>}
+<h2>Thêm mới quản trị viên</h2>
+<a class="btn quick-link" href="#list-admin"><i class="far fa-list mr-1"></i> Danh sách mã giảm giá</a>
+<div class="box_content px-300">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <table class="form_table">
+            <tbody>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.DiscountCode.TypeDiscount)</td>
+                    <td class="form_text">@Html.EnumDropDownListFor(a => Model.DiscountCode.TypeDiscount, new { @class = "form_control w300" })</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Price)</td>
+                    <td class="form_text">@Html.TextBoxFor(model => model.Price, new { @class = "input-number form_control" })</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Discount)</td>
+                    <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Discount)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Active)</td>
+                    <td class="form_text">@Html.CheckBoxFor(model => model.DiscountCode.Active, new { @checked = "checked" })</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.DiscountCode.ExpDay)</td>
+                    <td class="form_text">@Html.EditorFor(model => model.DiscountCode.ExpDay)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">Số lượng mã</td>
+                    <td class="form_text"><input type="number" name="number" /></td>
+                </tr>
+                <tr>
+                    <td class="form_name"></td>
+                    <td class="form_text">
+                        <input type="submit" class="btn quick-link" value="Thêm mới">
+                    </td>
+                </tr>
+            </tbody>
+        </table>}
+</div>
+@*@Html.Action("ListCodeDiscount", "Vcms")*@
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script>
+        $("#DiscountCode_ExpDay").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+
+        $(function () {
+            $(".input-number").maskMoney({
+                precision: 0,
+                thousands: ','
+            });
+        });
+
+    </script>
+}

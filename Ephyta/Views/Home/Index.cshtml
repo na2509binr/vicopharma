@@ -1,0 +1,290 @@
+﻿@model Ephyta.ViewModel.HomeViewModel
+@using Ephyta.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = config.Title;
+    ViewBag.Description = config.Description;
+
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Index");
+
+    var fb = Model.Banners.FirstOrDefault(c => c.GroupId == 1);
+    if (fb != null)
+    {
+        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/banners/", fb.Image);
+    }
+    var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+    var a = 800;
+}
+
+<section class="banner">
+    <div class="banner-list">
+        @foreach (var banner in Model.Banners.Where(l => l.GroupId == 1))
+        {
+            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+        }
+    </div>
+</section>
+@if (Model.Banners.Any(l => l.GroupId == 4))
+{
+    <section class="service">
+        <div class="container">
+            <div class="row">
+                @foreach (var banner in Model.Banners.Where(l => l.GroupId == 4 && l.Image != null).Take(4))
+                {
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="service-item">
+
+                            <img src="@Path.Combine("/images/banners/",banner.Image)" />
+                            <div class="content">
+                                <div class="name">@banner.BannerName</div>
+                                <div class="des">@banner.Slogan</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+@if (Model.Banners.Any(l => l.GroupId == 2))
+{
+    <div class="banner-product-hot">
+        <div class="container-fluid">
+            <div class="row row-gutter-10 ">
+                @foreach (var banner in Model.Banners.Where(l => l.GroupId == 2 && l.Image != null))
+                {
+                    <div class="col-6">
+                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+
+}
+
+<section class="section-product">
+    <div class="container">
+        <div class="text-center">
+            <div class="section-title d-inline-block">Sản phẩm bán chạy nhất</div>
+        </div>
+        <div class="product-list">
+            @foreach (var item in Model.Products.Where(l => l.Hot).Take(12))
+            {
+                @*@Html.Partial("_ItemProduct", item)*@
+
+                @Html.Action("ItemProduct", "Home", new { id = item.Id })
+
+            }
+        </div>
+    </div>
+</section>
+
+
+<section class="section-product position-relative">
+    <div class="la-cay-1"></div>
+    <div class="la-cay-2"></div>
+    <div class="container">
+        <div class="text-center">
+            <div class="section-title d-inline-block">Khuyến mại mà combo</div>
+        </div>
+        @foreach (var banner in Model.Banners.Where(l => l.GroupId == 5))
+        {
+            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+
+        }
+
+        <div class="product-list">
+            @foreach (var item in Model.Products.Where(l => l.ProductCategory.TypeProduct == TypeProduct.Combo && l.SaleOff != null).Take(12))
+            {
+
+                @Html.Action("ItemProduct", "Home", new { id = item.Id })
+
+            }
+        </div>
+    </div>
+</section>
+
+
+<section class="section-product">
+    <div class="container">
+        <div class="text-center">
+            <div class="section-title d-inline-block">Danh mục sản phẩm</div>
+        </div>
+        @foreach (var banner in Model.Banners.Where(l => l.GroupId == 6))
+        {
+            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+
+        }
+
+        <div class="product-list">
+            @foreach (var item in Model.Products.Where(l => l.ProductCategory.TypeProduct == TypeProduct.Product && l.Hot == false).Take(12))
+            {
+
+                @Html.Action("ItemProduct", "Home", new { id = item.Id })
+
+            }
+        </div>
+    </div>
+</section>
+
+@*@foreach (var item in Model.ProductCategories)
+{
+    <section class="section-product">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-title d-inline-block">@item.Name</div>
+            </div>
+            @if (item.Image != null)
+            {
+                <img src="@img" data-src="@Path.Combine("/images/productCategory/",item.Image)" class="lazyload section-product-img" />
+
+            }
+            <div class="product-list">
+                @foreach (var product in Model.Products.Where(l => l.ProductCategoryId == item.Id))
+                {
+             
+                    @Html.Action("ItemProduct", "Home", new { id = product.Id })
+
+                }
+            </div>
+        </div>
+    </section>
+
+}*@
+
+<section class="news">
+    <div class="container">
+        <div class="text-center">
+            <div class="section-title d-inline-block">tin tức & sự kiện</div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-8">
+                <div class="new-slider">
+                    @foreach (var item in Model.Articles.Where(l => l.Home).Take(6))
+                    {
+                        <div class="news-item">
+                            <div class="img">
+                                <a href="@Url.Action("ArticleDetail", new { url = item.Url })">
+                                    @if (item.Image != null)
+                                    {
+                                        <img src="@img" data-src="@Path.Combine("/images/articles/",item.Image)" class="lazyload" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/no-image.jpg" />
+                                    }
+                                </a>
+                            </div>
+                            <div class="body">
+                                <div class="date">@item.CreateDate.ToString("dd/MM/yyy")</div>
+                                <div class="name">
+                                    <a href="@Url.Action("ArticleDetail", new { url = item.Url })">@item.Subject</a>
+                                </div>
+                                <div class="des">@item.Description</div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                @foreach (var item in Model.Articles.Where(l => l.Col).Take(3))
+                {
+                    <div class="new-col">
+                        <div class="date">@item.CreateDate.ToString("dd/MM/yyy")</div>
+                        <div class="name">
+                            <a href="@Url.Action("ArticleDetail", new { url = item.Url })">@item.Subject</a>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="video">
+    <div class="container">
+        <div class="text-center mb-3">
+            <div class="section-title d-inline-block">VIDEO VỀ EPHYTA</div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                @if (config.VideoIntro != null)
+                {
+                    var ytId = HtmlHelpers._pegarIDYoutube(config.VideoIntro);
+                    <div class="media-video">
+                        <div class="embed-responsive ">
+                            <a href="@config.VideoIntro" data-fancybox class="">
+                                <div class="play-video">
+                                    <i class="fa fa-play"></i>
+                                </div>
+                                <div class="video-img">
+                                    <img data-src="https://i.ytimg.com/vi_webp/@ytId/maxresdefault.webp" class="img-fluid lazyload" width="100%" alt="Video giới thiệu" />
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-5">
+                @Html.Action("FormRegister")
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.Feedbacks.Any())
+{
+    <div class="feedback">
+        <div class="container">
+            <div class="title text-center">KHÁCH HÀNG NÓI VỀ CHÚNG TÔI</div>
+            <div class="feedback-list">
+                @foreach (var item in Model.Feedbacks)
+                {
+                    <div class="feedback-item">
+                        <div class="avata">
+                            @if (item.Image != null)
+                            {
+                                <img data-src="@Path.Combine("/images/feedbacks/",item.Image)" src="@img" class="lazyload" />
+
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/no-image.jpg" />
+                            }
+                        </div>
+                        <div class="name">@item.Name</div>
+                        <div class="des">@item.Content</div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+
+}
+
+<section class="partner pb-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="section-title d-inline-block">ĐỐI TÁC CỦA CHÚNG TÔI</div>
+        </div>
+        <div class="partner-list">
+            @foreach (var banner in Model.Banners.Where(l => l.GroupId == 3))
+            {
+                <div class="partner-item">
+                    <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                </div>
+            }
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        IndexJs();
+    </script>
+}

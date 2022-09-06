@@ -1,0 +1,133 @@
+﻿@model Ephyta.ViewModel.ListProductViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Danh sách sản phẩm</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới sản phẩm thành công</strong></div>
+}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật sản phẩm thành công</strong></div>
+}
+<a class="btn quick-link" href="@Url.Action("Product")"><i class="fal fa-plus-circle mr-1"></i>Thêm sản phẩm</a>
+<div class="box_content">
+    <div class="form-search-list">
+        <p style="width: 30%;">
+            Danh mục @Html.DropDownListFor(model => model.CategoryId, Model.SelectCategories, "Tất cả sản phẩm", new { onchange = "window.location.href='/Product/ListProduct?catId='+this.value" })
+        </p>
+        <form action="@Url.Action("ListProduct")" method="get">
+            <p>
+                Tên sp @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </p>
+        </form>
+    </div>
+    <p>Có tổng số <strong>@Model.Products.TotalItemCount</strong> sản phẩm</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th style="width: 100px">STT</th>
+                <th style="width: 50px">Hình ảnh</th>
+                <th style="width: 350px">Tên sản phẩm</th>
+                <th style="width: 110px">Danh mục</th>
+                <th>Giá</th>
+                <th>Giá giảm</th>
+                <th>Hiện trang chủ</th>
+                <th>Bán chạy</th>
+                <th>Hoạt động</th>
+                <th style="width: 150px"></th>
+            </tr>
+            @foreach (var product in Model.Products)
+            {
+                <tr data-id="@product.Id">
+                    <td>@Html.DisplayFor(model => product.Sort)</td>
+                    <td>
+                        @if (product.ListImage != null)
+                        {
+                            <a href="@Url.Action("ProductDetail", "Home", new {proId = product.Id, name = Html.ConvertToUnSign(product.Name), catname = Html.ConvertToUnSign(product.ProductCategory.Name)})" target="_blank"><img class="img-border" src="@Path.Combine("/images/products/", product.ListImage.Split(',')[0])?w=100" alt="" /></a>
+                        }
+                        else
+                        {
+                            @:NO PICTURE
+                        }
+                    </td>
+                    <td class="left">
+                        <p>
+                            <a href="javascript:;" onclick="cloneProduct(@product.Id)" class="text-danger">Nhân đôi SP</a>
+                        </p>
+                        <a href="@Url.Action("UpdateProduct", new { productId = product.Id })"><strong>@product.Name</strong></a>
+                    </td>
+                    <td>@product.ProductCategory.Name</td>
+                    @if (product.Price != null)
+                    {
+                        <td>
+                            @Html.DisplayFor(model => product.Price) <br />
+                        </td>
+                    }
+                    else
+                    {
+                        <td>Liên hệ </td>
+                    }
+                    @if (product.SaleOff != null)
+                    {
+                        <td> @Html.DisplayFor(model => product.SaleOff)</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>@Html.DisplayFor(model => product.Home)</td>
+                    <td>@Html.DisplayFor(model => product.Hot)</td>
+                    <td>@Html.DisplayFor(model => product.Active)</td>
+                    <td>
+                        @Html.ActionLink("D/s đánh giá khách hàng", "ListReview", "Review", new { productId = product.Id }, null)<br />
+                        @Html.ActionLink("D/s đánh giá KOL", "ListReviewKol", "Review", new { productId = product.Id }, null)<br />
+                        @Html.ActionLink("Sửa", "UpdateProduct", new { productId = product.Id })
+                        - <a href="javascript:;" onclick="deleteProduct('@product.Id')" class="red-warring">Xóa</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.Products.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="9">@Html.PagedListPager(Model.Products, page => Url.Action("ListProduct", new { page, catId = Model.CategoryId, name = Model.Name }))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteProduct(id) {
+            if (confirm("Bạn có chắc chắn xóa bài viết này không?")) {
+                $.post("/Product/DeleteProduct", { productId: id }, function (data) {
+                    if (data) {
+                        alert("Xóa bài viết thành công");
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        alert("Quá trình thực hiện không thành công");
+                    }
+                });
+            }
+        }
+        function cloneProduct(proId) {
+            $.post("/Product/CloneProduct",
+                { proId },
+                function (data) {
+                    if (data) {
+                        window.location.reload();
+                    } else {
+                        alert("Quá trình thực hiện lỗi. Hãy thử lại");
+                    }
+                });
+        }
+
+
+    </script>
+}

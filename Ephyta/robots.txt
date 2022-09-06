@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /tim-kiem*
 
-sitemap: https://melinka.vn/sitemap.xml
+sitemap: https://ephyta.vn/sitemap.xml

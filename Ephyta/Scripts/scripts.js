@@ -1,27 +1,19 @@
 ﻿function IndexJs() {
-
-
     $(".banner-list").slick({
-
         dots: true,
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
         autoplay: true,
-        speed: 1500,
-        autoplaySpeed: 5000,
     });
-
     $(".product-list").slick({
-
         dots: false,
         infinite: true,
         slidesToShow: 4,
         slidesToScroll: 4,
         arrows: true,
         autoplay: true,
-        speed: 1500,
         autoplaySpeed: 5000,
         prevArrow: '<div class="slick-prev"><i class="far fa-angle-left"></i></div>',
         nextArrow: '<div class="slick-next"><i class="far fa-angle-right"></i></div>',
@@ -30,39 +22,34 @@
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
-                    slidesToScroll: 3,
+                    slidesToScroll: 3
                 }
             },
             {
                 breakpoint: 600,
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll: 2,
+                    slidesToScroll: 2
                 }
             },
         ]
     });
-
     $(".new-slider").slick({
-
         infinite: true,
         slidesToShow: 2,
         slidesToScroll: 2,
         arrows: true,
         autoplay: true,
-        speed: 1500,
-        autoplaySpeed: 5000,
         prevArrow: '<div class="slick-prev"><i class="far fa-angle-left"></i></div>',
         nextArrow: '<div class="slick-next"><i class="far fa-angle-right"></i></div>',
         responsive: [
-            
             {
                 breakpoint: 600,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1,
+                    slidesToScroll: 1
                 }
-            },
+            }
         ]
     });
     $(".feedback-list").slick({
@@ -72,8 +59,6 @@
         slidesToScroll: 3,
         arrows: false,
         autoplay: true,
-        speed: 1500,
-        autoplaySpeed: 5000,
         responsive: [
 
             {
@@ -93,24 +78,19 @@
         slidesToScroll: 3,
         arrows: true,
         autoplay: true,
-        speed: 1500,
-        autoplaySpeed: 5000,
         prevArrow: '<div class="slick-prev"><i class="far fa-angle-left"></i></div>',
         nextArrow: '<div class="slick-next"><i class="far fa-angle-right"></i></div>',
     });
- 
-    document.addEventListener('lazybeforeunveil', function (e) {
-        var bg = e.target.getAttribute('data-bg');
-        if (bg) {
-            e.target.style.backgroundImage = 'url(' + bg + ')';
-        }
-    });
 }
+document.addEventListener('lazybeforeunveil', function (e) {
+    var bg = e.target.getAttribute('data-bg');
+    if (bg) {
+        e.target.style.backgroundImage = 'url(' + bg + ')';
+    }
+});
 
 $(function () {
-
     var ratings = document.getElementsByClassName('rating');
-
     for (var i = 0; i < ratings.length; i++) {
         var r = new SimpleStarRating(ratings[i]);
 
@@ -140,7 +120,6 @@ $(function () {
             });
         }
     });
-
 
     $("#contact_form").on("submit",
         function(e) {
@@ -261,7 +240,6 @@ $(function () {
     AOS.init();
 });
 
-
 function removeProduct(thisD) {
     if (confirm("Bạn có chắc chắn xóa sản phẩm này khỏi giỏ hàng?")) {
         const recordToDelete = $(thisD).attr("data-id");
@@ -302,7 +280,6 @@ function showMenuMobi() {
 //    $(".hamburger").removeClass("is-active");
 //    $(".overlay-all").removeClass("active");
 //}
-
 
 function scrollHeaderMenu(idD) {
     let valS = parseInt($('#' + idD).scrollLeft() + 150);
@@ -513,9 +490,6 @@ function CartJs() {
         }
     });
 }
-
-
-
 
 function UpdateCode(code) {
 

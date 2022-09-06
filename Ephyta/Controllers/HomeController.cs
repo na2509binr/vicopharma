@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using WebMarkupMin.AspNet4.Mvc;
-using System.Drawing;
-using System.IO;
 
 namespace Ephyta.Controllers
 {

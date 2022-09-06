@@ -1634,6 +1634,7 @@ img {
 }
 .article-item .content {
   padding-left: 10px;
+  flex: 1;
 }
 .article-item .content .name a {
   color: #719A16;

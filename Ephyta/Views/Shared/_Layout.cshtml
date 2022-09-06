@@ -11,7 +11,7 @@
     <meta name="description" content="@Html.Raw(ViewBag.Description)" />
     @*<meta name="keywords" content="@ViewBag.Keywords" />*@
     <link rel="canonical" href="@ViewBag.Canonical" />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content="noindex" />
     @if (config.Image != null)
     {
         <link rel="shortcut icon" href="@Path.Combine("/images/configs/", config.Image)?w=128&h=128">
@@ -32,10 +32,6 @@
     <link rel="preload" href="~/webfonts/Fester-Bold.woff2" as="font" type="font/otf" crossorigin="">
     <link rel="preload" href="~/webfonts/Lato-Bold_2.woff2" as="font" type="font/ttf" crossorigin="">
     <link rel="preload" href="~/webfonts/Lato-Regular_2.woff2" as="font" type="font/ttf" crossorigin="">
-
-    @*<link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">*@
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
     @if (config.GoogleAnalytics != null)

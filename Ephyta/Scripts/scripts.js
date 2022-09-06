@@ -74,7 +74,16 @@
         autoplay: true,
         speed: 1500,
         autoplaySpeed: 5000,
+        responsive: [
 
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                }
+            },
+        ]
         
     });
     $(".partner-list").slick({

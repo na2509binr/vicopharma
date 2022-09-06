@@ -2227,6 +2227,21 @@ img {
   }
 }
 @media only screen and (max-width: 500px) {
+  .partner {
+    padding-top: 30px;
+  }
+  .partner .slick-arrow {
+    width: 25px;
+    height: 25px;
+    font-size: 20px;
+  }
+  .partner .slick-next {
+    right: -10px;
+  }
+  .partner .slick-prev {
+    left: -10px;
+  }
+
   .news-item .body .des {
     height: 60px;
   }

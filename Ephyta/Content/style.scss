@@ -2576,9 +2576,25 @@ img{
 
 @media only screen and (max-width: 500px) {
 
+    .partner {
+        padding-top: 30px;
 
-    .news-item .body .des{
-        height:60px;
+        .slick-arrow {
+            width: 25px;
+            height: 25px;
+            font-size:20px;
+        }
+
+        .slick-next {
+            right: -10px;
+        }
+
+        .slick-prev {
+            left: -10px;
+        }
+    }
+    .news-item .body .des {
+        height: 60px;
     }
 
     .la-cay-1,

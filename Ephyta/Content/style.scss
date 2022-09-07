@@ -500,7 +500,8 @@ img {
 .banner-list {
     img {
         width: 100%;
-        height: 47vw;
+        aspect-ratio: 2;
+        object-fit: cover;
     }
 
     .slick-dots {
@@ -744,7 +745,6 @@ img {
 
 .section-product-img {
     width: 100%;
-    height: 184px;
     margin-bottom: 20px;
 }
 
@@ -2529,11 +2529,12 @@ img {
 
 
     .banner-list {
-        .slick-dots{
-            bottom:0px;
-            button{
-                width:10px;
-                height:10px;
+        .slick-dots {
+            bottom: 0px;
+
+            button {
+                width: 10px;
+                height: 10px;
             }
         }
     }
@@ -2571,11 +2572,6 @@ img {
         }
     }
 
-
-    .section-product-img {
-        height: 120px;
-    }
-
     .service-item {
         margin-bottom: 10px;
     }
@@ -2597,8 +2593,9 @@ img {
             margin-bottom: 20px;
         }
     }
-    .register-form form .btn{
-        padding:10px 28px;
+
+    .register-form form .btn {
+        padding: 10px 28px;
     }
 }
 
@@ -2675,10 +2672,6 @@ img {
     .la-cay-1,
     .la-cay-2 {
         display: none;
-    }
-
-    .section-product-img {
-        height: 80px;
     }
 
     .product-item {
@@ -2780,6 +2773,7 @@ img {
     z-index: 998 !important;
     width: 105px;
 }
+
 .chat-messenger {
     bottom: 100px;
 }
@@ -2976,16 +2970,17 @@ i {
     bottom: 40px;
     z-index: 999;
     background: #719A16;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    i{
-        color:$white;
-        font-size:24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    i {
+        color: $white;
+        font-size: 24px;
     }
 }
 
@@ -3020,41 +3015,47 @@ i {
 }
 
 @media only screen and (max-width: 768px) {
-    .footer-bottom{
-        padding-bottom:80px;
+    .footer-bottom {
+        padding-bottom: 80px;
     }
+
     .chat-messenger {
         left: 50%;
         bottom: 20px;
         transform: translateX(-50%);
-        width:60px;
+        width: 60px;
     }
+
     .chat-zalo {
         right: unset;
-        left:unset;
-        right:20px;
+        left: unset;
+        right: 20px;
         bottom: 20px;
-        width:60px;
+        width: 60px;
     }
+
     .footer-bottom {
-        .container{
-            flex-wrap:wrap;
+        .container {
+            flex-wrap: wrap;
         }
     }
+
     .media-video {
-        .play-video{
-            width:50px;
-            height:50px;
-            font-size:20px;
+        .play-video {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
         }
     }
-    #myBtn{
-        bottom:100px;
-        right:7px;
-        width:40px;
-        height:40px;
-        i{
-            font-size:16px;
+
+    #myBtn {
+        bottom: 100px;
+        right: 7px;
+        width: 40px;
+        height: 40px;
+
+        i {
+            font-size: 16px;
         }
     }
 }

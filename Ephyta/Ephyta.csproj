@@ -343,6 +343,7 @@
     <Content Include="Content\images\bg-menu.png" />
     <Content Include="Content\images\bg-service.png" />
     <Content Include="Content\images\feedback-bg.png" />
+    <Content Include="Content\images\icon-zalo.png" />
     <Content Include="Content\images\la-cay1.png" />
     <Content Include="Content\images\la-cay2.png" />
     <Content Include="Content\images\logo-icon\chamsoc.png" />
@@ -361,6 +362,7 @@
     <Content Include="Content\images\logo-icon\tre.png" />
     <Content Include="Content\images\logo-icon\tw.svg" />
     <Content Include="Content\images\logo-icon\Union1.svg" />
+    <Content Include="Content\images\mess.png" />
     <Content Include="Content\images\no-avata.png" />
     <Content Include="Content\images\no-image.jpg" />
     <Content Include="Content\images\pen.png" />
@@ -434,6 +436,7 @@
     <Content Include="favicon.ico" />
     <Content Include="favicon.jpg" />
     <Content Include="Global.asax" />
+    <Content Include="images\articleCategory\2020\12\15\132525175030327334.png" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Content\style.scss" />

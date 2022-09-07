@@ -6,7 +6,7 @@
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="footer-col">
                     <div class="title-ft">về Ephyta</div>
                     <ul class="ul-block">
@@ -27,7 +27,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="footer-col">
                     <div class="title-ft">Thông tin</div>
                     <ul class="ul-block">
@@ -35,11 +35,11 @@
                             <a href="@Url.Action("AllProductCategory")">Sản phẩm</a>
                         </li>
                         @*<li>
-                            <a href="">Khuyến mãi</a>
-                        </li>
-                        <li>
-                            <a href="">Kiến thức về sản phẩm</a>
-                        </li>*@
+                                <a href="">Khuyến mãi</a>
+                            </li>
+                            <li>
+                                <a href="">Kiến thức về sản phẩm</a>
+                            </li>*@
                         @foreach (var item in Model.ArticleCategories.Where(l => l.ParentId == null && l.TypePost == TypePost.Support))
                         {
                             <li>
@@ -53,7 +53,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="footer-col">
                     <div class="title-ft">Hướng dẫn mua hàng</div>
                     <ul class="ul-block">
@@ -67,7 +67,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-6">
                 <div class="footer-col">
                     <div class="title-ft">Thông tin liên hệ</div>
                     <ul class="ul-block">
@@ -123,4 +123,27 @@
 </div>
 
 <div class="overlay-all" onclick="showMenuMobi()"></div>
+
+
+<div class="chat-fix">
+    <a href="https://zalo.me/@config.Hotline" class="chat-zalo" target="_blank" rel="noindex nofollow noopener" aria-label="Chat Zalo">
+        <img src="~/Content/images/icon-zalo.png"/>
+    </a>
+    @if(config.UrlMessenger != null)
+    { 
+        <a href="" class="chat-messenger">
+            <img src="~/Content/images/mess.png"/>
+        </a>
+    
+    }
+
+    <a href="tel:@config.Hotline" class="suntory-alo-phone suntory-alo-green" id="suntory-alo-phoneIcon" @*style="left: 0; bottom: 0;*@">
+        <div class="suntory-alo-ph-circle"></div>
+        <div class="suntory-alo-ph-circle-fill"></div>
+        <div class="suntory-alo-ph-img-circle">
+            <i class="fal fa-phone"></i>
+        </div>
+        @*<div class="tel"><p class="fone">0986.877.478</p></div>*@
+    </a>
+</div>
 

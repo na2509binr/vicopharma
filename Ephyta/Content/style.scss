@@ -76,6 +76,11 @@ a:hover {
     text-decoration: none;
 }
 
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -269,7 +274,7 @@ img {
     &-menu {
         background-color: $green;
         background-image: url("../Content/images/bg-menu.png");
-        background-size: 100% 100%;
+        background-size: cover;
         background-repeat: no-repeat;
     }
 }
@@ -534,7 +539,7 @@ img {
 .service {
     background-color: $green;
     background-image: url(../Content/images/bg-service.png);
-    background-size: 100% 100%;
+    background-size: cover;
     background-repeat: no-repeat;
     padding: 13px 0;
 
@@ -1073,7 +1078,7 @@ img {
     /*margin-top:70px;*/
     background-color: #3A5A05;
     background-image: url("../Content/images/bg-footer.png");
-    background-size: 100% 100%;
+    background-size: cover;
     background-repeat: no-repeat;
     padding-top: 50px;
     color: $white;
@@ -2522,6 +2527,17 @@ img {
         padding-top: 30px;
     }
 
+
+    .banner-list {
+        .slick-dots{
+            bottom:0px;
+            button{
+                width:10px;
+                height:10px;
+            }
+        }
+    }
+
     .product-list {
         .slick-list.draggable {
             margin: 0 -10px;
@@ -2557,7 +2573,7 @@ img {
 
 
     .section-product-img {
-        height: 150px;
+        height: 120px;
     }
 
     .service-item {
@@ -2580,6 +2596,9 @@ img {
         .title {
             margin-bottom: 20px;
         }
+    }
+    .register-form form .btn{
+        padding:10px 28px;
     }
 }
 
@@ -2622,6 +2641,11 @@ img {
             }
         }
     }
+
+    .service {
+        background-size: auto;
+        background-repeat: unset;
+    }
 }
 
 @media only screen and (max-width: 500px) {
@@ -2654,7 +2678,7 @@ img {
     }
 
     .section-product-img {
-        height: 100px;
+        height: 80px;
     }
 
     .product-item {
@@ -2752,7 +2776,7 @@ img {
 .chat-messenger,
 .chat-zalo {
     position: fixed;
-    right: 0;
+    left: 20px;
     z-index: 998 !important;
     width: 105px;
 }
@@ -2769,7 +2793,7 @@ img {
     cursor: pointer;
     height: 95px;
     position: fixed;
-    right: 0;
+    left: 0;
     bottom: 0;
     transition: visibility 0.5s ease 0s;
     width: 120px;
@@ -2945,6 +2969,26 @@ i {
     color: #fff
 }
 
+
+#myBtn {
+    position: fixed;
+    right: 30px;
+    bottom: 40px;
+    z-index: 999;
+    background: #719A16;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    i{
+        color:$white;
+        font-size:24px;
+    }
+}
+
 @keyframes suntory-alo-ring-ring {
     0% {
         transform: rotate(0deg) scale(1) skew(1deg)
@@ -2980,14 +3024,17 @@ i {
         padding-bottom:80px;
     }
     .chat-messenger {
-        right: 50%;
+        left: 50%;
         bottom: 20px;
-        transform: translateX(50%);
+        transform: translateX(-50%);
+        width:60px;
     }
     .chat-zalo {
         right: unset;
-        left:20px;
+        left:unset;
+        right:20px;
         bottom: 20px;
+        width:60px;
     }
     .footer-bottom {
         .container{
@@ -2999,6 +3046,15 @@ i {
             width:50px;
             height:50px;
             font-size:20px;
+        }
+    }
+    #myBtn{
+        bottom:100px;
+        right:7px;
+        width:40px;
+        height:40px;
+        i{
+            font-size:16px;
         }
     }
 }

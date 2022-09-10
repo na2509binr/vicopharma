@@ -2344,20 +2344,23 @@ img {
     display:flex;
     flex-direction:column;
 }*/
+.chat-zalo {
+  left: 30px;
+}
+
 .chat-messenger,
 .chat-zalo {
   position: fixed;
-  left: 20px;
   z-index: 998 !important;
-  width: 105px;
 }
 
 .chat-messenger {
-  bottom: 100px;
+  bottom: 20px;
+  right: 20px;
 }
 
 .chat-zalo {
-  bottom: 170px;
+  bottom: 100px;
 }
 
 .suntory-alo-phone {
@@ -2365,8 +2368,8 @@ img {
   cursor: pointer;
   height: 95px;
   position: fixed;
-  left: 0;
-  bottom: 0;
+  left: 10px;
+  bottom: 10px;
   transition: visibility 0.5s ease 0s;
   width: 120px;
   z-index: 998 !important;
@@ -2529,12 +2532,12 @@ img {
 
 #myBtn {
   position: fixed;
-  right: 30px;
-  bottom: 40px;
+  right: 20px;
+  bottom: 120px;
   z-index: 999;
   background: #719A16;
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2574,21 +2577,6 @@ img {
     padding-bottom: 80px;
   }
 
-  .chat-messenger {
-    left: 50%;
-    bottom: 20px;
-    transform: translateX(-50%);
-    width: 60px;
-  }
-
-  .chat-zalo {
-    right: unset;
-    left: unset;
-    right: 20px;
-    bottom: 20px;
-    width: 60px;
-  }
-
   .footer-bottom .container {
     flex-wrap: wrap;
   }
@@ -2600,12 +2588,19 @@ img {
   }
 
   #myBtn {
-    bottom: 100px;
-    right: 7px;
+    bottom: 1rem;
+    right: 50%;
     width: 40px;
     height: 40px;
+    transform: translateX(50%);
   }
   #myBtn i {
     font-size: 16px;
+  }
+
+  /**/
+  .new-slider .slick-prev,
+.new-slider .slick-next {
+    transform: none;
   }
 }

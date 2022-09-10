@@ -267,9 +267,16 @@ namespace Ephyta.Controllers
                 if (isPost)
                 {
                     model.Product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
+                   
                     model.Product.ProductCategoryId = Convert.ToInt32(fc["CategoryId"]);
                     _unitOfWork.ProductRepository.Insert(model.Product);
                     _unitOfWork.Save();
+                    var count = _unitOfWork.ProductRepository.GetQuery(a => a.Url == model.Product.Url).Count();
+                    if (count > 1)
+                    {
+                        model.Product.Url += "-" + model.Product.Id;
+                        _unitOfWork.Save();
+                    }
                     return RedirectToAction("ListProduct", new { result = "success" });
                 }
             }
@@ -346,6 +353,12 @@ namespace Ephyta.Controllers
                     product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
 
                     _unitOfWork.Save();
+                    var count = _unitOfWork.ProductRepository.GetQuery(a => a.Url == model.Product.Url).Count();
+                    if (count > 1)
+                    {
+                        product.Url += "-" + product.Id;
+                        _unitOfWork.Save();
+                    }
                     return RedirectToAction("ListProduct", new { result = "update" });
                 }
             }

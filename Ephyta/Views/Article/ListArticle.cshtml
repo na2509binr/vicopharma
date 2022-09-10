@@ -36,7 +36,6 @@
                 <th>Danh mục</th>
                 <th>Hiện slider</th>
                 <th>Hiện dọc</th>
-
                 <th>Hoạt động</th>
                 <th style="width: 100px"></th>
             </tr>
@@ -50,8 +49,8 @@
                     </td>
                     <td>@article.ArticleCategory.CategoryName</td>
                     <td>@Html.DisplayFor(model => article.Home)</td>
-                    <td>@Html.DisplayFor(model => article.Active)</td>
                     <td>@Html.DisplayFor(model => article.Col)</td>
+                    <td>@Html.DisplayFor(model => article.Active)</td>
 
                     <td>
                         @Html.ActionLink("Sửa", "UpdateArticle", new { articleId = article.Id })

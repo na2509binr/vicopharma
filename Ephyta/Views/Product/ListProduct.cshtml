@@ -48,7 +48,7 @@
                     <td>
                         @if (product.ListImage != null)
                         {
-                            <a href="@Url.Action("ProductDetail", "Home", new {proId = product.Id, name = Html.ConvertToUnSign(product.Name), catname = Html.ConvertToUnSign(product.ProductCategory.Name)})" target="_blank"><img class="img-border" src="@Path.Combine("/images/products/", product.ListImage.Split(',')[0])?w=100" alt="" /></a>
+                            <a href="@Url.Action("ProductDetail", "Home", new {url = product.Url })" target="_blank"><img class="img-border" src="@Path.Combine("/images/products/", product.ListImage.Split(',')[0])?w=100" alt="" /></a>
                         }
                         else
                         {

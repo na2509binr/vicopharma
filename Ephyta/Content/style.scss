@@ -230,6 +230,10 @@ img {
 }
 
 .header {
+    &-logo{
+        height:62px;
+    }
+
     &-center {
         display: flex;
         justify-content: space-between;
@@ -2505,10 +2509,6 @@ img {
             font-size: 28px;
         }
     }
-
-
-
-
     .header-search {
         position: fixed;
         width: 100%;

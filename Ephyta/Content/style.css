@@ -176,6 +176,9 @@ img {
   color: #719A16;
 }
 
+.header-logo {
+  height: 62px;
+}
 .header-center {
   display: flex;
   justify-content: space-between;

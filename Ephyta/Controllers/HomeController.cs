@@ -257,8 +257,8 @@ namespace Ephyta.Controllers
                         $"Địa chỉ: {model.Address},</p>" +
                         $"</p>Nội dung:{model.Body}</p>";
 
-            Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, "melinkagroup@gmail.com", "email-send@vico.vn",
-           "email-send@vico.vn", "send@123", "melinka.vn"));
+            Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, ConfigSite.Email, Email,
+           Email, Password, "Ephyta"));
 
             return Json(new { status = true, msg = "Gửi liên hệ thành công.\nChúng tôi sẽ liên lạc lại với bạn sớm nhất có thể." });
         }

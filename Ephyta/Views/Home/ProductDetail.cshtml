@@ -5,7 +5,7 @@
 }
 @{
     ViewBag.Title = Model.Product.TitleMeta ?? Model.Product.Name;
-    ViewBag.Description = Model.Product.DescriptionMeta ?? Model.Product.Description;
+    ViewBag.Description = Model.Product.DescriptionMeta ?? Html.CutString(Html.RemoveHtml(Model.Product.Description), 150);
 
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductDetail", new { url = Model.Product.Url });
 
@@ -160,6 +160,20 @@
                 </div>
                 <div class="content-detail mt-4 collapse" id="tab-1">
                     @Html.Raw(Model.Product.Usermanual)
+                </div>
+
+            </div>
+        }
+        @if (Model.Product.Ingredient != null)
+        {
+            <div class="product-ingredient">
+                <div class="title title-global collapsed" data-toggle="collapse" data-target="#tab-2">
+                    THÀNH PHẦN
+                    <i class="far fa-chevron-down down"></i>
+                    <i class="far fa-chevron-up up"></i>
+                </div>
+                <div class="content-detail mt-4 collapse" id="tab-2">
+                    @Html.Raw(Model.Product.Ingredient)
                 </div>
 
             </div>

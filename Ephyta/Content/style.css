@@ -1222,26 +1222,26 @@ img {
   border-bottom: 1px solid #D9D9D9;
 }
 
-.user-manual {
+.user-manual, .product-ingredient {
   padding: 20px 0;
   border-bottom: 1px solid #D9D9D9;
 }
-.user-manual .collapsed .down {
+.user-manual .collapsed .down, .product-ingredient .collapsed .down {
   display: block;
 }
-.user-manual .collapsed .up {
+.user-manual .collapsed .up, .product-ingredient .collapsed .up {
   display: none;
 }
-.user-manual .down {
+.user-manual .down, .product-ingredient .down {
   display: none;
 }
-.user-manual .up {
+.user-manual .up, .product-ingredient .up {
   display: block;
 }
-.user-manual .title-global {
+.user-manual .title-global, .product-ingredient .title-global {
   position: relative;
 }
-.user-manual .title-global i {
+.user-manual .title-global i, .product-ingredient .title-global i {
   position: absolute;
   top: 5px;
   right: 10px;

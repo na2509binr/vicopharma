@@ -238,7 +238,7 @@ img {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 22px 0;
+        padding: 10px 0;
     }
 
     &-social {
@@ -1311,7 +1311,8 @@ img {
     }
 
     .buy-now {
-        margin-top: 25px;
+        /*margin-top: 25px;*/
+        margin-left:10px;
         color: $white;
         background: $green;
         padding: 10px 20px;
@@ -1439,7 +1440,7 @@ img {
 }
 
 .product-detail-content {
-    padding: 20px 0;
+    padding: 25px 0;
     border-bottom: 1px solid #D9D9D9;
 }
 
@@ -1489,11 +1490,16 @@ img {
     display: inline-flex;
     background: #E67E22;
     border-radius: 48px;
-    padding: 9px 29px 10px 9px;
+    padding: 8px 20px 8px 9px;
+
+    input.nice-number {
+        background: transparent;
+    }
 
     .nice-number {
         background: $white;
         border-radius: 25px;
+        height: 32px;
 
         button {
             background: transparent;
@@ -1501,6 +1507,9 @@ img {
             color: #8DB049;
             font-weight: 700;
             font-size: 18px;
+            display: flex;
+            align-items: center;
+            align-content: center;
 
             &:focus {
                 box-shadow: unset;
@@ -1513,7 +1522,7 @@ img {
     }
 
     .btn-order {
-        margin-left: 15px;
+        margin-left: 10px;
         height: 100%;
         background: transparent;
         border: none;
@@ -2753,6 +2762,11 @@ img {
         .nice-number button {
             width: 20px;
             height: 20px;
+        }
+    }
+    .product-info{
+        .buy-now{
+            margin-left:0;
         }
     }
 }

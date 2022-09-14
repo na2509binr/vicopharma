@@ -110,8 +110,11 @@
                             <button type="submit" class="btn-order">Thêm vào giỏ hàng</button>
                         </div>
                     </form>
-
-                    <div class="product-des">
+                    <div class="buy-now" onclick="addToCart(@Model.Product.Id,'checkout')">
+                        <i class="fal fa-shopping-bag"></i>
+                        Mua ngay
+                    </div>
+                    <div class="product-des mt-3">
 
                         <div class="content">@Html.Raw(Model.Product.Description)</div>
                         <hr />
@@ -129,10 +132,7 @@
                             </div>
                         }
                     </div>
-                    <div class="buy-now" onclick="addToCart(@Model.Product.Id,'checkout')">
-                        <i class="fal fa-shopping-bag"></i>
-                        Mua ngay
-                    </div>
+
                 </div>
 
             </div>

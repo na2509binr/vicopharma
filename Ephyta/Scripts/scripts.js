@@ -195,9 +195,6 @@ $(function () {
     });
 
     $("[data-item=city]").on("change", function (data) {
-
-      /*  console.log(data);*/
-
         const id = $(this).val();
         var items = [];
         items.push("<option value>Hãy chọn quận huyện</option>");
@@ -218,7 +215,6 @@ $(function () {
             const id = $(this).val();
             var items = [];
             items.push("<option value>Hãy chọn Phường xã</option>");
-
             if (id !== "") {
                 $.getJSON("/Base/GetWard", { districtId: id }, function (data) {
                     $.each(data, function (key, val) {
@@ -317,7 +313,6 @@ function addToCart(n,m) {
         //    });
     });
 }
-
 
 function ProductDetailJs() {
 
@@ -471,7 +466,6 @@ function ShowMenu() {
         x.className = "header-bottom py-lg-3";
     }
 }
-
 
 function showSearch() {
     $(".header-search").toggleClass("active");

@@ -28,10 +28,8 @@ namespace Ephyta.Controllers
 
             var itemCarts = carts.Select(a => new CheckOutViewModel.CartItem
             {
-                CartItems = a,
+                CartItems = a
             });
-
-
             var viewModel = new CheckOutViewModel
             {
                 //CartItems = itemCarts,

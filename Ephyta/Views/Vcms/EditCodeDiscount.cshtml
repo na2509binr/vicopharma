@@ -10,26 +10,38 @@
     {
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.DiscountCode.Id)
-        <table class="form_table">
-            <tr>
-                <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Fullname)</td>
-                <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Fullname)</td>
-            </tr>
-            <tr>
-                <td class="form_name">@Html.LabelFor(model => model.Price)</td>
-                <td class="form_text">@Html.TextBoxFor(model => model.Price, new { @class = "input-number form_control" })</td>
-            </tr>
-            <tr>
-                <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Active)</td>
-                <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Active)</td>
-            </tr>
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text">
-                    <input type="submit" class="btn quick-link" value="Cập nhật" />
-                </td>
-            </tr>
-        </table>
+    <table class="form_table">
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Fullname)</td>
+            <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Fullname)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(a => Model.DiscountCode.TypeDiscount)</td>
+            <td class="form_text">@Html.EnumDropDownListFor(a => Model.DiscountCode.TypeDiscount, new { @class = "form_control w300" })</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Price)</td>
+            <td class="form_text">@Html.TextBoxFor(model => model.Price, new { @class = "input-number form_control" })</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Discount)</td>
+            <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Discount)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.DiscountCode.Active)</td>
+            <td class="form_text">@Html.EditorFor(model => model.DiscountCode.Active)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.DiscountCode.ExpDay)</td>
+            <td class="form_text">@Html.EditorFor(model => model.DiscountCode.ExpDay)</td>
+        </tr>
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <input type="submit" class="btn quick-link" value="Cập nhật" />
+            </td>
+        </tr>
+    </table>
     }
 </div>
 @*@Html.Action("ListCodeDiscount", "Vcms")*@

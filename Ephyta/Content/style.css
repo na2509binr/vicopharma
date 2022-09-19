@@ -1098,13 +1098,13 @@ img {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
 }
 .product-img-list .slick-next {
-  right: 30px;
+  right: 0px;
 }
 .product-img-list .slick-prev {
-  left: 30px;
+  left: 0px;
 }
 .product-img-list > .item:not(:first-child) {
   display: none;
@@ -1124,8 +1124,13 @@ img {
 .product-slides-nav .slick-slide {
   padding: 2px;
 }
+.product-slides-nav .slick-current.slick-active .nav-item {
+  border: 1px solid #719A16;
+}
 .product-slides-nav .nav-item {
   position: relative;
+  border: 1px solid #f3f3f3;
+  padding: 10px;
 }
 .product-slides-nav .nav-item:before {
   content: "";
@@ -1142,10 +1147,8 @@ img {
   background: transparent;
 }
 .product-slides-nav img {
-  border: 1px solid #f3f3f3;
   object-fit: cover;
-  padding: 10px;
-  height: 100px;
+  aspect-ratio: 1;
   width: 100%;
 }
 
@@ -1368,7 +1371,7 @@ img {
 /* reviews-customers-css  */
 .reviews-customers {
   background: #FAFBF7;
-  padding: 20px 0 70px;
+  padding: 20px 0 50px;
 }
 .reviews-customers .title {
   font-size: 20px;
@@ -2353,12 +2356,21 @@ img {
 
   .product-item {
     padding: 15px 10px;
+    margin-bottom: 15px;
   }
   .product-item .tag-new,
 .product-item .tag-discout {
     font-size: 12px;
   }
 
+  .user-manual,
+.product-ingredient {
+    padding: 10px 0;
+  }
+
+  .reviews-customers {
+    padding-bottom: 30px;
+  }
   .reviews-customers .btn-comment {
     margin-left: 30px;
     padding: 15px;
@@ -2370,6 +2382,11 @@ img {
   .reviews-item .left {
     width: auto;
     margin-bottom: 8px;
+  }
+  .reviews-item .left img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
   }
   .reviews-item .content {
     font-weight: 600;

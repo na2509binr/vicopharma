@@ -365,10 +365,24 @@ function ProductDetailJs() {
         autoplay: true,
         speed: 1500,
         autoplaySpeed: 5000,
-        asNavFor: '.nav-img',
+        asNavFor: '.product-slides-nav',
         prevArrow: ('<div class="slick-prev"><i class="fas fa-chevron-left"></i></div>'),
         nextArrow: ('<div class="slick-next"><i class="fas fa-chevron-right"></i></div>'),
     });
+
+    $('.product-slides-nav').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        asNavFor: '.product-img-list',
+        infinite: true,
+        //autoplay: true,
+        arrows: false,
+        speed: 1000,
+        focusOnSelect: true,
+        pauseOnHover: true
+    });
+
+
 
     $('.nav-img').slick({
         slidesToShow: 5,

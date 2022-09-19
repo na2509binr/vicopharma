@@ -586,7 +586,7 @@ img {
 /* section-product-css  */
 
 .section-product {
-    padding-top: 40px;
+    padding-top: 30px;
 
     .section-title {
         margin-bottom: 30px;
@@ -956,7 +956,7 @@ img {
 
 /*partner-css*/
 .partner {
-    padding-top: 70px;
+    padding-top: 35px;
 
     &-list {
         max-width: 1100px;
@@ -1008,7 +1008,7 @@ img {
 /*media-video-css*/
 
 .video {
-    padding: 70px 0;
+    padding: 50px 0;
 }
 
 .media-video {
@@ -1304,6 +1304,52 @@ img {
     }
 }
 
+
+.product-slides-nav {
+    margin-top: 10px;
+
+    .slick-slide {
+        padding: 2px;
+    }
+
+    .nav-item {
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            /*background: rgba($color: #000000, $alpha: 0.7);*/
+            z-index: 2;
+            transition: all 0.5s;
+        }
+    }
+
+    .slick-current {
+        .nav-item:before {
+            background: transparent;
+        }
+    }
+    /* .slick-list {
+        margin: 0 -10px;
+    }*/
+    /*.nav-item {
+        margin: 0 10px;
+        position: relative;
+    }
+*/
+    img {
+        border: 1px solid #f3f3f3;
+        object-fit: cover;
+        padding: 10px;
+        height: 100px;
+        width: 100%;
+    }
+}
+
 .product-info {
     .name-product {
         font-size: 22px;
@@ -1312,13 +1358,51 @@ img {
 
     .buy-now {
         /*margin-top: 25px;*/
-        margin-left:10px;
+        margin-left: 10px;
         color: $white;
         background: $green;
         padding: 10px 20px;
         display: inline-block;
         border-radius: 71px;
         cursor: pointer;
+    }
+
+    .product-des{
+        font-size:14px;
+        ul{
+            padding-left:13px;
+        }
+    }
+}
+
+.media-feature {
+    background: #f5f5f5;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+
+    i {
+        font-size: 1.5rem;
+        color: $green;
+    }
+
+    .media-body {
+        margin-left: 10px;
+
+        .media-name {
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-size: .875rem;
+            margin-bottom: 2px;
+
+            a {
+                color: #4C503D;
+            }
+        }
     }
 }
 

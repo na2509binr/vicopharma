@@ -30,8 +30,137 @@
 
 <section class="product-detail">
     <div class="container py-3">
+
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-sm-12 col-lg-9">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        @if (Model.Product.ListImage != null)
+                        {
+                            var arr = Model.Product.ListImage.Split(',');
+                            <div class="box-img-detail">
+                                <div class="product-img-list">
+                                    @foreach (var item in arr)
+                                    {
+                                        <div class="item">
+                                            <a href="@Path.Combine("/images/products/", item)" data-fancybox="gallery">
+                                                <img data-src="@Path.Combine("/images/products/", item)?w=600" alt="@Model.Product.Name" class="img-responsive lazyload" src="@img" />
+                                            </a>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="product-slides-nav">
+                                @foreach (var item in arr)
+                                {
+                                    <div class="nav-item">
+                                        <img src="@Path.Combine("/images/products/", item)?w=100" alt="@Model.Product.Name" />
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="product-info">
+                            <h1 class="name-product">@Model.Product.Name</h1>
+                            <div class="product-info-rating d-flex">
+                                <span class="rating mr-2" data-default-rating="@Model.Rating" disabled></span>
+                                <div class="see-more">
+                                    <span>Xem</span>
+                                    <a href="#reviews-customers">@Model.Reviews.Count() đánh giá từ khách đã mua hàng</a>
+                                </div>
+                            </div>
+                            <div class="price-detail">
+                                <div class="content">
+                                    @if (Model.Product.SaleOff != null)
+                                    {
+                                        <div class="new-price">@Convert.ToInt32(Model.Product.SaleOff).ToString("N0")đ</div>
+                                        <div class="old-price d-inline-block"> @Convert.ToInt32(Model.Product.Price).ToString("N0")đ</div>
+
+                                    }
+                                    else if (Model.Product.Price != null)
+                                    {
+                                        <div class="new-price">@Convert.ToInt32(Model.Product.Price).ToString("N0")đ</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="new-price d-inline-block">LIÊN HỆ</div>
+                                    }
+                                </div>
+                            </div>
+                            <form id="formBookProduct" class="formAddCart">
+                                <input type="hidden" name="ProductId" value="@Model.Product.Id" />
+                                <div class="quantity">
+
+                                    <div class="product-count">
+                                        <input type="text" value="1" min="1" id="number" name="quantity" class="nice-number" maxlength="4" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <button type="submit" class="btn-order">Thêm vào giỏ hàng</button>
+                                </div>
+                            </form>
+                            <div class="buy-now" onclick="addToCart(@Model.Product.Id,'checkout')">
+                                <i class="fal fa-shopping-bag"></i>
+                                Mua ngay
+                            </div>
+                            <div class="product-des mt-3">
+
+                                <div class="content">@Html.Raw(Model.Product.Description)</div>
+                                <hr />
+                                @if (Model.Product.Use != null)
+                                {
+                                    <div class="howtouse">
+                                        <span><b>Cách dùng</b>@Model.Product.Use</span>
+                                    </div>
+
+                                }
+                                @if (Model.Product.Specifications != null)
+                                {
+                                    <div class="specifications">
+                                        <span><b>Quy cách</b>@Model.Product.Specifications</span>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mt-lg-0 mt-3">
+                <div class="media media-feature">
+                    <i class="fas fa-truck"></i>
+                    <div class="media-body">
+                        <div class="media-name">Giao hàng toàn quốc</div>
+                        <p>Giao hàng tận nơi - nhanh chóng</p>
+                        <p>Đảm bảo thời gian - tiến độ</p>
+                    </div>
+                </div>
+                <div class="media media-feature">
+                    <i class="fas fa-cash-register"></i>
+                    <div class="media-body">
+                        <div class="media-name">Thanh toán</div>
+                        <p>Hình thức thanh toán đa dạng</p>
+                        <p>Thủ tục đơn giản - nhanh chóng</p>
+                    </div>
+                </div>
+                <div class="media media-feature">
+                    <i class="fas fa-comment-alt"></i>
+                    <div class="media-body">
+                        <div class="media-name">Tư vấn 24/7</div>
+                        <p>Nhân viên tư vấn làm việc 24/7</p>
+                        <p>Hỗ trợ đặt hàng nhanh chóng</p>
+                        <p>Hotline: <a href="tel:@config.Hotline">@config.Hotline</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="row">
+            <div class="col-lg-5">
                 <div class="row ">
                     <div class="col-md-2 col-12 order-1 order-md-0">
                         @if (Model.Product.ListImage != null)
@@ -70,7 +199,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <div class="product-info">
                     <h1 class="name-product">@Model.Product.Name</h1>
                     <div class="product-info-rating d-flex">
@@ -136,7 +265,7 @@
                 </div>
 
             </div>
-        </div>
+        </div>*@
 
         <div class="product-detail-content " id="thong-tin-san-pham">
             <div class="title title-global">THÔNG TIN SẢN PHẨM</div>

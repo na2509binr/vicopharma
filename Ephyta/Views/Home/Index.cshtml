@@ -20,7 +20,9 @@
     <div class="banner-list">
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 1))
         {
-            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+            <a href="@banner.Url">
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+            </a>
         }
     </div>
 </section>
@@ -54,7 +56,9 @@
                 @foreach (var banner in Model.Banners.Where(l => l.GroupId == 2 && l.Image != null))
                 {
                     <div class="col-6">
-                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                        <a href="@banner.Url">
+                            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                        </a>
                     </div>
 
                 }
@@ -91,7 +95,9 @@
         </div>
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 5))
         {
-            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+            <a href="@banner.Url">
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+            </a>
 
         }
 
@@ -114,7 +120,9 @@
         </div>
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 6))
         {
-            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+            <a href="@banner.Url">
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+            </a>
 
         }
 
@@ -130,29 +138,29 @@
 </section>
 
 @*@foreach (var item in Model.ProductCategories)
-{
-    <section class="section-product">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-title d-inline-block">@item.Name</div>
-            </div>
-            @if (item.Image != null)
-            {
-                <img src="@img" data-src="@Path.Combine("/images/productCategory/",item.Image)" class="lazyload section-product-img" />
-
-            }
-            <div class="product-list">
-                @foreach (var product in Model.Products.Where(l => l.ProductCategoryId == item.Id))
+    {
+        <section class="section-product">
+            <div class="container">
+                <div class="text-center">
+                    <div class="section-title d-inline-block">@item.Name</div>
+                </div>
+                @if (item.Image != null)
                 {
-             
-                    @Html.Action("ItemProduct", "Home", new { id = product.Id })
+                    <img src="@img" data-src="@Path.Combine("/images/productCategory/",item.Image)" class="lazyload section-product-img" />
 
                 }
-            </div>
-        </div>
-    </section>
+                <div class="product-list">
+                    @foreach (var product in Model.Products.Where(l => l.ProductCategoryId == item.Id))
+                    {
 
-}*@
+                        @Html.Action("ItemProduct", "Home", new { id = product.Id })
+
+                    }
+                </div>
+            </div>
+        </section>
+
+    }*@
 
 <section class="news">
     <div class="container">
@@ -277,7 +285,9 @@
             @foreach (var banner in Model.Banners.Where(l => l.GroupId == 3))
             {
                 <div class="partner-item">
-                    <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                    <a href="@banner.Url">
+                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                    </a>
                 </div>
             }
         </div>

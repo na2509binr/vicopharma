@@ -437,7 +437,6 @@
     <Content Include="favicon.ico" />
     <Content Include="favicon.jpg" />
     <Content Include="Global.asax" />
-    <Content Include="images\articleCategory\2020\12\15\132525175030327334.png" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Content\style.scss" />

@@ -4,7 +4,6 @@
     var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     ViewBag.Title = config.Title;
     ViewBag.Description = config.Description;
-
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Index");
 
     var fb = Model.Banners.FirstOrDefault(c => c.GroupId == 1);
@@ -12,8 +11,7 @@
     {
         ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/banners/", fb.Image);
     }
-    var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
-    var a = 800;
+    const string img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
 }
 
 <section class="banner">
@@ -21,7 +19,7 @@
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 1))
         {
             <a href="@banner.Url">
-                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" alt="@banner.BannerName"/>
             </a>
         }
     </div>
@@ -57,7 +55,7 @@
                 {
                     <div class="col-6">
                         <a href="@banner.Url">
-                            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                            <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" alt="@banner.BannerName"/>
                         </a>
                     </div>
 
@@ -85,7 +83,6 @@
     </div>
 </section>
 
-
 <section class="section-product position-relative">
     <div class="la-cay-1"></div>
     <div class="la-cay-2"></div>
@@ -96,7 +93,7 @@
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 5))
         {
             <a href="@banner.Url">
-                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" alt="@banner.BannerName"/>
             </a>
 
         }
@@ -112,7 +109,6 @@
     </div>
 </section>
 
-
 <section class="section-product">
     <div class="container">
         <div class="text-center">
@@ -121,7 +117,7 @@
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 6))
         {
             <a href="@banner.Url">
-                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" />
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" alt="@banner.BannerName"/>
             </a>
 
         }
@@ -177,7 +173,7 @@
                                 <a href="@Url.Action("ArticleDetail", new { url = item.Url })">
                                     @if (item.Image != null)
                                     {
-                                        <img src="@img" data-src="@Path.Combine("/images/articles/",item.Image)" class="lazyload" />
+                                        <img src="@img" data-src="@Path.Combine("/images/articles/",item.Image)" class="lazyload" alt="@item.ArticleCategory.CategoryName"/>
                                     }
                                     else
                                     {
@@ -257,12 +253,12 @@
                         <div class="avata">
                             @if (item.Image != null)
                             {
-                                <img data-src="@Path.Combine("/images/feedbacks/",item.Image)" src="@img" class="lazyload" />
+                                <img data-src="@Path.Combine("/images/feedbacks/",item.Image)" src="@img" class="lazyload" alt="@item.Name"/>
 
                             }
                             else
                             {
-                                <img src="~/Content/images/no-image.jpg" />
+                                <img src="~/Content/images/no-image.jpg" alt="No Picture"/>
                             }
                         </div>
                         <div class="name">@item.Name</div>
@@ -286,7 +282,7 @@
             {
                 <div class="partner-item">
                     <a href="@banner.Url">
-                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" />
+                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" alt="@banner.BannerName"/>
                     </a>
                 </div>
             }

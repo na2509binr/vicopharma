@@ -3,43 +3,38 @@
 
 @{
     var discount = 100 - Convert.ToInt32((Model.Product.SaleOff / Model.Product.Price) * 100);
-    int date = int.Parse(DateTime.Now.ToString("dd")) - int.Parse(Model.Product.CreateDate.ToString("dd"));
-
+    //var date = int.Parse(DateTime.Now.ToString("dd")) - int.Parse(Model.Product.CreateDate.ToString("dd"));
     //DateTime ngaydang = Convert.ToDateTime(Model.Product.CreateDate.ToString("dd/MM/yyyy"));
     //DateTime ngaytra = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy"));
 
+    var ngaydang = Model.Product.CreateDate;
+    var hientai = DateTime.Now;
 
+    var time = hientai - ngaydang;
+    var tongSoNgay = time.Days;
 
-    DateTime ngaydang = Convert.ToDateTime(Model.Product.CreateDate);
-    DateTime hientai = Convert.ToDateTime(DateTime.Now);
-
-    TimeSpan Time = hientai - ngaydang;
-    int TongSoNgay = Time.Days;
-
-    var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+    const string img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
 }
 <div class="product-item">
     <div class="img">
         <a href="@Url.Action("ProductDetail", "Home" , new { url = Model.Product.Url})">
             @if (Model.Product.ListImage != null)
             {
-                <img src="@img" data-src="@Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0])" class="lazyload" />
+                <img src="@img" data-src="@Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0])" class="lazyload" alt="@Model.Product.Name"/>
             }
             else
             {
-                <img src="~/Content/images/no-image.jpg" />
+                <img src="~/Content/images/no-image.jpg" alt="NO IMAGE"/>
             }
         </a>
         <div class="icon">
             <div class="add-checkout">
-                <a href="javascript;;" onclick="addToCart(@Model.Product.Id,'checkout')"><i class="fal fa-shopping-bag"></i></a>
+                <a href="javascript:;" onclick="addToCart(@Model.Product.Id,'checkout')"><i class="fal fa-shopping-bag"></i></a>
             </div>
-
             <div class="add-cart">
                 <a href="javascript:;" onclick="addToCart(@Model.Product.Id,'add')">
                     <i class="far fa-cart-plus"></i>
                 </a>
-                
             </div>
         </div>
     </div>
@@ -68,7 +63,7 @@
     </div>
 
     <div class="tag">
-        @if (TongSoNgay < 30)
+        @if (tongSoNgay < 30)
         {
             <div class="tag-new">new</div>
 

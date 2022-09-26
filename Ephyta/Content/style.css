@@ -183,7 +183,6 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
 }
 .header-social {
   display: flex;
@@ -413,7 +412,7 @@ img {
 
 .banner-list img {
   width: 100%;
-  aspect-ratio: 2;
+  aspect-ratio: 2.75;
   object-fit: cover;
 }
 .banner-list .slick-dots {
@@ -461,7 +460,7 @@ img {
   flex-shrink: 0;
 }
 .service-item .name {
-  color: #FFA500;
+  color: #fff6b8;
   font-family: "SVN-Gilroy-Bold", sans-serif;
 }
 .service-item .des {
@@ -2328,6 +2327,14 @@ img {
     background-size: auto;
     background-repeat: unset;
   }
+
+  .banner-list img {
+    aspect-ratio: 2;
+  }
+
+  .service-item img {
+    max-width: 50px;
+  }
 }
 @media only screen and (max-width: 500px) {
   .partner {
@@ -2673,6 +2680,11 @@ img {
   }
   100% {
     transform: rotate(0deg) scale(1) skew(1deg);
+  }
+}
+@media only screen and (max-width: 1600px) and (min-width: 1100px) {
+  .banner-list img {
+    aspect-ratio: 3;
   }
 }
 @media only screen and (max-width: 768px) {

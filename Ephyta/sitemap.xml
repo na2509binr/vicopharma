@@ -1,15 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://ephyta.vn/sitemap/products.xml</loc>
+    <loc>https://ephyta.com/sitemap/products.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://ephyta.vn/sitemap/products-categories.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://ephyta.vn/sitemap/articles.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://ephyta.vn/sitemap/article-categories.xml</loc>
+    <loc>https://ephyta.com/sitemap/articles.xml</loc>
   </sitemap>
 </sitemapindex>

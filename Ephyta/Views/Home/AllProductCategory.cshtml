@@ -1,8 +1,8 @@
 ﻿@model Ephyta.ViewModel.CategoryProductViewModel
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "Tất cả sản phẩm";
-    ViewBag.Description = "Tất cả sản phẩm của ";
+    ViewBag.Title = "Sản phẩm mới nhất Ephyta";
+    ViewBag.Description = "Tất cả sản phẩm của Ephyta";
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("AllProductCategory");
     if (Model.Products.Any())
     {

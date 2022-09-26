@@ -123,20 +123,16 @@
 </div>
 
 <div class="overlay-all" onclick="showMenuMobi()"></div>
-
-
 <div class="chat-fix">
     <a href="https://zalo.me/@config.Hotline" class="chat-zalo" target="_blank" rel="noindex nofollow noopener" aria-label="Chat Zalo">
-        <img src="~/Content/images/icon-zalo.png"/>
+        <img src="~/Content/images/icon-zalo.png" alt="Zalo"/>
     </a>
     @if(config.UrlMessenger != null)
     { 
-        <a href="https://m.me/@config.UrlMessenger" class="chat-messenger">
-            <img src="~/Content/images/mess.png"/>
+        <a href="@config.UrlMessenger" class="chat-messenger" target="_blank" rel="nofollow">
+            <img src="~/Content/images/mess.png" alt="Mesenger"/>
         </a>
-    
     }
-
     <a href="tel:@config.Hotline" class="suntory-alo-phone suntory-alo-green" id="suntory-alo-phoneIcon" @*style="left: 0; bottom: 0;*@">
         <div class="suntory-alo-ph-circle"></div>
         <div class="suntory-alo-ph-circle-fill"></div>

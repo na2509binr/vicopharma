@@ -21,12 +21,12 @@ namespace Ephyta.Controllers
         public ContentResult ProductSitemap()
         {
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            var items = _unitOfWork.ProductRepository.GetQuery(a => a.Active, q => q.OrderByDescending(a => a.Id)).Select(a => new { id = a.Id, url = a.Url}).Take(2000).ToList();
+            var items = _unitOfWork.ProductRepository.GetQuery(a => a.Active, q => q.OrderByDescending(a => a.Id)).Select(a => new { url = a.Url, time = a.CreateDate}).Take(2000).ToList();
             var itemSitemap = (from item in items
                                select new XElement(ns + "url", new XElement(ns + "loc", Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductDetail", "Home", new
                                {
                                    item.url
-                               })), new XElement(ns + "lastmod", DateTime.Now.ToString("yyyy-MM-dd")), new XElement(ns + "changefreq", "daily"), new XElement(ns + "priority", "0.8"))).ToList();
+                               })), new XElement(ns + "lastmod", item.time.ToString("yyyy-MM-dd")), new XElement(ns + "changefreq", "daily"), new XElement(ns + "priority", "0.8"))).ToList();
             var sitemap = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement(ns + "urlset", itemSitemap));
             return Content(sitemap.ToString(), "text/xml");
         }
@@ -51,12 +51,12 @@ namespace Ephyta.Controllers
         public ContentResult ArticleSitemap()
         {
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            var items = _unitOfWork.ArticleRepository.GetQuery(a => a.Active, q => q.OrderByDescending(a => a.Id)).Select(a => new { a.Url }).Take(100).ToList();
+            var items = _unitOfWork.ArticleRepository.GetQuery(a => a.Active, q => q.OrderByDescending(a => a.Id)).Select(a => new { a.Url, time = a.CreateDate }).Take(100).ToList();
             var itemSitemap = (from item in items
                                select new XElement(ns + "url", new XElement(ns + "loc", Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleDetail", "Home", new
                                {
                                    url = item.Url
-                               })), new XElement(ns + "lastmod", DateTime.Now.ToString("yyyy-MM-dd")), new XElement(ns + "changefreq", "daily"), new XElement(ns + "priority", "0.8"))).ToList();
+                               })), new XElement(ns + "lastmod", item.time.ToString("yyyy-MM-dd")), new XElement(ns + "changefreq", "daily"), new XElement(ns + "priority", "0.8"))).ToList();
             var sitemap = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement(ns + "urlset", itemSitemap));
             return Content(sitemap.ToString(), "text/xml");
             //sitemap.Save(Server.MapPath("/Sitemap/ArticleSitemap.xml"));

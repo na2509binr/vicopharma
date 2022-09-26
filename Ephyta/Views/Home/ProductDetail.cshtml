@@ -275,7 +275,7 @@
                 </div>
                 <div class="see-open active mt-3">Xem thêm <i class="fas fa-angle-double-right"></i></div>
                 <div class="see-close mt-3">
-                    Thu gọn <i class="fas fa-angle-double-right"></i></a>
+                    Thu gọn <i class="fas fa-angle-double-right"></i>
                 </div>
             </div>
         </div>
@@ -391,9 +391,9 @@
                     <span>Theo @Model.Reviews.Count() đánh giá</span>
                 </div>
                 <div class="btn-comment">
-                    <a href="@Url.Action("FormComment", new{url = Model.Product.Url})" data-fancybox data-type="ajax" data-touch="false">
+                    <a href="javascript:;" rel="noindex" data-src="@Url.Action("FormComment", new{url = Model.Product.Url})" data-fancybox data-type="ajax" data-touch="false">
                         VIẾT ĐÁNH GIÁ
-                        <img src="~/Content/images/pen.png" class="ml-2" />
+                        <img src="~/Content/images/pen.png" class="ml-2" alt="Viết đánh giá"/>
                     </a>
                 </div>
             </div>
@@ -405,8 +405,6 @@
 </section>
 
 @*@Html.Action("FormComment")*@
-
-
 
 @section scripts{
     <script src="~/Scripts/jquery.nice-number.js"></script>
@@ -439,8 +437,6 @@
 
         });
 
-    </script>
-    <script>
         ProductDetailJs();
     </script>
 }

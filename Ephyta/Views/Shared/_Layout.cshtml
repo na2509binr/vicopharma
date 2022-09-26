@@ -11,11 +11,8 @@
     <meta name="description" content="@Html.Raw(ViewBag.Description)" />
     @*<meta name="keywords" content="@ViewBag.Keywords" />*@
     <link rel="canonical" href="@ViewBag.Canonical" />
-    <meta name="robots" content="noindex" />
-    @if (config.Image != null)
-    {
-        <link rel="shortcut icon" href="@Path.Combine("/images/configs/", config.Image)?w=128&h=128">
-    }
+    <meta name="robots" content="@(ViewBag.Robots == null ? "index,follow" : ViewBag.Robots)" />
+    <link rel="shortcut icon" href="~/favicon.jpg" />
     <meta property="og:locale" content="vi_VN">
     <meta property="og:type" content="website">
     <meta property="og:title" content="@ViewBag.Title">
@@ -61,26 +58,26 @@
         })();
     </script>
     @*<script type="application/ld+json">
-        {
-            "@@context": "http://schema.org",
-            "@@type": "Organization",
-            "url": "https://.vn",
-            "logo": "https://.vn/images/configs/2020/12/15/132524974851697664.png",
-            "sameAs" : [
-                "@config.Facebook",
-                "@config.Twitter",
-                "@config.Youtube",
-                "@config.Instagram"
-            ],
-            "address": {
-                "@@type": "PostalAddress",
-                "streetAddress": "S Số 20N3, tổ 57, phường Thịnh Quang, quận Đống Đa",
-                "addressRegion": "HN",
-                "postalCode": "100000",
-                "addressCountry": "VN"
+            {
+                "@@context": "http://schema.org",
+                "@@type": "Organization",
+                "url": "https://.vn",
+                "logo": "https://.vn/images/configs/2020/12/15/132524974851697664.png",
+                "sameAs" : [
+                    "@config.Facebook",
+                    "@config.Twitter",
+                    "@config.Youtube",
+                    "@config.Instagram"
+                ],
+                "address": {
+                    "@@type": "PostalAddress",
+                    "streetAddress": "S Số 20N3, tổ 57, phường Thịnh Quang, quận Đống Đa",
+                    "addressRegion": "HN",
+                    "postalCode": "100000",
+                    "addressCountry": "VN"
+                }
             }
-        }
-    </script>*@
+        </script>*@
 
     @if (config.LiveChat != null)
     {

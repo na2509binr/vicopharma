@@ -3,19 +3,13 @@
 @{
     ViewBag.Title = Model.Category.TitleMeta ?? Model.Category.CategoryName;
     ViewBag.Description = Model.Category.DescriptionMeta ?? Model.Category.CategoryName;
-
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleCategory", new { url = Model.Category.Url });
 
-    if (Model.Articles.Any())
+    var fa = Model.Articles.FirstOrDefault();
+    if (fa?.Image != null)
     {
-        var fa = Model.Articles.First();
-
-        if (fa.Image != null)
-        {
-            ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", fa.Image);
-        }
+        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", fa.Image);
     }
-
 }
 <div class="bg-breadcrumb">
     <div class="container">

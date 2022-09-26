@@ -3,11 +3,10 @@
 @{
     ViewBag.Title = Model.Category.TitleMeta ?? Model.Category.Name;
     ViewBag.Description = Model.Category.DescriptionMeta ?? Model.Category.Name;
-
-    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductCategory", new{ url = Model.Category.Url});
-    if (Model.Products.Any())
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductCategory", new { url = Model.Category.Url });
+    var fp = Model.Products.FirstOrDefault();
+    if (fp?.ListImage != null)
     {
-        var fp = Model.Products.First();
         ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/products/", fp.ListImage.Split(',')[0]);
     }
 }

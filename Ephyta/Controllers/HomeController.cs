@@ -29,11 +29,38 @@ namespace Ephyta.Controllers
         [MinifyXhtml, CompressContent]
         public ActionResult Index()
         {
+            var items = _unitOfWork.ProductRepository
+                .GetQuery(l => l.Active && l.Home && l.Hot, a => a.OrderByDescending(c => c.Id)).Select(a =>
+                    new ItemProductViewModel
+                    {
+                        Product = a,
+                        Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+                    }).Take(12);
+
+            var combos = _unitOfWork.ProductRepository
+                .GetQuery(l => l.Active && l.ProductCategory.TypeProduct == TypeProduct.Combo && l.SaleOff != null, a => a.OrderByDescending(c => c.Id)).Select(a =>
+                    new ItemProductViewModel
+                    {
+                        Product = a,
+                        Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+                    }).Take(12);
+
+            var allProducts = _unitOfWork.ProductRepository
+                .GetQuery(l => l.Active && l.ProductCategory.TypeProduct == TypeProduct.Product, a => a.OrderByDescending(c => c.Id)).Select(a =>
+                    new ItemProductViewModel
+                    {
+                        Product = a,
+                        Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+                    }).Take(12);
+
+
             var model = new HomeViewModel
             {
                 ProductCategories = ProductCategories.Where(l => l.Home),
-                Articles = _unitOfWork.ArticleRepository.GetQuery(l => l.Active , a => a.OrderByDescending(c => c.CreateDate)),
-                Products = _unitOfWork.ProductRepository.GetQuery(l => l.Active && l.Home , a => a.OrderByDescending(c => c.Id)),
+                Articles = _unitOfWork.ArticleRepository.GetQuery(l => l.Active, a => a.OrderByDescending(c => c.CreateDate)),
+                Products = items,// _unitOfWork.ProductRepository.GetQuery(l => l.Active && l.Home, a => a.OrderByDescending(c => c.Id)),
+                ComboProducts = combos,
+                AllProducts = allProducts,
                 Feedbacks = _unitOfWork.FeedbackRepository.Get(l => l.Active, a => a.OrderByDescending(c => c.Id), 20),
                 Banners = Banners
             };
@@ -56,7 +83,7 @@ namespace Ephyta.Controllers
             var model = new FooterViewModel
             {
                 ArticleCategories = ArticleCategories,
-                Articles = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.ArticleCategory.TypePost == TypePost.Policy , q => q.OrderBy(a => a.CreateDate))
+                Articles = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.ArticleCategory.TypePost == TypePost.Policy, q => q.OrderBy(a => a.CreateDate))
             };
             return PartialView(model);
         }
@@ -84,9 +111,16 @@ namespace Ephyta.Controllers
                     break;
             }
             var pageNumber = page ?? 1;
+
+            var items = products.Select(a => new ItemProductViewModel
+            {
+                Product = a,
+                Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+            });
+
             var model = new CategoryProductViewModel
             {
-                Products = products.ToPagedList(pageNumber, 12),
+                Products = items.ToPagedList(pageNumber, 12),
                 Sort = sort
             };
             return View(model);
@@ -100,7 +134,7 @@ namespace Ephyta.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var products = _unitOfWork.ProductRepository.GetQuery(l => l.Active && (l.ProductCategoryId == category.Id || l.ProductCategory.ParentId == category.Id ), c => c.OrderByDescending(a => a.Id));
+            var products = _unitOfWork.ProductRepository.GetQuery(l => l.Active && (l.ProductCategoryId == category.Id || l.ProductCategory.ParentId == category.Id), c => c.OrderByDescending(a => a.Id));
             switch (sort)
             {
                 case "name":
@@ -120,9 +154,17 @@ namespace Ephyta.Controllers
                     break;
             }
             var pageNumber = page ?? 1;
+
+            var items = products.Select(a => new ItemProductViewModel
+            {
+                Product = a,
+                Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+            });
+
+
             var model = new CategoryProductViewModel
             {
-                Products = products.ToPagedList(pageNumber, 12),
+                Products = items.ToPagedList(pageNumber, 12),
                 Category = category,
                 Sort = sort,
                 ParentId = category.ParentId ?? category.Id,
@@ -138,24 +180,30 @@ namespace Ephyta.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var products = _unitOfWork.ProductRepository.GetQuery(l => l.Active && l.ProductCategoryId == product.ProductCategoryId && l.Id != product.Id, a => a.OrderByDescending(c => c.Id), 4);
+            var products = _unitOfWork.ProductRepository.GetQuery(l => l.Active && l.ProductCategoryId == product.ProductCategoryId && l.Id != product.Id, a => a.OrderByDescending(c => c.Id));
 
-            var reviews = _unitOfWork.ReviewRepository.GetQuery(l => l.Active && l.ProductId == product.Id);
-
-            decimal rating = 5;
-            if(reviews.Count() > 0)
+            var items = products.Select(a => new ItemProductViewModel
             {
-                rating = (decimal)reviews.Average(s => ((int)s.StarReview));
-            }
-            //var rating = 
+                Product = a,
+                Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+            }).Take(4);
+
+            var itemHots = _unitOfWork.ProductRepository
+                .GetQuery(l => l.Active && l.Hot, a => a.OrderByDescending(c => c.Id)).Select(a =>
+                    new ItemProductViewModel
+                    {
+                        Product = a,
+                        Rating = a.Reviews.Where(c => c.Active).Average(c => (decimal?)c.StarReview) ?? 0
+                    }).Take(4);
+
             var model = new ProductDetailViewModel
             {
-                ReviewKols = _unitOfWork.ReviewKolRepository.GetQuery(l => l.Active && l.ProductId == product.Id),
-                Reviews = reviews,
+                ReviewKols = _unitOfWork.ReviewKolRepository.Get(l => l.Active && l.ProductId == product.Id),
+                //Reviews = product.Reviews.Where(a => a.Active).OrderByDescending(a => a.Id),
                 Product = product,
-                Products = products,
-                ProductHot = _unitOfWork.ProductRepository.GetQuery(l => l.Active && l.Hot, a => a.OrderByDescending(c => c.Id)).Take(4),
-                Rating = Math.Round(rating,1),
+                Products = items,
+                ProductHots = itemHots,
+                //Rating = Math.Round(rating, 1),
             };
             return View(model);
         }
@@ -382,7 +430,7 @@ namespace Ephyta.Controllers
                 Reviews = review.ToPagedList(pageNumber, pageSize),
                 Id = id,
             };
-           
+
             return View(model);
         }
         public PartialViewResult ItemProduct(int id)
@@ -391,13 +439,13 @@ namespace Ephyta.Controllers
             var reviews = _unitOfWork.ReviewRepository.GetQuery(l => l.Active && l.ProductId == product.Id);
 
             decimal rating = 5;
-            if (reviews.Count() > 0)
+            if (reviews.Any())
             {
-                rating = (decimal)reviews.Average(s => ((int)s.StarReview));
+                rating = (decimal)reviews.Average(s => (int)s.StarReview);
             }
             var model = new ItemProductViewModel
             {
-                
+
                 Product = product,
                 Rating = Math.Round(rating, 1),
             };

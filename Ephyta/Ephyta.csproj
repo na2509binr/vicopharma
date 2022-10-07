@@ -343,6 +343,7 @@
     <Content Include="Content\images\bg-menu.png" />
     <Content Include="Content\images\bg-service.png" />
     <Content Include="Content\images\empty-cart.png" />
+    <Content Include="Content\images\feedback-bg.jpg" />
     <Content Include="Content\images\feedback-bg.png" />
     <Content Include="Content\images\icon-zalo.png" />
     <Content Include="Content\images\la-cay1.png" />

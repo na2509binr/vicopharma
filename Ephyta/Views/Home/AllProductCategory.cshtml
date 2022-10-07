@@ -4,10 +4,10 @@
     ViewBag.Title = "Sản phẩm mới nhất Ephyta";
     ViewBag.Description = "Tất cả sản phẩm của Ephyta";
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("AllProductCategory");
-    if (Model.Products.Any())
+    var fp = Model.Products.FirstOrDefault();
+    if (fp?.Product?.ListImage != null)
     {
-        var fp = Model.Products.First();
-        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/products/", fp.ListImage.Split(',')[0]);
+        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/products/", fp.Product.ListImage.Split(',')[0]);
     }
 }
 <div class="bg-breadcrumb">
@@ -46,7 +46,7 @@
                         @foreach (var product in Model.Products)
                         {
                             <div class="col-lg-3 col-6">
-                                @Html.Action("ItemProduct", "Home", new { id = product.Id })
+                                @Html.Partial("ItemProduct", product)
                             </div>
                         }
 

@@ -13,7 +13,7 @@
     }
     const string img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
 }
-
+<h1 class="d-none">@config.Title</h1>
 <section class="banner">
     <div class="banner-list">
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 1))
@@ -34,7 +34,7 @@
                     <div class="col-lg-3 col-md-6 col-12">
                         <div class="service-item">
 
-                            <img src="@Path.Combine("/images/banners/",banner.Image)" />
+                            <img src="@Path.Combine("/images/banners/",banner.Image)" alt="@banner.BannerName" width="50"/>
                             <div class="content">
                                 <div class="name">@banner.BannerName</div>
                                 <div class="des">@banner.Slogan</div>
@@ -50,20 +50,18 @@
 {
     <div class="banner-product-hot">
         <div class="container-fluid">
-            <div class="row row-gutter-10 ">
+            <div class="row row-gutter-10">
                 @foreach (var banner in Model.Banners.Where(l => l.GroupId == 2 && l.Image != null))
                 {
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <a href="@banner.Url">
                             <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" alt="@banner.BannerName"/>
                         </a>
                     </div>
-
                 }
             </div>
         </div>
     </div>
-
 }
 
 <section class="section-product">
@@ -72,12 +70,11 @@
             <div class="section-title d-inline-block">Sản phẩm bán chạy nhất</div>
         </div>
         <div class="product-list">
-            @foreach (var item in Model.Products.Where(l => l.Hot).Take(12))
+            @foreach (var item in Model.Products)
             {
                 @*@Html.Partial("_ItemProduct", item)*@
 
-                @Html.Action("ItemProduct", "Home", new { id = item.Id })
-
+                @Html.Partial("ItemProduct", item)
             }
         </div>
     </div>
@@ -93,18 +90,20 @@
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 5))
         {
             <a href="@banner.Url">
-                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" alt="@banner.BannerName"/>
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img img-fluid" width="1200" alt="@banner.BannerName"/>
             </a>
-
         }
-
         <div class="product-list">
-            @foreach (var item in Model.Products.Where(l => l.ProductCategory.TypeProduct == TypeProduct.Combo && l.SaleOff != null).Take(12))
+            @foreach (var item in Model.ComboProducts)
             {
+                @Html.Partial("ItemProduct", item)
+            }
 
+            @*@foreach (var item in Model.Products.Where(l => l.ProductCategory.TypeProduct == TypeProduct.Combo && l.SaleOff != null).Take(12))
+            {
                 @Html.Action("ItemProduct", "Home", new { id = item.Id })
 
-            }
+            }*@
         </div>
     </div>
 </section>
@@ -117,17 +116,13 @@
         @foreach (var banner in Model.Banners.Where(l => l.GroupId == 6))
         {
             <a href="@banner.Url">
-                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img" alt="@banner.BannerName"/>
+                <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload section-product-img img-fluid" width="1200" alt="@banner.BannerName"/>
             </a>
-
         }
-
         <div class="product-list">
-            @foreach (var item in Model.Products.Where(l => l.ProductCategory.TypeProduct == TypeProduct.Product && l.Hot == false).Take(12))
+            @foreach (var item in Model.AllProducts)
             {
-
-                @Html.Action("ItemProduct", "Home", new { id = item.Id })
-
+                @Html.Partial("ItemProduct", item)
             }
         </div>
     </div>
@@ -143,14 +138,11 @@
                 @if (item.Image != null)
                 {
                     <img src="@img" data-src="@Path.Combine("/images/productCategory/",item.Image)" class="lazyload section-product-img" />
-
                 }
                 <div class="product-list">
                     @foreach (var product in Model.Products.Where(l => l.ProductCategoryId == item.Id))
                     {
-
                         @Html.Action("ItemProduct", "Home", new { id = product.Id })
-
                     }
                 </div>
             </div>
@@ -161,7 +153,7 @@
 <section class="news">
     <div class="container">
         <div class="text-center">
-            <div class="section-title d-inline-block">tin tức & sự kiện</div>
+            <div class="section-title d-inline-block">Tin tức & sự kiện</div>
         </div>
         <div class="row mt-3">
             <div class="col-lg-8">
@@ -173,11 +165,11 @@
                                 <a href="@Url.Action("ArticleDetail", new { url = item.Url })">
                                     @if (item.Image != null)
                                     {
-                                        <img src="@img" data-src="@Path.Combine("/images/articles/",item.Image)" class="lazyload" alt="@item.ArticleCategory.CategoryName"/>
+                                        <img src="@img" data-src="@Path.Combine("/images/articles/",item.Image)?w=500" class="lazyload" width="500" alt="@item.ArticleCategory.CategoryName"/>
                                     }
                                     else
                                     {
-                                        <img src="~/Content/images/no-image.jpg" />
+                                        <img src="~/Content/images/no-image.jpg" alt="No Picture"/>
                                     }
                                 </a>
                             </div>
@@ -202,13 +194,11 @@
                             <a href="@Url.Action("ArticleDetail", new { url = item.Url })">@item.Subject</a>
                         </div>
                     </div>
-
                 }
             </div>
         </div>
     </div>
 </section>
-
 
 <section class="video">
     <div class="container">
@@ -227,7 +217,7 @@
                                     <i class="fa fa-play"></i>
                                 </div>
                                 <div class="video-img">
-                                    <img data-src="https://i.ytimg.com/vi_webp/@ytId/maxresdefault.webp" class="img-fluid lazyload" width="100%" alt="Video giới thiệu" />
+                                    <img src="@img" data-src="https://i.ytimg.com/vi_webp/@ytId/maxresdefault.webp" class="img-fluid lazyload" alt="Video giới thiệu" />
                                 </div>
                             </a>
                         </div>
@@ -243,7 +233,7 @@
 
 @if (Model.Feedbacks.Any())
 {
-    <div class="feedback">
+    <div class="feedback lazyload" data-bg="/Content/images/feedback-bg.jpg">
         <div class="container">
             <div class="title text-center">KHÁCH HÀNG NÓI VỀ CHÚNG TÔI</div>
             <div class="feedback-list">
@@ -282,7 +272,7 @@
             {
                 <div class="partner-item">
                     <a href="@banner.Url">
-                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)" class="lazyload" alt="@banner.BannerName"/>
+                        <img src="@img" data-src="@Path.Combine("/images/banners/",banner.Image)?w=300" class="lazyload" alt="@banner.BannerName"/>
                     </a>
                 </div>
             }

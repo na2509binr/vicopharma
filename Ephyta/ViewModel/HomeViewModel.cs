@@ -12,7 +12,9 @@ namespace Ephyta.ViewModel
         public IEnumerable<Banner> Banners { get; set; }
         public IEnumerable<Article> Articles { get; set; }
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ItemProductViewModel> Products { get; set; }
+        public IEnumerable<ItemProductViewModel> ComboProducts { get; set; }
+        public IEnumerable<ItemProductViewModel> AllProducts { get; set; }
         public IEnumerable<Feedback> Feedbacks { get; set; }
     }
     public class HeaderViewModel
@@ -30,7 +32,7 @@ namespace Ephyta.ViewModel
     public class CategoryProductViewModel
     {
         public ProductCategory Category { get; set; }
-        public IPagedList<Product> Products { get; set; }
+        public IPagedList<ItemProductViewModel> Products { get; set; }
         public IEnumerable<ProductCategory> Categories { get; set; }
         public int CatId { get; set; }
         public string Sort { get; set; }
@@ -45,13 +47,12 @@ namespace Ephyta.ViewModel
     public class ProductDetailViewModel
     {
         public Product Product { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ItemProductViewModel> Products { get; set; }
 
         public IEnumerable<ReviewKol> ReviewKols { get; set; }
 
-
-        public IEnumerable<Review> Reviews { get; set; }
-        public IEnumerable<Product> ProductHot { get; set; }
+        //public IEnumerable<Review> Reviews { get; set; }
+        public IEnumerable<ItemProductViewModel> ProductHots { get; set; }
 
         public decimal Rating { get; set; }
 

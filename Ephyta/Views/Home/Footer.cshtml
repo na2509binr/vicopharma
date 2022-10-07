@@ -2,8 +2,9 @@
 @using Ephyta.Models
 @{
     var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    const string img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
 }
-<footer class="footer">
+<footer class="footer lazyload" da-bg="~/Content/images/bg-footer.png">
     <div class="container pb-3">
         <div class="row">
             <div class="col-lg-3 col-md-6">
@@ -114,26 +115,23 @@
             </div>
         </div>
         <div class="item">
-            <a href="">
-                <img src="~/Content/images/bct.png" />
-            </a>
+            <img src="@img" data-src="~/Content/images/bct.png" alt="BCT" class="lazyload" width="150" />
         </div>
-
     </div>
 </div>
 
 <div class="overlay-all" onclick="showMenuMobi()"></div>
 <div class="chat-fix">
     <a href="https://zalo.me/@config.Hotline" class="chat-zalo" target="_blank" rel="noindex nofollow noopener" aria-label="Chat Zalo">
-        <img src="~/Content/images/icon-zalo.png" alt="Zalo"/>
+        <img src="~/Content/images/icon-zalo.png" alt="Zalo" width="50" />
     </a>
-    @if(config.UrlMessenger != null)
-    { 
+    @if (config.UrlMessenger != null)
+    {
         <a href="@config.UrlMessenger" class="chat-messenger" target="_blank" rel="nofollow">
-            <img src="~/Content/images/mess.png" alt="Mesenger"/>
+            <img src="~/Content/images/mess.png" alt="Mesenger" width="50" />
         </a>
     }
-    <a href="tel:@config.Hotline" class="suntory-alo-phone suntory-alo-green" id="suntory-alo-phoneIcon" @*style="left: 0; bottom: 0;*@">
+    <a href="tel:@config.Hotline" class="suntory-alo-phone suntory-alo-green" id="suntory-alo-phoneIcon" @*style="left: 0; bottom: 0;*@>
         <div class="suntory-alo-ph-circle"></div>
         <div class="suntory-alo-ph-circle-fill"></div>
         <div class="suntory-alo-ph-img-circle">

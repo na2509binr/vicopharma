@@ -1,5 +1,5 @@
-User-agent: *
-Allow: /
-Disallow: /tim-kiem*
+user-agent: *
+allow: /
+disallow: /tim-kiem*
 
 sitemap: https://ephyta.com/sitemap.xml

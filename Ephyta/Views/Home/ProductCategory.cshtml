@@ -5,9 +5,9 @@
     ViewBag.Description = Model.Category.DescriptionMeta ?? Model.Category.Name;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductCategory", new { url = Model.Category.Url });
     var fp = Model.Products.FirstOrDefault();
-    if (fp?.ListImage != null)
+    if (fp?.Product.ListImage != null)
     {
-        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/products/", fp.ListImage.Split(',')[0]);
+        ViewBag.ImagShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/products/", fp.Product.ListImage.Split(',')[0]);
     }
 }
 <div class="bg-breadcrumb">
@@ -47,7 +47,7 @@
                         @foreach (var product in Model.Products)
                         {
                             <div class="col-lg-3 col-6">
-                                @Html.Action("ItemProduct", "Home", new { id = product.Id })
+                                @Html.Partial("ItemProduct", product)
                             </div>
                         }
 

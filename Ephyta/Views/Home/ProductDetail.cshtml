@@ -69,7 +69,7 @@
                                 <span class="rating mr-2" data-default-rating="@Model.Rating" disabled></span>
                                 <div class="see-more">
                                     <span>Xem</span>
-                                    <a href="#reviews-customers">@Model.Reviews.Count() đánh giá từ khách đã mua hàng</a>
+                                    <a href="#reviews-customers">@Model.Product.Reviews.Count() đánh giá từ khách đã mua hàng</a>
                                 </div>
                             </div>
                             <div class="price-detail">
@@ -356,7 +356,7 @@
             @foreach (var item in Model.Products)
             {
                 <div class="col-lg-3 col-6">
-                    @Html.Partial("_ItemProduct", item)
+                    @Html.Partial("ItemProduct", item)
                 </div>
             }
         </div>
@@ -367,11 +367,11 @@
     <div class="container">
         <div class="title title-global">Sản phẩm bán chạy nhất</div>
         <div class="row mt-4 row-mb-10">
-            @foreach (var item in Model.ProductHot)
+            @foreach (var item in Model.ProductHots)
             {
                 <div class="col-lg-3 col-6">
                     @*@Html.Partial("_ItemProduct", item)*@
-                    @Html.Action("ItemProduct", "Home", new { id = item.Id })
+                    @Html.Partial("ItemProduct", item)
                 </div>
             }
         </div>
@@ -388,7 +388,7 @@
                         <div class="number">@Model.Rating</div>
                         <div class="rating mr-2" data-default-rating="@Model.Rating" disabled></div>
                     </div>
-                    <span>Theo @Model.Reviews.Count() đánh giá</span>
+                    <span>Theo @Model.Product.Reviews.Count đánh giá</span>
                 </div>
                 <div class="btn-comment">
                     <a href="javascript:;" rel="noindex" data-src="@Url.Action("FormComment", new{url = Model.Product.Url})" data-fancybox data-type="ajax" data-touch="false">

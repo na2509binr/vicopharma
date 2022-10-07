@@ -20,7 +20,7 @@
         <a href="@Url.Action("ProductDetail", "Home" , new { url = Model.Product.Url})">
             @if (Model.Product.ListImage != null)
             {
-                <img src="@img" data-src="@Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0])" class="lazyload" alt="@Model.Product.Name"/>
+                <img src="@img" data-src="@Path.Combine("/images/products/", Model.Product.ListImage.Split(',')[0])?w=400" class="lazyload" alt="@Model.Product.Name"/>
             }
             else
             {

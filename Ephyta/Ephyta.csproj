@@ -257,6 +257,10 @@
     <Compile Include="Migrations\202209060506066_Code-ExpDay.designer.cs">
       <DependentUpon>202209060506066_Code-ExpDay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202211280455476_StringLength-Product.cs" />
+    <Compile Include="Migrations\202211280455476_StringLength-Product.designer.cs">
+      <DependentUpon>202211280455476_StringLength-Product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Article.cs" />
@@ -794,6 +798,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209060506066_Code-ExpDay.resx">
       <DependentUpon>202209060506066_Code-ExpDay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202211280455476_StringLength-Product.resx">
+      <DependentUpon>202211280455476_StringLength-Product.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

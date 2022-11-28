@@ -12,7 +12,7 @@ namespace Ephyta.Models
         [Display(Name = "Danh sách ảnh"), UIHint("UploadMultiFile")]
         public string ListImage { get; set; }
         [Display(Name = "Trích dẫn ngắn"), Required(ErrorMessage = "Hãy nhập trích dẫn ngắn"),
-         StringLength(1000, ErrorMessage = "Tối đa 1000 ký tự"), UIHint("EditorBox")]
+         UIHint("EditorBox")]
         public string Description { get; set; }
         [Display(Name = "Công dụng"), UIHint("EditorBox")]
         public string Function { get; set; }
@@ -20,7 +20,7 @@ namespace Ephyta.Models
         public string Usermanual { get; set; }
         [Display(Name = "Giới thiệu chung"), UIHint("EditorBox")]
         public string Intro { get; set; }
-        [Display(Name = "Cách dùng"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        [Display(Name = "Cách dùng"), StringLength(2000, ErrorMessage = "Tối đa 2000 ký tự"), UIHint("TextArea")]
         public string Use { get; set; }
         [Display(Name = "Quy cách"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
         public string Specifications { get; set; }

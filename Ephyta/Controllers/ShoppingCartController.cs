@@ -1,21 +1,19 @@
-﻿using Helpers;
+﻿//using DucAnSport.Filters;
+using Ephyta.Models;
+using Ephyta.ViewModel;
+using Helpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Mvc;
-using Ephyta.DAL;
-//using DucAnSport.Filters;
-using Ephyta.Models;
-using Ephyta.ViewModel;
-using System.Collections.Generic;
 
 namespace Ephyta.Controllers
 {
     [RoutePrefix("gio-hang")]
     public class ShoppingCartController : BaseController
     {
-     
+
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         private static string Email => WebConfigurationManager.AppSettings["email"];
         private static string Password => WebConfigurationManager.AppSettings["password"];
@@ -94,7 +92,7 @@ namespace Ephyta.Controllers
         //        CartTotal = cart.GetTotal(),
         //        CitySelectList = CitySelectList
         //    };
-            
+
         //    return View(model);
         //}
         [Route("thanh-toan")]
@@ -135,7 +133,7 @@ namespace Ephyta.Controllers
                     {
                         model.Order.DiscountPercent = discount.Discount;
 
-                        model.Order.DiscountAmount = Convert.ToDecimal(fc["PricesDiscount"]) ;
+                        model.Order.DiscountAmount = Convert.ToDecimal(fc["PricesDiscount"]);
                         //model.Order.DiscountAmount = item.;
                         //model.Order.DiscountAmount = discount.Price;
 
@@ -248,7 +246,7 @@ namespace Ephyta.Controllers
                 sb += "</table>";
                 sb += "<p>Cảm ơn bạn đã tin tưởng và mua hàng của chúng tôi.</p>";
 
-                Task.Run(() => HtmlHelpers.SendEmail("gmail", "[" + model.Order.MaDonHang + "] Đơn đặt hàng từ website HHT", sb, ConfigSite.Email, Email, Email, Password, "HHT.VN", model.Order.CustomerInfo.Email, ConfigSite.Email));
+                Task.Run(() => HtmlHelpers.SendEmail("gmail", "[" + model.Order.MaDonHang + "] Đơn đặt hàng từ website EPHYTA", sb, ConfigSite.Email, Email, Email, Password, "EPHYTA.VN", model.Order.CustomerInfo.Email, "maiph0978@gmail.com"));
 
                 return RedirectToAction("CheckOutComplete", new { orderId = model.Order.MaDonHang });
             }
@@ -423,7 +421,7 @@ namespace Ephyta.Controllers
                     };
                     return Json(statistic);
                 }
-                
+
                 return Json(new CardStatistic
                 {
                     Status = 0,
@@ -439,7 +437,7 @@ namespace Ephyta.Controllers
                 {
                     Status = 1,
                     totalItem = 0,
-                    itemCount =0,
+                    itemCount = 0,
                     totalMoney = 0,
                     Msg = "Cập nhật không thành công."
                 });
@@ -451,9 +449,9 @@ namespace Ephyta.Controllers
         {
             try
             {
-                var codeDiscount = _unitOfWork.DiscountCodeRepository.GetQuery(l => l.Fullname.ToLower().Contains(code.ToLower())).FirstOrDefault();   
+                var codeDiscount = _unitOfWork.DiscountCodeRepository.GetQuery(l => l.Fullname.ToLower().Contains(code.ToLower())).FirstOrDefault();
 
-                if(codeDiscount != null)
+                if (codeDiscount != null)
                 {
                     DateTime HSD = Convert.ToDateTime(codeDiscount.ExpDay);
                     DateTime hientai = Convert.ToDateTime(DateTime.Now);
@@ -465,7 +463,7 @@ namespace Ephyta.Controllers
                             Status = 0,
                             Msg = "Mã giảm giá này đã được sử dụng",
                             PercentDiscount = 0,
-                            totalMoneyItem= 0,
+                            totalMoneyItem = 0,
                             //itemCount = itemCount,
                             //totalItem = cart.GetCount(),
                             //totalMoneyItem = totalMoneyItem ?? 0,
@@ -473,7 +471,7 @@ namespace Ephyta.Controllers
                         };
                         return Json(statistic);
                     }
-                    else if ( timeSpan.Days < 0 && codeDiscount.ExpDay != null)
+                    else if (timeSpan.Days < 0 && codeDiscount.ExpDay != null)
                     {
                         var statistic = new CodeStatistic
                         {

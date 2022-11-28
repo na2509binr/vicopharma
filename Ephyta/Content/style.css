@@ -2329,10 +2329,6 @@ img {
     background-repeat: unset;
   }
 
-  .banner-list img {
-    aspect-ratio: 2;
-  }
-
   .service-item img {
     max-width: 50px;
   }

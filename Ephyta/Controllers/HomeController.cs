@@ -1,7 +1,7 @@
-﻿using Helpers;
-using Ephyta.DAL;
+﻿using Ephyta.DAL;
 using Ephyta.Models;
 using Ephyta.ViewModel;
+using Helpers;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -355,8 +355,8 @@ namespace Ephyta.Controllers
                 body.Append("<p>Giá: <strong>" + proPrice + "</strong></p>");
                 body.Append("<p>Số lượng: <strong>" + quantity + "</strong></p>");
                 body.Append("<p>Tổng tiền: <strong>" + tongtien.ToString("N0") + "</strong></p>");
-                body.Append("<p>Hình ảnh: <img src='https://" + Request.Url?.Host + "/images/products/" + proImg + "?w=200' /></p>");
-                body.Append("<p>Link SP: https://" + Request.Url?.Host + proUrl + "</p>");
+                body.Append("<p>Hình ảnh: <img src='" + Request.Url?.GetLeftPart(UriPartial.Authority) + "/images/products/" + proImg + "?w=200' /></p>");
+                body.Append("<p>Link SP: " + Request.Url?.GetLeftPart(UriPartial.Authority) + proUrl + "</p>");
                 body.Append("<p>Họ và tên: " + name + "</p>");
                 body.Append("<p>Di động: " + mobile + "</p>");
                 body.Append("<p>Email: " + email + "</p>");
@@ -368,7 +368,7 @@ namespace Ephyta.Controllers
 
                 Task.Run(() =>
                 {
-                    HtmlHelpers.SendEmail("gmail", subject, body.ToString(), ConfigSite.Email, Email, Email, Password, "Đặt hàng Online - MELINKA", email, ConfigSite.Email);
+                    HtmlHelpers.SendEmail("gmail", subject, body.ToString(), ConfigSite.Email, Email, Email, Password, "Đặt hàng Online - EPHYTA", email, "maiph0978@gmail.com");
                 });
 
                 return true;

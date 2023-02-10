@@ -1,9 +1,5 @@
 ﻿using Ephyta.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Ephyta.ViewModel
 {
@@ -25,14 +21,24 @@ namespace Ephyta.ViewModel
         [Display(Name = "Mật khẩu"), Required(ErrorMessage = "Hãy nhập mật khẩu")]
         public string Password { get; set; }
     }
+    public class UpdateAdminModel
+    {
+        public int Id { get; set; }
+        [Display(Name = "Tên đăng nhập"), Required(ErrorMessage = "Hãy nhập tên đăng nhập")]
+        public string Username { get; set; }
+        [Display(Name = "Mật khẩu")]
+        public string Password { get; set; }
+        public RoleAdmin RoleAdmin { get; set; }
+        public bool Active { get; set; }
+    }
     public class InfoAdminViewModel
     {
-        public IEnumerable<Article> Articles { get; set; }
-        public IEnumerable<Banner> Banners { get; set; }
-        public IEnumerable<Contact> Contacts { get; set; }
-        public IEnumerable<Admin> Admins { get; set; }
-        public IEnumerable<Product> Products { get; set; }
-        public IEnumerable<Feedback> Feedbacks { get; set; }
+        public int Articles { get; set; }
+        public int Banners { get; set; }
+        public int Contacts { get; set; }
+        public int Admins { get; set; }
+        public int Products { get; set; }
+        public int Feedbacks { get; set; }
     }
 
     public class CodeDiscountViewModel
@@ -52,7 +58,7 @@ namespace Ephyta.ViewModel
         public string ToDate { get; set; }
         [Required]
         public int PageSize { get; set; }
-         public int Type { get; set; }
+        public int Type { get; set; }
         public int Status { get; set; }
         public int HSD { get; set; }
 

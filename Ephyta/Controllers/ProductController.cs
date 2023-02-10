@@ -1,24 +1,23 @@
-﻿using Helpers;
-using Ephyta.DAL;
+﻿using Ephyta.DAL;
+using Ephyta.Filters;
 using Ephyta.Models;
 using Ephyta.ViewModel;
+using Helpers;
 using PagedList;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Ephyta.Controllers
 {
-    [Authorize]
+    [Authorize, AdminRoleFilters]
     public class ProductController : Controller
     {
         // GET: Product
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         private IEnumerable<ProductCategory> ProductCategories => _unitOfWork.ProductCategoryRepository.Get();
+        private RoleAdmin Role => (RoleAdmin)Enum.Parse(typeof(RoleAdmin), RouteData.Values["Role"].ToString());
 
         #region ProductCategory
         [ChildActionOnly]
@@ -29,6 +28,10 @@ namespace Ephyta.Controllers
         }
         public ActionResult ProductCategory(string result = "")
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index", "Vcms");
+            }
             ViewBag.ArticleCat = result;
             ViewBag.RootCats =
                 new SelectList(
@@ -40,13 +43,18 @@ namespace Ephyta.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult ProductCategory(ProductCategory category)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index", "Vcms");
+            }
+
             if (ModelState.IsValid)
             {
                 var isPost = true;
                 var file = Request.Files["Image"];
 
                 var json = HtmlHelpers.UploadFile(file, "/images/productCategory/");
-                if(json != null)
+                if (json != null)
                 {
                     int status = json.GetType().GetProperty("status").GetValue(json, null);
                     if (status == 1)
@@ -105,6 +113,11 @@ namespace Ephyta.Controllers
         }
         public ActionResult UpdateCategory(int catId = 0)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index", "Vcms");
+            }
+
             var category = _unitOfWork.ProductCategoryRepository.GetById(catId);
             if (category == null)
             {
@@ -116,6 +129,11 @@ namespace Ephyta.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult UpdateCategory(ProductCategory category, FormCollection fc)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index", "Vcms");
+            }
+
             if (ModelState.IsValid)
             {
                 var isPost = true;
@@ -187,6 +205,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteCategory(int catId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var category = _unitOfWork.ProductCategoryRepository.GetById(catId);
             if (category == null)
             {
@@ -196,8 +219,14 @@ namespace Ephyta.Controllers
             _unitOfWork.Save();
             return true;
         }
+        [HttpPost]
         public bool UpdateProductCat(int sort = 1, bool active = false, bool home = false, int productCatId = 0)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return false;
+            }
+
             var productCat = _unitOfWork.ProductCategoryRepository.GetById(productCatId);
             if (productCat == null)
             {
@@ -267,7 +296,7 @@ namespace Ephyta.Controllers
                 if (isPost)
                 {
                     model.Product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
-                   
+
                     model.Product.ProductCategoryId = Convert.ToInt32(fc["CategoryId"]);
                     _unitOfWork.ProductRepository.Insert(model.Product);
                     _unitOfWork.Save();
@@ -380,6 +409,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteProduct(int productId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var product = _unitOfWork.ProductRepository.GetById(productId);
             if (product == null)
             {

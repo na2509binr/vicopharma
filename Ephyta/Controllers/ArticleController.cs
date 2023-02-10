@@ -1,24 +1,23 @@
-﻿using Helpers;
-using Ephyta.DAL;
+﻿using Ephyta.DAL;
+using Ephyta.Filters;
 using Ephyta.Models;
 using Ephyta.ViewModel;
+using Helpers;
 using PagedList;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Ephyta.Controllers
 {
-    [Authorize]
+    [Authorize, AdminRoleFilters]
     public class ArticleController : Controller
     {
         // GET: Article
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         private IEnumerable<ArticleCategory> ArticleCategories => _unitOfWork.ArticleCategoryRepository.Get();
+        private RoleAdmin Role => (RoleAdmin)Enum.Parse(typeof(RoleAdmin), RouteData.Values["Role"].ToString());
 
         #region ArticleCategory
         [ChildActionOnly]

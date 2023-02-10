@@ -20,6 +20,12 @@
         <table class="form_table">
             <tbody>
                 <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Role)</td>
+                    <td class="form_text">
+                        @Html.EnumDropDownListFor(model => model.Role, new { @class = "form_control" })
+                    </td>
+                </tr>
+                <tr>
                     <td class="form_name">@Html.LabelFor(model => model.Username)</td>
                     <td class="form_text">
                         @Html.EditorFor(model => model.Username)

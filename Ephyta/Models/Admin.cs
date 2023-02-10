@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Ephyta.Models
 {
@@ -17,10 +13,17 @@ namespace Ephyta.Models
         [Display(Name = "Hoạt động", Description = "Hoạt động")]
         public bool Active { get; set; }
         [Display(Name = "Phân quyền")]
-        public int Role { get; set; }
+        public RoleAdmin Role { get; set; }
         public Admin()
         {
             Active = true;
         }
+    }
+
+    public enum RoleAdmin
+    {
+        Admin,
+        Editor,
+        Copywriter
     }
 }

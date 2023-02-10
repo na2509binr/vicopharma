@@ -1,4 +1,10 @@
-﻿using PagedList;
+﻿using Ephyta.DAL;
+using Ephyta.Filters;
+using Ephyta.Models;
+using Ephyta.ViewModel;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using PagedList;
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -6,25 +12,22 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using Ephyta.DAL;
-//using DucAnSport.Filters;
-using Ephyta.Models;
-using Ephyta.ViewModel;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
 
 namespace Ephyta.Controllers
 {
-    [Authorize]
+    [Authorize, AdminRoleFilters]
     public class OrderController : Controller
     {
         // GET: Order
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private RoleAdmin Role => (RoleAdmin)Enum.Parse(typeof(RoleAdmin), RouteData.Values["Role"].ToString());
 
         public ActionResult ListOrder(int? page, int? cityId, string madonhang, string fromdate, string todate, string customerName, string customerEmail, string customerMobile, int status = -1, int payment = 0, int pageSize = 50)
         {
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToActionPermanent("Index", "Vcms");
+            }
 
             var pageNumber = page ?? 1;
             var orders = _unitOfWork.OrderRepository.GetQuery(orderBy: q => q.OrderByDescending(a => a.Id));
@@ -98,7 +101,10 @@ namespace Ephyta.Controllers
         }
         public PartialViewResult LoadOrder(int orderId = 0)
         {
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return null;
+            }
 
             var order = _unitOfWork.OrderRepository.GetById(orderId);
 
@@ -161,10 +167,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool UpdateOrder(string notice, int payment = 0, int status = 0, int orderId = 0)
         {
-            //if (Role == RoleAdmin.Copywiter)
-            //{
-            //    return false;
-            //}
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return false;
+            }
 
             var order = _unitOfWork.OrderRepository.GetById(orderId);
             if (order == null)
@@ -194,17 +200,17 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool UpdateOrderNotice(string notice, int thanhtoantruoc = 0, int ship = 0, int orderId = 0)
         {
-            //if (Role == RoleAdmin.Copywiter)
-            //{
-            //    return false;
-            //}
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return false;
+            }
 
             var order = _unitOfWork.OrderRepository.GetById(orderId);
             if (order == null)
             {
                 return false;
             }
-            
+
             order.ShipFee = ship;
             order.ThanhToanTruoc = thanhtoantruoc;
             order.CustomerInfo.Body = notice;
@@ -214,7 +220,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteOrder(int orderId = 0)
         {
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return false;
+            }
 
             var order = _unitOfWork.OrderRepository.GetById(orderId);
             if (order == null)
@@ -229,7 +238,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool ParmanentDeleteOrder(int orderId = 0)
         {
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return false;
+            }
 
             var order = _unitOfWork.OrderRepository.GetById(orderId);
             if (order == null || order.Status != 3)

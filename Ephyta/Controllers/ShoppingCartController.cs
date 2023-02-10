@@ -13,7 +13,6 @@ namespace Ephyta.Controllers
     [RoutePrefix("gio-hang")]
     public class ShoppingCartController : BaseController
     {
-
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         private static string Email => WebConfigurationManager.AppSettings["email"];
         private static string Password => WebConfigurationManager.AppSettings["password"];

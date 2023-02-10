@@ -1,30 +1,30 @@
-﻿using Helpers;
-using Ephyta.DAL;
+﻿using Ephyta.DAL;
+using Ephyta.Filters;
 using Ephyta.Models;
 using Ephyta.ViewModel;
+using Helpers;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using PagedList;
 using System;
+using System.Data;
+using System.Data.Entity;
+using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using PagedList;
-using System.Collections.Generic;
-using System.Data;
-using OfficeOpenXml;
-using System.Globalization;
-using System.Data.Entity;
-using OfficeOpenXml.Style;
-using System.Drawing;
 
 namespace Ephyta.Controllers
 {
-
-    [Authorize]
+    [Authorize, AdminRoleFilters]
     public class VcmsController : Controller
     {
         // GET: Vcms
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
-
+        private RoleAdmin Role => (RoleAdmin)Enum.Parse(typeof(RoleAdmin), RouteData.Values["Role"].ToString());
 
         #region Admin
 
@@ -32,12 +32,12 @@ namespace Ephyta.Controllers
         {
             var model = new InfoAdminViewModel
             {
-                Admins = _unitOfWork.AdminRepository.Get(),
-                Articles = _unitOfWork.ArticleRepository.GetQuery(),
-                Banners = _unitOfWork.BannerRepository.Get(),
-                Contacts = _unitOfWork.ContactRepository.GetQuery(),
-                Products = _unitOfWork.ProductRepository.GetQuery(),
-                Feedbacks = _unitOfWork.FeedbackRepository.Get()
+                Admins = _unitOfWork.AdminRepository.GetQuery().Count(),
+                Articles = _unitOfWork.ArticleRepository.GetQuery().Count(),
+                Banners = _unitOfWork.BannerRepository.GetQuery().Count(),
+                Contacts = _unitOfWork.ContactRepository.GetQuery().Count(),
+                Products = _unitOfWork.ProductRepository.GetQuery().Count(),
+                Feedbacks = _unitOfWork.FeedbackRepository.GetQuery().Count()
             };
             return View(model);
         }
@@ -50,7 +50,7 @@ namespace Ephyta.Controllers
         public ActionResult CreateAdmin(string result = "")
         {
             ViewBag.Result = result;
-            if (!User.Identity.Name.Equals("admin"))
+            if (Role != RoleAdmin.Admin)
             {
                 return RedirectToAction("Index");
             }
@@ -59,10 +59,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public ActionResult CreateAdmin(Admin model)
         {
-            //if (!User.Identity.Name.Equals("admin"))
-            //{
-            //    return RedirectToAction("Index");
-            //}
+            if (Role != RoleAdmin.Admin)
+            {
+                return RedirectToAction("Index");
+            }
             if (ModelState.IsValid)
             {
                 var admin =
@@ -83,24 +83,33 @@ namespace Ephyta.Controllers
         }
         public ActionResult EditAdmin(int adminId = 0)
         {
-            //if (!User.Identity.Name.Equals("admin"))
-            //{
-            //    return RedirectToAction("Index");
-            //}
+            if (Role != RoleAdmin.Admin)
+            {
+                return RedirectToAction("Index");
+            }
             var admin = _unitOfWork.AdminRepository.GetById(adminId);
             if (admin == null)
             {
                 return RedirectToAction("CreateAdmin");
             }
-            return View(admin);
+
+            var model = new UpdateAdminModel
+            {
+                Username = admin.Username,
+                Active = admin.Active,
+                Id = admin.Id,
+                RoleAdmin = admin.Role
+            };
+
+            return View(model);
         }
         [HttpPost]
-        public ActionResult EditAdmin(Admin model)
+        public ActionResult EditAdmin(UpdateAdminModel model)
         {
-            //if (!User.Identity.Name.Equals("admin"))
-            //{
-            //    return RedirectToAction("Index");
-            //}
+            if (Role != RoleAdmin.Admin)
+            {
+                return RedirectToAction("Index");
+            }
             if (ModelState.IsValid)
             {
                 var admin = _unitOfWork.AdminRepository.GetQuery(a => a.Username.Equals(model.Username)).SingleOrDefault();
@@ -108,7 +117,18 @@ namespace Ephyta.Controllers
                 {
                     return RedirectToAction("CreateAdmin");
                 }
-                admin.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+
+                if (model.Username != "admin")
+                {
+                    admin.Active = model.Active;
+                    admin.Role = model.RoleAdmin;
+                    admin.Username = model.Username;
+                }
+
+                if (model.Password != null)
+                {
+                    admin.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+                }
                 _unitOfWork.Save();
                 return RedirectToAction("CreateAdmin", new { result = "update" });
             }
@@ -116,7 +136,7 @@ namespace Ephyta.Controllers
         }
         public bool DeleteAdmin(string username)
         {
-            if (!User.Identity.Name.Equals("admin"))
+            if (Role != RoleAdmin.Admin)
             {
                 return false;
             }
@@ -160,12 +180,12 @@ namespace Ephyta.Controllers
         #endregion
 
         #region Login
-        [AllowAnonymous]
+        [AllowAnonymous, OverrideActionFilters]
         public ActionResult Login()
         {
             return View();
         }
-        [AllowAnonymous]
+        [AllowAnonymous, OverrideActionFilters]
         [HttpPost]
         public ActionResult Login(AdminLoginModel model, string returnUrl)
         {
@@ -175,8 +195,15 @@ namespace Ephyta.Controllers
 
                 if (admin != null && HtmlHelpers.VerifyHash(model.Password, "SHA256", admin.Password))
                 {
-                    //Session["Role"] = admin.Role;
-                    FormsAuthentication.SetAuthCookie(model.Username, true);
+                    var ticket = new FormsAuthenticationTicket(1, model.Username.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                        admin.Role.ToString(),
+                        FormsAuthentication.FormsCookiePath);
+
+                    var encTicket = FormsAuthentication.Encrypt(ticket);
+                    // Create the cookie.
+                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { SameSite = SameSiteMode.Lax, Secure = true });
+
+                    //FormsAuthentication.SetAuthCookie(model.Username, true);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
@@ -286,15 +313,20 @@ namespace Ephyta.Controllers
         #region City
         public ActionResult City()
         {
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult City(City model)
         {
-
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
             if (ModelState.IsValid)
             {
                 _unitOfWork.CityRepository.Insert(model);
@@ -313,6 +345,10 @@ namespace Ephyta.Controllers
 
         public ActionResult EditCity(int cityId = 0)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
 
             var city = _unitOfWork.CityRepository.GetById(cityId);
             if (city == null)
@@ -325,8 +361,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public ActionResult EditCity(City model)
         {
-
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
             if (ModelState.IsValid)
             {
                 _unitOfWork.CityRepository.Update(model);
@@ -339,6 +377,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteCity(int cityId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
 
             var city = _unitOfWork.CityRepository.GetById(cityId);
             if (city == null)
@@ -356,6 +398,10 @@ namespace Ephyta.Controllers
         #region District
         public ActionResult AddOrUpdateDistrict(int? districtId, int cityId, int result = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return RedirectToAction("Index");
+            }
 
             var model = new District
             {
@@ -372,6 +418,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public ActionResult AddOrUpdateDistrict(District model)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 _unitOfWork.DistrictRepository.Insert(model);
@@ -385,6 +436,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteDistrict(int districtId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var district = _unitOfWork.DistrictRepository.GetById(districtId);
             if (district == null)
             {
@@ -407,11 +463,12 @@ namespace Ephyta.Controllers
         //    return PartialView("ListCodeDiscount", code);
         //}
 
-
-
         public ActionResult ListCodeDiscount(int? page, string name, string fromdate, string todate, int pageSize = 50, int status = 3, int type = 3, int hsd = 0)
         {
-
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
 
             var pageNumber = page ?? 1;
             //const int pageSize = 15;
@@ -452,7 +509,7 @@ namespace Ephyta.Controllers
             {
                 code = code.Where(a => a.ExpDay != null && a.ExpDay < DateTime.Now);
             }
-            else if(hsd == 2)
+            else if (hsd == 2)
             {
                 code = code.Where(a => a.ExpDay == null || a.ExpDay > DateTime.Now);
 
@@ -477,9 +534,12 @@ namespace Ephyta.Controllers
             return View(model);
         }
 
-
         public ActionResult CreateCodeAll(string result = "")
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
 
             var model = new CodeDiscountViewModel
             {
@@ -492,6 +552,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public ActionResult CreateCodeAll(CodeDiscountViewModel model, FormCollection fc)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 var isPost = true;
@@ -543,10 +608,13 @@ namespace Ephyta.Controllers
             return View(model);
         }
 
-
-
         public ActionResult CodeDiscount(string result = "")
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
+
             string randomStr = "";
             string[] myIntArray = new string[12];
             int x;
@@ -578,6 +646,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public ActionResult CodeDiscount(CodeDiscountViewModel model)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 var isPost = true;
@@ -604,10 +677,10 @@ namespace Ephyta.Controllers
 
         public ActionResult EditCodeDiscount(int codeId = 0)
         {
-            //if (!User.Identity.Name.Equals("admin"))
-            //{
-            //    return RedirectToAction("Index");
-            //}
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
             var code = _unitOfWork.DiscountCodeRepository.GetById(codeId);
             if (code == null)
             {
@@ -624,6 +697,10 @@ namespace Ephyta.Controllers
         [HttpPost]
         public ActionResult EditCodeDiscount(CodeDiscountViewModel model)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToAction("Index");
+            }
 
             if (ModelState.IsValid)
             {
@@ -650,6 +727,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteCodeDiscount(int codeId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var code = _unitOfWork.DiscountCodeRepository.GetById(codeId);
             if (code == null)
             {
@@ -660,7 +742,6 @@ namespace Ephyta.Controllers
             return true;
         }
         #endregion
-
 
         public void ExportCodeDiscount(int? cityId, string fromdate, string todate, int status, int type, int payment = 0)
         {
@@ -763,7 +844,6 @@ namespace Ephyta.Controllers
                 Response.BinaryWrite(pck.GetAsByteArray());
             }
         }
-
 
         public JsonResult GetTags(string term)
         {

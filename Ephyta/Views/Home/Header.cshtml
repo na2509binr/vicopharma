@@ -3,7 +3,6 @@
 
 @{
     var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
-    var i = 1;
 }
 
 <div class="top-header">
@@ -22,14 +21,13 @@
         </div>
     </div>
 </div>
-
 <header class="header">
     <div class="container">
         <div class="header-center">
             <a href="/">
-                @if(config.Image != null)
-                { 
-                    <img src="@Path.Combine("/images/configs/",config.Image)" class="header-logo"/>
+                @if (config.Image != null)
+                {
+                    <img src="@Path.Combine("/images/configs/",config.Image)" class="header-logo" />
                 }
             </a>
             <form action="@Url.Action("Search")" method="get" class="header-search">
@@ -91,7 +89,9 @@
                             {
                                 <ul class="ul-block menu-child">
                                     <li class="megaMenu_title">
-                                        @{ i = 1; }
+                                        @{
+                                            var i = 1;
+                                        }
                                         @foreach (var child in Model.ProductCategories.Where(l => l.ParentId == category.Id))
                                         {
                                             <ul class="ul-block">
@@ -239,4 +239,6 @@
             </ul>
         </div>
     </div>
+    @*<img src="~/Content/images/topleft.png" alt="left" class="christmas-left"/>
+    <img src="~/Content/images/topright.png" alt="right" class="christmas-right"/>*@
 </header>

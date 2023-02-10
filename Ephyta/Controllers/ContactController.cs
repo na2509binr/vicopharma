@@ -1,22 +1,29 @@
-﻿using Helpers;
-using Ephyta.DAL;
+﻿using Ephyta.DAL;
+using Ephyta.Filters;
 using Ephyta.Models;
 using Ephyta.ViewModel;
+using Helpers;
 using PagedList;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace Ephyta.Controllers
 {
-    [Authorize]
+    [Authorize, AdminRoleFilters]
     public class ContactController : Controller
     {
         // GET: Contact
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private RoleAdmin Role => (RoleAdmin)Enum.Parse(typeof(RoleAdmin), RouteData.Values["Role"].ToString());
 
         #region Contact
         public ActionResult ListContact(int? page, string name)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToActionPermanent("Index", "Vcms");
+            }
             var pageNumber = page ?? 1;
             const int pageSize = 15;
             var contact = _unitOfWork.ContactRepository.Get(orderBy: l => l.OrderByDescending(a => a.Id));
@@ -34,6 +41,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteContact(int contactId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var contact = _unitOfWork.ContactRepository.GetById(contactId);
             if (contact == null)
             {
@@ -205,6 +217,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteFeedback(int feedbackId = 0)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return false;
+            }
+
             var feedback = _unitOfWork.FeedbackRepository.GetById(feedbackId);
             if (feedback == null)
             {
@@ -216,10 +233,14 @@ namespace Ephyta.Controllers
         }
         #endregion
 
-
         #region Register
         public ActionResult ListRegister(int? page, string phone)
         {
+            if (Role == RoleAdmin.Copywriter)
+            {
+                return RedirectToActionPermanent("Index", "Vcms");
+            }
+
             var pageNumber = page ?? 1;
             const int pageSize = 15;
             var contact = _unitOfWork.RegisterRepository.Get(orderBy: l => l.OrderByDescending(a => a.Id));
@@ -237,6 +258,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteRegister(int contactId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var contact = _unitOfWork.RegisterRepository.GetById(contactId);
             if (contact == null)
             {
@@ -247,6 +273,7 @@ namespace Ephyta.Controllers
             return true;
         }
         #endregion
+
 
         protected override void Dispose(bool disposing)
         {

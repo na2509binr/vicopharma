@@ -451,19 +451,25 @@ namespace Ephyta.Controllers
             };
             return PartialView(model);
         }
-        //[ChildActionOnly]
-        [Route("reviews/{url}")]
-        public PartialViewResult FormComment(string url)
-        {
-            var product = _unitOfWork.ProductRepository.GetQuery(a => a.Url == url).FirstOrDefault();
 
+        [Route("reviews/{url}")]
+        public ActionResult FormComment(string url)
+        {
+            if (!Request.IsAjaxRequest())
+            {
+                return RedirectToActionPermanent("Index");
+            }
+            var product = _unitOfWork.ProductRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
+            if (product == null)
+            {
+                return null;
+            }
             var model = new CommentFormViewModel
             {
                 Product = product,
                 Review = new Review()
             };
             return PartialView(model);
-            //return PartialView();
         }
 
         [HttpPost, ValidateAntiForgeryToken]

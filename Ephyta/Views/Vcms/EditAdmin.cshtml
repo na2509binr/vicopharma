@@ -1,4 +1,4 @@
-﻿@model Ephyta.Models.Admin
+﻿@model Ephyta.ViewModel.UpdateAdminModel
 @{
     ViewBag.Title = "Cập nhật quản trị";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -11,6 +11,12 @@
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
         <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.RoleAdmin)</td>
+                <td class="form_text">
+                    @Html.EnumDropDownListFor(model => model.RoleAdmin, new { @class = "form_control" })
+                </td>
+            </tr>
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Username)</td>
                 <td class="form_text">@Html.EditorFor(model => model.Username)</td>
@@ -26,7 +32,7 @@
             <tr>
                 <td class="form_name"></td>
                 <td class="form_text">
-                    <input type="submit" class="btn quick-link" value="Cập nhật" />
+                    <input type="submit" class="btn quick-link" value="Cập nhật"/>
                 </td>
             </tr>
         </table>

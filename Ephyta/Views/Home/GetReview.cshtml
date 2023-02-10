@@ -2,10 +2,8 @@
 
 @model Ephyta.ViewModel.GetReviewViewModel
 @using PagedList.Mvc
-
 @{
     var img = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
-
     Layout = null;
 }
 @foreach (var review in Model.Reviews)
@@ -16,11 +14,11 @@
                 <div class="avata">
                     @if (review.ImageAvata != null)
                     {
-                        <img src="@Path.Combine("/images/reviews/", review.ImageAvata.Split(',')[0])" class="" />
+                        <img src="@Path.Combine("/images/reviews/", review.ImageAvata.Split(',')[0])" class="" alt="@review.Name" />
                     }
                     else
                     {
-                        <img src="~/Content/images/no-avata.png" class="" />
+                        <img src="~/Content/images/no-avata.png" class="" alt="No Picture"/>
 
                     }
                 </div>

@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Ephyta.Controllers
 {
+    [Authorize]
     public class UploaderController : Controller
     {
         private const int ThumbSize = 160;

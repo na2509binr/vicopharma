@@ -317,7 +317,7 @@
                     {
                         <div class="product-review-item">
                             <div class="item">
-                                @if (item.VideoLink != null && item.VideoLink != "")
+                                @if (!string.IsNullOrEmpty(item.VideoLink))
                                 {
                                     <div class="embed-responsive embed-responsive-16by9 video-item">
                                         @Html.ShowYoutubeLazy(item.VideoLink, 600, 400)

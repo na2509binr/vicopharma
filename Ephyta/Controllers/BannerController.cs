@@ -1,20 +1,22 @@
-﻿using Helpers;
-using Ephyta.DAL;
+﻿using Ephyta.DAL;
+using Ephyta.Filters;
+using Ephyta.Models;
 using Ephyta.ViewModel;
+using Helpers;
 using PagedList;
 using System;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using Ephyta.Models;
 
 namespace Ephyta.Controllers
 {
-    [Authorize]
+    [Authorize, AdminRoleFilters]
     public class BannerController : Controller
     {
         // GET: Banner
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private RoleAdmin Role => (RoleAdmin)Enum.Parse(typeof(RoleAdmin), RouteData.Values["Role"].ToString());
+
         #region Banner
         public ActionResult ListBanner(int? page, int groupId = 0, string result = "")
         {
@@ -169,6 +171,11 @@ namespace Ephyta.Controllers
         [HttpPost]
         public bool DeleteBanner(int bannerId = 0)
         {
+            if (Role != RoleAdmin.Admin)
+            {
+                return false;
+            }
+
             var banner = _unitOfWork.BannerRepository.GetById(bannerId);
             if (banner == null)
             {
@@ -180,6 +187,7 @@ namespace Ephyta.Controllers
             return true;
         }
         #endregion
+
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

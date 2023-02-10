@@ -9,7 +9,6 @@ using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Ephyta.Controllers
@@ -43,7 +42,7 @@ namespace Ephyta.Controllers
             {
                 //SelectProducts = new SelectList(Products.Where(a => a.Active), "Id", "Name"),
                 Products = Products,
-                ReviewKols = reviewKols.ToPagedList(pageNumber, pageSize),            
+                ReviewKols = reviewKols.ToPagedList(pageNumber, pageSize),
                 Name = name,
             };
             return View(model);
@@ -51,7 +50,7 @@ namespace Ephyta.Controllers
 
         public ActionResult ReviewKol()
         {
-           
+
             var model = new InsertReviewKolViewModel
             {
                 Products = Products,
@@ -140,13 +139,13 @@ namespace Ephyta.Controllers
         }
         #endregion
 
-        public ActionResult ListReviewFalse(int? page, int? productId, string name, string result = "",  string sort = "date-desc")
+        public ActionResult ListReviewFalse(int? page, int? productId, string name, string result = "", string sort = "date-desc")
         {
             ViewBag.Result = result;
             var pageNumber = page ?? 1;
             const int pageSize = 15;
-            var reviews = _unitOfWork.ReviewRepository.GetQuery( l => l.Active == false, l => l.OrderByDescending(a => a.CreateDate)).AsNoTracking();
-            if(productId > 0)
+            var reviews = _unitOfWork.ReviewRepository.GetQuery(l => l.Active == false, l => l.OrderByDescending(a => a.CreateDate)).AsNoTracking();
+            if (productId > 0)
             {
                 reviews = reviews.Where(r => r.ProductId == productId);
             }
@@ -167,7 +166,7 @@ namespace Ephyta.Controllers
             ViewBag.Result = result;
             var pageNumber = page ?? 1;
             const int pageSize = 15;
-            var reviews = _unitOfWork.ReviewRepository.GetQuery(l => l.Active , l => l.OrderByDescending(a => a.CreateDate)).AsNoTracking();
+            var reviews = _unitOfWork.ReviewRepository.GetQuery(l => l.Active, l => l.OrderByDescending(a => a.CreateDate)).AsNoTracking();
             if (productId > 0)
             {
                 reviews = reviews.Where(r => r.ProductId == productId);
@@ -190,7 +189,7 @@ namespace Ephyta.Controllers
             var model = new InsertReviewViewModel
             {
                 Products = Products,
-                Review = new Review { Active = true,StarReview = StarReview.Five}
+                Review = new Review { Active = true, StarReview = StarReview.Five }
             };
             return View(model);
         }
@@ -276,6 +275,6 @@ namespace Ephyta.Controllers
         }
 
 
-      
+
     }
 }

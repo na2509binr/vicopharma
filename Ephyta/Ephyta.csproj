@@ -265,6 +265,10 @@
     <Compile Include="Migrations\202211280455476_StringLength-Product.designer.cs">
       <DependentUpon>202211280455476_StringLength-Product.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202302130913387_TikTok-config.cs" />
+    <Compile Include="Migrations\202302130913387_TikTok-config.designer.cs">
+      <DependentUpon>202302130913387_TikTok-config.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Article.cs" />
@@ -808,6 +812,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202211280455476_StringLength-Product.resx">
       <DependentUpon>202211280455476_StringLength-Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302130913387_TikTok-config.resx">
+      <DependentUpon>202302130913387_TikTok-config.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

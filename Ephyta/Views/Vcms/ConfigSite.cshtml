@@ -40,16 +40,16 @@
                 </tr>
             }
             @*<tr>
-                <td class="form_name">@Html.LabelFor(model => model.ImageFooter)</td>
-                <td class="form_text">@Html.TextBoxFor(model => model.ImageFooter, new { type = "file" }) <span class="red-warring">Kích thươc: 160px - 62px</span></td>
-            </tr>
-            @if (Model.ImageFooter != null)
-            {
-                <tr>
-                    <td class="form_name"></td>
-                    <td class="form_text"><img class="img-border" style="background: #000;" src="@Path.Combine("/images/configs/", Model.ImageFooter)?w=150" /></td>
+                    <td class="form_name">@Html.LabelFor(model => model.ImageFooter)</td>
+                    <td class="form_text">@Html.TextBoxFor(model => model.ImageFooter, new { type = "file" }) <span class="red-warring">Kích thươc: 160px - 62px</span></td>
                 </tr>
-            }*@
+                @if (Model.ImageFooter != null)
+                {
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text"><img class="img-border" style="background: #000;" src="@Path.Combine("/images/configs/", Model.ImageFooter)?w=150" /></td>
+                    </tr>
+                }*@
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.VideoIntro)</td>
                 <td class="form_text">@Html.EditorFor(model => model.VideoIntro)</td>
@@ -85,6 +85,10 @@
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Twitter)</td>
                 <td class="form_text">@Html.EditorFor(model => model.Twitter)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.TikTok)</td>
+                <td class="form_text">@Html.EditorFor(model => model.TikTok)</td>
             </tr>
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Instagram)</td>

@@ -40,6 +40,10 @@
     @Html.Action("Header", "Home")
     @RenderBody()
     @Html.Action("Footer", "Home")
+    <div id="popup-banner" style="display: none;">
+        @Html.Action("FormRegister","Home")
+    </div>
+
     @*<div class="snow-container">
         <div class="snow foreground"></div>
         <div class="snow foreground layered"></div>

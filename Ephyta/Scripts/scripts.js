@@ -1,4 +1,20 @@
-﻿function IndexJs() {
+﻿window.addEventListener("DOMContentLoaded", function () {
+    var popUp = sessionStorage.getItem("popup");
+    if (popUp === null || popUp === "") {
+        setTimeout(function () {
+            $.fancybox.open({
+                src: "#popup-banner",
+                touch: false
+            });
+            sessionStorage.setItem("popup", "show");
+        },
+         1000);
+    }
+
+})
+
+
+function IndexJs() {
     $(".banner-list").slick({
         dots: true,
         infinite: true,

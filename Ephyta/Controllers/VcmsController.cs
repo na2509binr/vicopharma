@@ -256,6 +256,7 @@ namespace Ephyta.Controllers
                 config.InfoFooter = model.InfoFooter;
                 config.UrlMessenger = model.UrlMessenger;
                 config.VideoIntro = model.VideoIntro;
+                config.TikTok = model.TikTok;
                 var file = Request.Files["Image"];
                 if (file != null && file.ContentLength > 0)
                 {

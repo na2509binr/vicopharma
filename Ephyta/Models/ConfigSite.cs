@@ -16,6 +16,9 @@ namespace Ephyta.Models
         [StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), Display(Name = "Đường dẫn Linkedin"),
          Url(ErrorMessage = "Đường dẫn không chính xác"), UIHint("TextBox")]
         public string Linkedin { get; set; }
+        [StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), Display(Name = "Đường dẫn TikTok"),
+   Url(ErrorMessage = "Đường dẫn không chính xác"), UIHint("TextBox")]
+        public string TikTok { get; set; }
         [StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), Display(Name = "Đường dẫn Instagram"),
          Url(ErrorMessage = "Đường dẫn không chính xác"), UIHint("TextBox")]
         public string Instagram { get; set; }

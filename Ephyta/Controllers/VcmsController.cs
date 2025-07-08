@@ -9,6 +9,7 @@ using PagedList;
 using System;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -337,11 +338,24 @@ namespace Ephyta.Controllers
             return View(model);
         }
 
-        [ChildActionOnly]
-        public ActionResult ListCity()
+
+        public ActionResult ListCityPartial(int? page, int groupId = 0, string result = "")
         {
+            ViewBag.Banner = result;
+            var pageNumber = page ?? 1;
+            const int pageSize = 10;
+            var wards = _unitOfWork.WardRepository.Get();
             var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.Sort));
-            return PartialView("ListCityPartial", cities);
+            var groupedWards = wards
+            .GroupBy(w => w.CityId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+            var model = new CityWardsViewModel
+            {
+                Cities = cities.ToPagedList(pageNumber, pageSize),
+                Wards = wards.ToList()
+            };
+            return View(model);
         }
 
         public ActionResult EditCity(int cityId = 0)

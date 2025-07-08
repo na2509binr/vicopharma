@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using Ephyta.DAL;
+using Ephyta.Models;
+using System.Linq;
 using System.Web.Mvc;
-using Ephyta.DAL;
 
 namespace Ephyta.Controllers
 {
@@ -10,7 +11,7 @@ namespace Ephyta.Controllers
 
         public SelectList CitySelectList => new SelectList(_unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)), "Id", "Name");
         public SelectList DistrictSelectList(int? cityId) => new SelectList(_unitOfWork.DistrictRepository.Get(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
-        public SelectList WardSelectList(int? districtId) => new SelectList(_unitOfWork.WardRepository.Get(a => a.Active && a.DistrictId == districtId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
+        public SelectList WardSelectList(int? cityId) => new SelectList(_unitOfWork.WardRepository.Get(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
 
         public JsonResult GetCities(string city = "")
         {
@@ -25,16 +26,16 @@ namespace Ephyta.Controllers
                 .GetQuery(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
             return Json(districts, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetWard(int? districtId)
+        public JsonResult GetWard(int? cityId)
         {
             var wards = _unitOfWork.WardRepository
-                .GetQuery(a => a.Active && a.DistrictId == districtId, q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
+                .GetQuery(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
             return Json(wards, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetShipFee(int id = 0)
         {
-            var price = _unitOfWork.CityRepository.GetById(id)?.ShipFee;
+            var price = _unitOfWork.WardRepository.GetById(id)?.ShipFee;
             return Json(price, JsonRequestBehavior.AllowGet);
         }
 

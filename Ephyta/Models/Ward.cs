@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ephyta.Models
@@ -14,8 +15,8 @@ namespace Ephyta.Models
         public bool Active { get; set; }
         [StringLength(20)]
         public string Prefix { get; set; }
-
-        public int DistrictId { get; set; }
-        public virtual District District { get; set; }
+        public string ShipFee { get; set; }
+        public int CityId { get; set; }
+        public virtual City City { get; set; }
     }
 }

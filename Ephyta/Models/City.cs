@@ -17,8 +17,5 @@ namespace Ephyta.Models
         public bool Active { get; set; }
         [StringLength(20)]
         public string Prefix { get; set; }
-        [Display(Name = "Phí Ship")]
-        public int ShipFee { get; set; }
-        public virtual ICollection<District> Districts { get; set; }
     }
 }

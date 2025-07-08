@@ -209,65 +209,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202208260352492_InitalCreate.cs" />
-    <Compile Include="Migrations\202208260352492_InitalCreate.designer.cs">
-      <DependentUpon>202208260352492_InitalCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208260508227_update-CreateDate.cs" />
-    <Compile Include="Migrations\202208260508227_update-CreateDate.designer.cs">
-      <DependentUpon>202208260508227_update-CreateDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208270214344_Update-Config-Article.cs" />
-    <Compile Include="Migrations\202208270214344_Update-Config-Article.designer.cs">
-      <DependentUpon>202208270214344_Update-Config-Article.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208270254559_Create-DB_Register.cs" />
-    <Compile Include="Migrations\202208270254559_Create-DB_Register.designer.cs">
-      <DependentUpon>202208270254559_Create-DB_Register.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208270302050_fix-Register_Product.cs" />
-    <Compile Include="Migrations\202208270302050_fix-Register_Product.designer.cs">
-      <DependentUpon>202208270302050_fix-Register_Product.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208281630335_Create-Review.cs" />
-    <Compile Include="Migrations\202208281630335_Create-Review.designer.cs">
-      <DependentUpon>202208281630335_Create-Review.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208281722379_All-ShoppingCart.cs" />
-    <Compile Include="Migrations\202208281722379_All-ShoppingCart.designer.cs">
-      <DependentUpon>202208281722379_All-ShoppingCart.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208290138225_update-StarReview.cs" />
-    <Compile Include="Migrations\202208290138225_update-StarReview.designer.cs">
-      <DependentUpon>202208290138225_update-StarReview.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202208300657141_Create-ReviewKols.cs" />
-    <Compile Include="Migrations\202208300657141_Create-ReviewKols.designer.cs">
-      <DependentUpon>202208300657141_Create-ReviewKols.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202209040419088_Create-DiscountCode.cs" />
-    <Compile Include="Migrations\202209040419088_Create-DiscountCode.designer.cs">
-      <DependentUpon>202209040419088_Create-DiscountCode.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202209050129473_update-DiscountCode.cs" />
-    <Compile Include="Migrations\202209050129473_update-DiscountCode.designer.cs">
-      <DependentUpon>202209050129473_update-DiscountCode.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202209050715260_Fix-tableOrder.cs" />
-    <Compile Include="Migrations\202209050715260_Fix-tableOrder.designer.cs">
-      <DependentUpon>202209050715260_Fix-tableOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202209060506066_Code-ExpDay.cs" />
-    <Compile Include="Migrations\202209060506066_Code-ExpDay.designer.cs">
-      <DependentUpon>202209060506066_Code-ExpDay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202211280455476_StringLength-Product.cs" />
-    <Compile Include="Migrations\202211280455476_StringLength-Product.designer.cs">
-      <DependentUpon>202211280455476_StringLength-Product.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202302130913387_TikTok-config.cs" />
-    <Compile Include="Migrations\202302130913387_TikTok-config.designer.cs">
-      <DependentUpon>202302130913387_TikTok-config.cs</DependentUpon>
+    <Compile Include="Migrations\202507081056037_CleanMigration.cs" />
+    <Compile Include="Migrations\202507081056037_CleanMigration.Designer.cs">
+      <DependentUpon>202507081056037_CleanMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -462,6 +406,7 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="db.config" />
     <None Include="Properties\PublishProfiles\ephyta.vn 45.217.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -771,50 +716,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202208260352492_InitalCreate.resx">
-      <DependentUpon>202208260352492_InitalCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208260508227_update-CreateDate.resx">
-      <DependentUpon>202208260508227_update-CreateDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208270214344_Update-Config-Article.resx">
-      <DependentUpon>202208270214344_Update-Config-Article.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208270254559_Create-DB_Register.resx">
-      <DependentUpon>202208270254559_Create-DB_Register.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208270302050_fix-Register_Product.resx">
-      <DependentUpon>202208270302050_fix-Register_Product.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208281630335_Create-Review.resx">
-      <DependentUpon>202208281630335_Create-Review.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208281722379_All-ShoppingCart.resx">
-      <DependentUpon>202208281722379_All-ShoppingCart.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208290138225_update-StarReview.resx">
-      <DependentUpon>202208290138225_update-StarReview.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202208300657141_Create-ReviewKols.resx">
-      <DependentUpon>202208300657141_Create-ReviewKols.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202209040419088_Create-DiscountCode.resx">
-      <DependentUpon>202209040419088_Create-DiscountCode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202209050129473_update-DiscountCode.resx">
-      <DependentUpon>202209050129473_update-DiscountCode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202209050715260_Fix-tableOrder.resx">
-      <DependentUpon>202209050715260_Fix-tableOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202209060506066_Code-ExpDay.resx">
-      <DependentUpon>202209060506066_Code-ExpDay.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202211280455476_StringLength-Product.resx">
-      <DependentUpon>202211280455476_StringLength-Product.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202302130913387_TikTok-config.resx">
-      <DependentUpon>202302130913387_TikTok-config.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202507081056037_CleanMigration.resx">
+      <DependentUpon>202507081056037_CleanMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

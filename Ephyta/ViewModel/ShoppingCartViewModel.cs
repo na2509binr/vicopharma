@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Ephyta.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
-using Ephyta.Models;
 
 namespace Ephyta.ViewModel
 {
@@ -113,5 +114,20 @@ namespace Ephyta.ViewModel
         public List<Cart> Carts { get; set; }
         public decimal TotalMoney { get; set; }
         public int Count { get; set; }
+    }
+
+    public class CityWardsViewModel
+    {
+        public PagedList.IPagedList<City> Cities { get; set; }
+        //public IEnumerable<City> Cities { get; set; }
+        //public IEnumerable<Ward> Wards { get; set; }
+        //public Dictionary<int, List<Ward>> GroupedWards { get; set; }
+
+        public List<Ward> Wards { get; set; }
+
+        public List<Ward> GetWardsByCityId(int cityId)
+        {
+            return Wards.Where(w => w.CityId == cityId).ToList();
+        }
     }
 }

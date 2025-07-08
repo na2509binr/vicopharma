@@ -7,13 +7,13 @@ namespace Ephyta.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class AllShoppingCart : IMigrationMetadata
+    public sealed partial class CleanMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AllShoppingCart));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CleanMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "202208281722379_All-ShoppingCart"; }
+            get { return "202507081056037_CleanMigration"; }
         }
         
         string IMigrationMetadata.Source

@@ -59,19 +59,19 @@
                             <div>@Html.ActionLink("Đăng xuất", "Logout", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
-                    <li data-id="20">
-                        <a class="root"><span>Mã giảm giá</span><i class="fas fa-caret-down"></i></a>
-                        <div class="sub hidden">
-                            <div>@Html.ActionLink("Thêm số lượng lớn mã giảm giá", "CreateCodeAll", "Vcms", null, new { @class = "text_link" })</div>
-                            <div>@Html.ActionLink("Thêm mã giảm giá", "CodeDiscount", "Vcms", null, new { @class = "text_link" })</div>
-                            <div>@Html.ActionLink("Danh sách mã giảm giá", "ListCodeDiscount", "Vcms", null, new { @class = "text_link" })</div>
+                    @*<li data-id="20">
+                            <a class="root"><span>Mã giảm giá</span><i class="fas fa-caret-down"></i></a>
+                            <div class="sub hidden">
+                                <div>@Html.ActionLink("Thêm số lượng lớn mã giảm giá", "CreateCodeAll", "Vcms", null, new { @class = "text_link" })</div>
+                                <div>@Html.ActionLink("Thêm mã giảm giá", "CodeDiscount", "Vcms", null, new { @class = "text_link" })</div>
+                                <div>@Html.ActionLink("Danh sách mã giảm giá", "ListCodeDiscount", "Vcms", null, new { @class = "text_link" })</div>
 
-                        </div>
-                    </li>
+                            </div>
+                        </li>*@
                     <li data-id="30">
                         <a class="root"><span>Quản lý Địa danh</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div>@Html.ActionLink("Quản lý địa danh", "City", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Quản lý địa danh", "ListCityPartial", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
 

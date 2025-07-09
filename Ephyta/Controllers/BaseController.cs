@@ -9,14 +9,14 @@ namespace Ephyta.Controllers
     {
         public readonly UnitOfWork _unitOfWork = new UnitOfWork();
 
-        public SelectList CitySelectList => new SelectList(_unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)), "Id", "Name");
+        public SelectList CitySelectList => new SelectList(_unitOfWork.CityRepository.Get(a => a.CityActive, q => q.OrderBy(a => a.CitySort)), "Id", "Name");
         public SelectList DistrictSelectList(int? cityId) => new SelectList(_unitOfWork.DistrictRepository.Get(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
-        public SelectList WardSelectList(int? cityId) => new SelectList(_unitOfWork.WardRepository.Get(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
+        public SelectList WardSelectList(int? cityId) => new SelectList(_unitOfWork.WardRepository.Get(a => a.WardActive && a.CityId == cityId, q => q.OrderBy(a => a.WardSort)), "Id", "Name");
 
         public JsonResult GetCities(string city = "")
         {
             var cities = _unitOfWork.CityRepository
-                .GetQuery(a => a.Active && a.Name.ToLower().Contains(city.ToLower()), q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
+                .GetQuery(a => a.CityActive && a.Name.ToLower().Contains(city.ToLower()), q => q.OrderBy(a => a.CitySort)).Select(a => new { a.Id, a.Name });
             return Json(cities, JsonRequestBehavior.AllowGet);
         }
 
@@ -29,7 +29,7 @@ namespace Ephyta.Controllers
         public JsonResult GetWard(int? cityId)
         {
             var wards = _unitOfWork.WardRepository
-                .GetQuery(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
+                .GetQuery(a => a.WardActive && a.CityId == cityId, q => q.OrderBy(a => a.WardSort)).Select(a => new { a.Id, a.Name });
             return Json(wards, JsonRequestBehavior.AllowGet);
         }
 

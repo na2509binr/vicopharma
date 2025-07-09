@@ -94,7 +94,7 @@ namespace Ephyta.Controllers
                 PageSize = pageSize,
                 Payment = payment,
                 CityId = cityId,
-                CitySelectList = new SelectList(_unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)), "Id", "Name")
+                CitySelectList = new SelectList(_unitOfWork.CityRepository.Get(a => a.CityActive, q => q.OrderBy(a => a.CitySort)), "Id", "Name")
             };
 
             return View(model);
@@ -154,7 +154,7 @@ namespace Ephyta.Controllers
             var model = new ReportProductViewModel
             {
                 CityId = cityId,
-                CitySelectList = new SelectList(_unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)), "Id", "Name"),
+                CitySelectList = new SelectList(_unitOfWork.CityRepository.Get(a => a.CityActive, q => q.OrderBy(a => a.CitySort)), "Id", "Name"),
                 FromDate = fromDate,
                 ToDate = toDate,
                 Status = status,

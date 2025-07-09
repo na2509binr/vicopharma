@@ -339,13 +339,14 @@ namespace Ephyta.Controllers
         }
 
 
+
         public ActionResult ListCityPartial(int? page, int groupId = 0, string result = "")
         {
             ViewBag.Banner = result;
             var pageNumber = page ?? 1;
             const int pageSize = 10;
             var wards = _unitOfWork.WardRepository.Get();
-            var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.Sort));
+            var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.CitySort));
             var groupedWards = wards
             .GroupBy(w => w.CityId)
             .ToDictionary(g => g.Key, g => g.ToList());
@@ -357,6 +358,40 @@ namespace Ephyta.Controllers
             };
             return View(model);
         }
+
+        public bool UpdateCity(int sort = 1, bool active = false, int cityId = 0)
+        {
+            var city = _unitOfWork.CityRepository.GetById(cityId);
+            if (city == null)
+            {
+                return false;
+            }
+            city.CitySort = sort;
+            city.CityActive = active;
+
+            _unitOfWork.Save();
+            return true;
+        }
+
+        public bool UpdateWard(int sort = 1, bool active = false, int shipFee = 1, int wardId = 0)
+        {
+            var ward = _unitOfWork.WardRepository.GetById(wardId);
+            if (ward == null)
+            {
+                return false;
+            }
+            ward.WardSort = sort;
+            ward.WardActive = active;
+            ward.ShipFee = shipFee;
+
+            _unitOfWork.Save();
+            return true;
+        }
+
+
+
+
+
 
         public ActionResult EditCity(int cityId = 0)
         {
@@ -403,7 +438,7 @@ namespace Ephyta.Controllers
                 return false;
             }
 
-            city.Active = false;
+            city.CityActive = false;
             //_unitOfWork.CityRepository.Delete(city);
             _unitOfWork.Save();
             return true;

@@ -10,34 +10,40 @@
     <table class="list_table">
         <thead>
             <tr>
-                <th class="text-center"></th>
+                <th class="text-center" style="width: 60px"></th>
                 <th class="text-center">Tên tỉnh/thành</th>
                 <th class="text-center">Thứ tự</th>
                 <th class="text-center">Hoạt động</th>
                 <th class="text-center">Loại</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var city in Model.Cities)
             {
                 <tr style="background: #f0f0f0" data-id="@city.Id" class="accordion-row">
-                    <td><button class="accordion-btn" onclick="toggleSub(this)">+</button></td>
-                    <td>@city.Name</td>
-                    <td class="text-center">@city.Sort</td>
-                    <td>@Html.DisplayFor(a => city.Active)</td>
+                    <td class="text-center"><button class="accordion-btn" onclick="toggleSub(this)" style="border: none; font-size: 18px;">+</button></td>
+                    <td><strong>@city.Name</strong></td>
+                    <td style="width: 150px; text-align: center;">
+                        <input type="number" name="CitySort" value="@city.CitySort" class="form_control" style="width: 50px;" />
+                    </td>
+                    <td class="text-center">@Html.CheckBoxFor(a => city.CityActive, new { @checked = "checked" })</td>
                     <td>@city.Prefix</td>
+                    <td class="text-center">
+                        <a href="javascript:;" onclick="updateCity('@city.Id')">Cập nhật</a>
+                    </td>
                 </tr>
                 <tr class="sub-table-row hidden">
                     <td></td>
-                    <td colspan="4">
+                    <td colspan="5">
                         <table class="sub-table" style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th>Tên xã/phường</th>
-                                    <th>Sắp xếp</th>
-                                    <th>Hoạt động</th>
-                                    <th>Loại</th>
-                                    <th>Phí ship</th>
+                                    <th class="text-center">Tên xã/phường</th>
+                                    <th class="text-center">Sắp xếp</th>
+                                    <th class="text-center">Hoạt động</th>
+                                    <th class="text-center">Loại</th>
+                                    <th class="text-center">Phí ship</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -47,10 +53,19 @@
 
                                     <tr data-id="@ward.Id">
                                         <td>@ward.Name</td>
-                                        <td>@ward.Sort</td>
-                                        <td>@Html.DisplayFor(a => ward.Active)</td>
+                                        <td style="width: 150px; text-align: center;">
+                                            <input type="number" name="WardSort" value="@ward.WardSort" class="form_control" style="width: 50px;" />
+                                        </td>
+                                        @*<td class="text-center">@ward.Sort</td>*@
+                                        <td class="text-center">@Html.CheckBoxFor(a => ward.WardActive, new { @checked = "checked" })</td>
                                         <td>@ward.Prefix</td>
-                                        <td>@ward.ShipFee</td>
+                                        @*<td class="text-right">@ward.ShipFee</td>*@
+                                        <td class="text-right">
+                                            <input id="ShipFee" type="text" name="ShipFee" value="@String.Format("{0:N0}", ward.ShipFee)" class="form_control" />
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="javascript:;" onclick="updateWard('@ward.Id')">Cập nhật</a>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
@@ -76,4 +91,102 @@
             button.textContent = button.textContent === '+' ? '−' : '+';
         }
     }
+
+    function updateCity(id) {
+        var divId = $("tr[data-id='" + id + "']");
+        var sort = divId.find("input[name=CitySort]").val();
+        var active = divId.find("input#city_CityActive").prop("checked");
+
+
+        $.post("/Vcms/UpdateCity", { cityId: id, sort, active }, function (data) {
+            if (data) {
+                alert("Cập nhật thành công");
+            } else {
+                alert("Quá trình thực hiện không thành công. Hãy thử lại");
+            }
+        });
+    }
+
+    function updateWard(id) {
+        var divId = $("tr[data-id='" + id + "']");
+        var sort = divId.find("input[name=WardSort]").val();
+        var active = divId.find("input#ward_WardActive").prop("checked");
+        var shipFee = parseInt(divId.find("input[name=ShipFee]").val().replace(/,/g, '')) || 0;
+        console.log(shipFee);
+
+        $.post("/Vcms/UpdateWard", { wardId: id, sort, active, shipFee }, function (data) {
+            if (data) {
+                alert("Cập nhật thành công");
+            } else {
+                alert("Quá trình thực hiện không thành công. Hãy thử lại");
+            }
+        });
+    }
+
 </script>
+
+<script>
+    //const input = document.getElementById("ShipFee");
+
+    //// Giữ vị trí con trỏ khi nhập
+    //function formatNumber(input) {
+    //    let selectionStart = input.selectionStart;
+    //    let selectionEnd = input.selectionEnd;
+
+    //    // Bỏ dấu phẩy cũ
+    //    let rawValue = input.value.replace(/,/g, '');
+
+    //    // Nếu không phải số thì bỏ qua
+    //    if (isNaN(rawValue)) return;
+
+    //    // Format lại
+    //    let formatted = Number(rawValue).toLocaleString('en-US');
+
+    //    // Cập nhật lại giá trị
+    //    input.value = formatted;
+
+    //    // Ước lượng vị trí mới của con trỏ
+    //    let diff = formatted.length - rawValue.length;
+    //    input.setSelectionRange(selectionStart + diff, selectionEnd + diff);
+    //}
+
+    //input.addEventListener("input", function () {
+    //    formatNumber(this);
+    //});
+
+    const input = document.getElementById("ShipFee");
+    const MAX_VALUE = 10000000; 
+
+    function formatNumberWithCommas(str) {
+        const num = str.replace(/,/g, '');
+        if (isNaN(num) || num === '') return '';
+        return parseInt(num, 10).toLocaleString('en-US');
+    }
+
+    function unformatNumber(str) {
+        return str.replace(/,/g, '');
+    }
+
+    input.addEventListener("input", function () {
+        let raw = unformatNumber(this.value);
+
+        // Nếu không phải số, reset luôn
+        if (isNaN(raw) || raw === '') {
+            this.value = '';
+            return;
+        }
+
+        // Chặn nếu vượt quá giới hạn
+        if (parseInt(raw) > MAX_VALUE) {
+            alert("Không được nhập quá 10,000,000");
+            raw = MAX_VALUE.toString();
+        }
+
+        // Format lại
+        this.value = formatNumberWithCommas(raw);
+
+        // Đưa con trỏ về cuối
+        this.setSelectionRange(this.value.length, this.value.length);
+    });
+</script>
+

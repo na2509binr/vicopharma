@@ -82,8 +82,11 @@
     <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
     </Reference>
+    <Reference Include="FileSignatures, Version=4.1.0.0, Culture=neutral, PublicKeyToken=aebe8c52f9d003e2, processorArchitecture=MSIL">
+      <HintPath>..\packages\FileSignatures.4.1.0\lib\net461\FileSignatures.dll</HintPath>
+    </Reference>
     <Reference Include="Helpers">
-      <HintPath>..\..\..\..\Documents\Zalo Received Files\Helpers.dll</HintPath>
+      <HintPath>C:\Users\688668\Downloads\Helpers.dll</HintPath>
     </Reference>
     <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.4.2.8\lib\net45\ImageResizer.dll</HintPath>
@@ -104,6 +107,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OpenMcdf, Version=2.2.1.9, Culture=neutral, PublicKeyToken=fdbb1629d7c00800, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenMcdf.2.2.1.9\lib\net40\OpenMcdf.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -118,6 +124,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -202,7 +209,6 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
-    <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\UploaderController.cs" />
     <Compile Include="Controllers\VcmsController.cs" />
     <Compile Include="DAL\DataEntities.cs" />
@@ -212,17 +218,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202507081056037_CleanMigration.cs" />
-    <Compile Include="Migrations\202507081056037_CleanMigration.Designer.cs">
-      <DependentUpon>202507081056037_CleanMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202507081602211_edit-db-1.cs" />
-    <Compile Include="Migrations\202507081602211_edit-db-1.Designer.cs">
-      <DependentUpon>202507081602211_edit-db-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202507081615395_edit-db-2.cs" />
-    <Compile Include="Migrations\202507081615395_edit-db-2.Designer.cs">
-      <DependentUpon>202507081615395_edit-db-2.cs</DependentUpon>
+    <Compile Include="Migrations\202507170707135_create-db.cs" />
+    <Compile Include="Migrations\202507170707135_create-db.Designer.cs">
+      <DependentUpon>202507170707135_create-db.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -259,88 +257,6 @@
     <Compile Include="ViewModel\ShoppingCartViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\AdvancedStringBuilder.dll" />
-    <Content Include="bin\AdvancedStringBuilder.xml" />
-    <Content Include="bin\Antlr3.Runtime.dll" />
-    <Content Include="bin\Antlr3.Runtime.pdb" />
-    <Content Include="bin\CKFinder.dll" />
-    <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.SqlServer.dll" />
-    <Content Include="bin\EntityFramework.SqlServer.xml" />
-    <Content Include="bin\EntityFramework.xml" />
-    <Content Include="bin\Ephyta.dll" />
-    <Content Include="bin\Ephyta.pdb" />
-    <Content Include="bin\EPPlus.dll" />
-    <Content Include="bin\EPPlus.Interfaces.dll" />
-    <Content Include="bin\EPPlus.System.Drawing.dll" />
-    <Content Include="bin\EPPlus.xml" />
-    <Content Include="bin\Helpers.dll" />
-    <Content Include="bin\ImageResizer.dll" />
-    <Content Include="bin\ImageResizer.Plugins.DiskCache.dll" />
-    <Content Include="bin\ImageResizer.Plugins.DiskCache.xml" />
-    <Content Include="bin\ImageResizer.xml" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
-    <Content Include="bin\Microsoft.IO.RecyclableMemoryStream.dll" />
-    <Content Include="bin\Microsoft.IO.RecyclableMemoryStream.xml" />
-    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
-    <Content Include="bin\PagedList.dll" />
-    <Content Include="bin\PagedList.Mvc.dll" />
-    <Content Include="bin\PagedList.Mvc.xml" />
-    <Content Include="bin\PagedList.xml" />
-    <Content Include="bin\roslyn\csc.exe" />
-    <Content Include="bin\roslyn\csi.exe" />
-    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll" />
-    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="bin\roslyn\System.Buffers.dll" />
-    <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
-    <Content Include="bin\roslyn\System.Memory.dll" />
-    <Content Include="bin\roslyn\System.Numerics.Vectors.dll" />
-    <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
-    <Content Include="bin\roslyn\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="bin\roslyn\System.Text.Encoding.CodePages.dll" />
-    <Content Include="bin\roslyn\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="bin\roslyn\vbc.exe" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe" />
-    <Content Include="bin\System.Buffers.dll" />
-    <Content Include="bin\System.Buffers.xml" />
-    <Content Include="bin\System.Memory.dll" />
-    <Content Include="bin\System.Memory.xml" />
-    <Content Include="bin\System.Numerics.Vectors.dll" />
-    <Content Include="bin\System.Numerics.Vectors.xml" />
-    <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="bin\System.Runtime.CompilerServices.Unsafe.xml" />
-    <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Helpers.xml" />
-    <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Mvc.xml" />
-    <Content Include="bin\System.Web.Optimization.dll" />
-    <Content Include="bin\System.Web.Optimization.xml" />
-    <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Razor.xml" />
-    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
-    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
-    <Content Include="bin\System.Web.WebPages.dll" />
-    <Content Include="bin\System.Web.WebPages.Razor.dll" />
-    <Content Include="bin\System.Web.WebPages.Razor.xml" />
-    <Content Include="bin\System.Web.WebPages.xml" />
-    <Content Include="bin\WebGrease.dll" />
-    <Content Include="bin\WebMarkupMin.AspNet.Common.dll" />
-    <Content Include="bin\WebMarkupMin.AspNet.Common.xml" />
-    <Content Include="bin\WebMarkupMin.AspNet4.Common.dll" />
-    <Content Include="bin\WebMarkupMin.AspNet4.Common.xml" />
-    <Content Include="bin\WebMarkupMin.AspNet4.Mvc.dll" />
-    <Content Include="bin\WebMarkupMin.AspNet4.Mvc.xml" />
-    <Content Include="bin\WebMarkupMin.Core.dll" />
-    <Content Include="bin\WebMarkupMin.Core.xml" />
     <Content Include="Content\adminSite.css">
       <DependentUpon>adminSite.less</DependentUpon>
     </Content>
@@ -790,7 +706,6 @@
     <Content Include="images\upload\_thumbs\Images\6.jpg" />
     <Content Include="images\upload\_thumbs\Images\8.jpg" />
     <Content Include="images\upload\_thumbs\Images\9.jpg" />
-    <Content Include="robots.txt" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Content\style.scss" />
     <Content Include="Content\bootstrap.min.css.map" />
@@ -800,17 +715,6 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="db.config" />
-    <Content Include="bin\Ephyta.dll.config" />
-    <Content Include="bin\roslyn\csc.exe.config" />
-    <Content Include="bin\roslyn\csc.rsp" />
-    <Content Include="bin\roslyn\csi.exe.config" />
-    <Content Include="bin\roslyn\csi.rsp" />
-    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.Managed.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
-    <Content Include="bin\roslyn\vbc.exe.config" />
-    <Content Include="bin\roslyn\vbc.rsp" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <None Include="Properties\PublishProfiles\ephyta.vn 45.217.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -1120,14 +1024,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202507081056037_CleanMigration.resx">
-      <DependentUpon>202507081056037_CleanMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202507081602211_edit-db-1.resx">
-      <DependentUpon>202507081602211_edit-db-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202507081615395_edit-db-2.resx">
-      <DependentUpon>202507081615395_edit-db-2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202507170707135_create-db.resx">
+      <DependentUpon>202507170707135_create-db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

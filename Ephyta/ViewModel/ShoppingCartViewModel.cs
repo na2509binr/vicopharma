@@ -71,9 +71,8 @@ namespace Ephyta.ViewModel
 
         [Display(Name = "Thành phố"), Required(ErrorMessage = "Bạn hãy chọn thành phố")]
         public int? CityId { get; set; }
-        [Display(Name = "Quận huyện"), Required(ErrorMessage = "Bạn hãy chọn quận huyện")]
-        public int? DistrictId { get; set; }
-        [Display(Name = "Phường xã")]
+
+        [Display(Name = "Phường xã"), Required(ErrorMessage = "Bạn hãy chọn phường xã")]
         public int? WardId { get; set; }
 
         public SelectList CitySelectList { get; set; }

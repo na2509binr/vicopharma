@@ -296,7 +296,6 @@ namespace Ephyta.Controllers
             {
                 order = a,
                 wardName = a.Ward.Name,
-                districtName = a.District.Name,
                 cityName = a.City.Name,
                 //typeUser = a.User != null ? a.User.TypeUser.ToString() : "Vãng lai"
             });
@@ -321,7 +320,7 @@ namespace Ephyta.Controllers
             var i = 1;
             foreach (var item in items)
             {
-                dt.Rows.Add(i, item.order.CreateDate.ToString("dd/MM/yyyy HH:mm"), item.order.MaDonHang, item.order.ShipFee.ToString("N0"), item.order.TotalFee().ToString("N0"), item.order.TotalDebt().ToString("N0"), item.order.Status, item.order.CustomerInfo.Fullname, item.order.CustomerInfo.Email, item.order.CustomerInfo.Mobile, item.order.CustomerInfo.Address, item.wardName, item.districtName, item.cityName);
+                dt.Rows.Add(i, item.order.CreateDate.ToString("dd/MM/yyyy HH:mm"), item.order.MaDonHang, item.order.ShipFee.ToString("N0"), item.order.TotalFee().ToString("N0"), item.order.TotalDebt().ToString("N0"), item.order.Status, item.order.CustomerInfo.Fullname, item.order.CustomerInfo.Email, item.order.CustomerInfo.Mobile, item.order.CustomerInfo.Address, item.wardName, item.cityName);
                 i++;
             }
             using (var pck = new ExcelPackage())

@@ -27,7 +27,7 @@
             <a href="/">
                 @if (config.Image != null)
                 {
-                    <img src="@Path.Combine("/images/configs/",config.Image)" class="header-logo" />
+                    <img src="@Path.Combine("/images/configs/",config.Image)" class="header-logo"  style="height: 90px;"/>
                 }
             </a>
             <form action="@Url.Action("Search")" method="get" class="header-search">

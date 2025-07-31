@@ -24,10 +24,10 @@
             </td>
         </tr>
         <tr>
-            <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
+            <td class="form_name">@Html.LabelFor(model => model.CitySort)</td>
             <td class="form_text">
-                @Html.EditorFor(model => model.Sort)
-            @Html.ValidationMessageFor(model => model.Sort)
+                @Html.EditorFor(model => model.CitySort)
+            @Html.ValidationMessageFor(model => model.CitySort)
         </td>
     </tr>
     @*<tr>
@@ -38,9 +38,9 @@
         </td>
     </tr>*@
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Active)</td>
+        <td class="form_name">@Html.LabelFor(model => model.CityActive)</td>
         <td class="form_text">
-            @Html.CheckBoxFor(model => model.Active, new { @checked = "checked" }) Có/Không
+            @Html.CheckBoxFor(model => model.CityActive, new { @checked = "checked" }) Có/Không
     </td>
 </tr>
 <tr>

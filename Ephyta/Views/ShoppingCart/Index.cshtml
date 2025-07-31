@@ -58,24 +58,54 @@
                             @Html.TextBoxFor(a => a.Order.CustomerInfo.Email, new { @class = "form-control", @placeholder = "Email của bạn" })
                             @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Email)
                         </div>
-                        @*<div class="form-group">
-                                @Html.TextBoxFor(a => a.Order.CustomerInfo.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
-                                @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Address)
-                            </div>*@
-                        <div class="form-row form-group">
-                            <div class="col-md-4 mb-md-0 mb-3">
-                                @Html.DropDownListFor(a => a.CityId, Model.CitySelectList, "Chọn thành phố", new { @class = "form-control", data_item = "city", onchange = "updateShip(this.value)" })
-                                @Html.ValidationMessageFor(a => a.CityId)
-                            </div>
-                            <div class="col-md-4 mb-md-0 mb-3">
-                                @Html.DropDownListFor(a => a.DistrictId, Model.DistrictSelectList, "Chọn quận huyện", new { @class = "form-control", data_item = "district" })
-                                @Html.ValidationMessageFor(a => a.DistrictId)
-                            </div>
-                            <div class="col-md-4 mb-md-0 mb-3">
-                                @Html.DropDownListFor(a => a.WardId, Model.WardSelectList, "Chọn phường xã", new { @class = "form-control", data_item = "ward" })
-                                @Html.ValidationMessageFor(a => a.WardId)
-                            </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Order.CustomerInfo.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
+                            @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Address)
                         </div>
+                        @*<div class="form-row form-group">
+            <div class="col-md-4 mb-md-0 mb-3">
+                @Html.DropDownListFor(a => a.CityId, Model.CitySelectList, "Chọn thành phố", new { @class = "form-control", data_item = "city", onchange = "updateShip(this.value)" })
+                @Html.ValidationMessageFor(a => a.CityId)
+            </div>
+            <div class="col-md-4 mb-md-0 mb-3">
+                @Html.DropDownListFor(a => a.DistrictId, Model.DistrictSelectList, "Chọn quận huyện", new { @class = "form-control", data_item = "district" })
+                @Html.ValidationMessageFor(a => a.DistrictId)
+            </div>
+            <div class="col-md-4 mb-md-0 mb-3">
+                @Html.DropDownListFor(a => a.WardId, Model.WardSelectList, "Chọn phường xã", new { @class = "form-control", data_item = "ward" })
+                @Html.ValidationMessageFor(a => a.WardId)
+            </div>
+        </div>*@
+                    <div class="form-row form-group">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.CityId)
+                            @Html.DropDownListFor(m => m.CityId, Model.CitySelectList, "Chọn thành phố", new
+                            {
+                                @class = "form-control",
+                                onchange = "loadWardsByCity(this.value)" // gọi AJAX
+                            })
+                            @Html.ValidationMessageFor(m => m.CityId)
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.WardId)
+                            @Html.DropDownListFor(m => m.WardId, Model.WardSelectList, "Chọn phường xã", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.WardId)
+                        </div>
+                    </div>
+                        @*<div class="form-row form-group">
+            <div class="col-md-6">
+                @Html.DropDownListFor(a => a.Order.CityId, Model.CitySelectList, "Chọn thành phố", new { @class = "form-control", id = "ddlCity" })
+                @Html.ValidationMessageFor(a => aa.OrderCityId)
+            </div>
+            <div class="col-md-6">
+                <select id="ddlWard" name="WardId" class="form-control">
+                    <option value="">Chọn phường xã</option>
+                </select>
+                @Html.ValidationMessageFor(a => a.WardId)
+            </div>
+        </div>*@
+
                         <div class="form-group">
                             @Html.TextBoxFor(a => a.Order.CustomerInfo.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
                             @Html.ValidationMessageFor(a => a.Order.CustomerInfo.Address)
@@ -169,7 +199,8 @@
                         </div>
                         <div class="shipFee d-flex justify-content-between">
                             <div class="span">Phí giao hàng:</div>
-                            <strong><span data-item="ship-fee">@Model.Order.ShipFee.ToString("N0")</span><sup>đ</sup></strong>
+                            <strong><span data-item="ship-fee">0</span><sup>đ</sup></strong>
+                            @*<strong><span data-item="ship-fee">@Model.Order.ShipFee.ToString("N0")</span><sup>đ</sup></strong>*@
                         </div>
                         <div class="discout d-flex justify-content-between">
                             <div class="span">Giảm giá:</div>
@@ -307,5 +338,40 @@
             });
 
         }
+
+        function loadWardsByCity(cityId) {
+            $.get('/ShoppingCart/GetWardsByCity', { cityId: cityId }, function (data) {
+                var wardSelect = $('select[name="WardId"]');
+                wardSelect.empty();
+                wardSelect.append($('<option>').text("Chọn phường xã").attr('value', ''));
+
+                $.each(data, function (i, ward) {
+                    wardSelect.append($('<option>').text(ward.Name).attr('value', ward.Id));
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            $('select[name="WardId"]').on('change', function () {
+                var wardId = $(this).val();
+                if (wardId) {
+                    $.get('/ShoppingCart/GetShipFeeByWard', { wardId: wardId }, function (data) {
+                        let shipFee = data.shipFee || 0;
+
+                        // Cập nhật nội dung hiển thị
+                        $('span[data-item="ship-fee"]').text(Number(shipFee).toLocaleString());
+                       
+
+                        // Nếu bạn cần gán lại giá trị vào model để khi submit giữ giá trị mới:
+                        $('input[name="Order.ShipFee"]').val(shipFee);
+                        $('#shipp').val(shipFee);
+                    });
+                } else {
+                    $('span[data-item="ship-fee"]').text("0");
+                    $('input[name="Order.ShipFee"]').val(0);
+                    $('#shipp').val(0);
+                }
+            });
+        });
     </script>
 }

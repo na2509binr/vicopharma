@@ -3,6 +3,7 @@ using Ephyta.Models;
 using Ephyta.ViewModel;
 using Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Configuration;
@@ -22,6 +23,8 @@ namespace Ephyta.Controllers
             var cart = ShoppingCart.GetCart(HttpContext);
 
             var carts = cart.GetCartItems();
+            var wards = _unitOfWork.WardRepository.Get().ToList();
+            var cities = _unitOfWork.CityRepository.Get().ToList();
 
             var itemCarts = carts.Select(a => new CheckOutViewModel.CartItem
             {
@@ -29,17 +32,20 @@ namespace Ephyta.Controllers
             });
             var viewModel = new CheckOutViewModel
             {
-                //CartItems = itemCarts,
-                //CartTotal = cart.GetTotal()
                 Order = new Order
                 {
                     TypePay = 1,
                     ShipFee = 30000,
                 },
+                //Cities = cities,
+                //Wards = wards,
                 CartItems = itemCarts,
                 CartTotal = cart.GetTotal(),
-                CitySelectList = CitySelectList
+                CitySelectList = new SelectList(cities, "Id", "Name"),
             };
+            viewModel.WardSelectList = viewModel.CityId != null
+                ? new SelectList(wards.Where(w => w.CityId == viewModel.CityId), "Id", "Name")
+                : new SelectList(new List<Ward>(), "Id", "Name");
             ViewBag.ReturnUrl = returnUrl;
             return View(viewModel);
         }
@@ -66,6 +72,26 @@ namespace Ephyta.Controllers
             }
             return RedirectToActionPermanent("Index");
         }
+
+        [HttpGet]
+        public JsonResult GetWardsByCity(int cityId)
+        {
+            var wards = _unitOfWork.WardRepository.Get(w => w.CityId == cityId)
+                          .Select(w => new { w.Id, w.Name }).ToList();
+
+            return Json(wards, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetShipFeeByWard(int wardId)
+        {
+            var fee = _unitOfWork.WardRepository.Get(w => w.Id == wardId)
+                       .Select(w => w.ShipFee)
+                       .FirstOrDefault();
+
+            return Json(new { shipFee = fee }, JsonRequestBehavior.AllowGet);
+        }
+
         //[Route("thanh-toan")]
         //public ActionResult CheckOut()
         //{
@@ -102,17 +128,8 @@ namespace Ephyta.Controllers
             {
                 var carts = ShoppingCart.GetCart(HttpContext);
                 var item = carts.GetCartItems();
-                //var date = fc["PayDate"];
-                //order.TransportDate = DateTime.TryParse(date, new CultureInfo("Vi"), DateTimeStyles.None, out var tDate) ? tDate : DateTime.Now;
-
-                //if (carts.GetTotal() < 100000)
-                //{
-                //    return RedirectToAction("Index");
-                //}
-
                 model.Order.DiscountCode = fc["tag-code"];
                 model.Order.CityId = model.CityId;
-                model.Order.DistrictId = model.DistrictId;
                 model.Order.WardId = model.WardId;
                 model.Order.ShipFee = Convert.ToInt32(fc["ShipFee"]);
 
@@ -172,7 +189,7 @@ namespace Ephyta.Controllers
                 }
 
                 //Thanh toán CK
-                var district = _unitOfWork.DistrictRepository.GetById(model.DistrictId);
+                var ward = _unitOfWork.WardRepository.GetById(model.WardId);
 
                 var typepay = "Thanh toán khi nhận hàng";
                 switch (model.Order.TypePay)
@@ -203,7 +220,7 @@ namespace Ephyta.Controllers
                 var sb = "<p style='font-size:16px'>Thông tin đơn hàng gửi từ website " + Request.Url?.Host + "</p>";
                 sb += "<p>Mã đơn hàng: <strong>" + model.Order.MaDonHang + "</strong></p>";
                 sb += "<p>Họ và tên: <strong>" + model.Order.CustomerInfo.Fullname + "</strong></p>";
-                sb += "<p>Địa chỉ: <strong>" + model.Order.CustomerInfo.Address + ", " + district?.Name +  "</strong></p>";
+                sb += "<p>Địa chỉ: <strong>" + model.Order.CustomerInfo.Address + ", " + ward?.Name +  "</strong></p>";
                 sb += "<p>Email: <strong>" + model.Order.CustomerInfo.Email + "</strong></p>";
                 sb += "<p>Điện thoại: <strong>" + model.Order.CustomerInfo.Mobile + "</strong></p>";
                 sb += "<p>Yêu cầu thêm: <strong>" + model.Order.CustomerInfo.Body + "</strong></p>";
@@ -245,11 +262,25 @@ namespace Ephyta.Controllers
                 sb += "</table>";
                 sb += "<p>Cảm ơn bạn đã tin tưởng và mua hàng của chúng tôi.</p>";
 
-                Task.Run(() => HtmlHelpers.SendEmail("gmail", "[" + model.Order.MaDonHang + "] Đơn đặt hàng từ website EPHYTA", sb, ConfigSite.Email, Email, Email, Password, "EPHYTA.VN", model.Order.CustomerInfo.Email, "maiph0978@gmail.com"));
+                Task.Run(() => HtmlHelpers.SendEmail("gmail", "[" + model.Order.MaDonHang + "] Đơn đặt hàng từ website VICOPHARMA", sb, ConfigSite.Email, Email, Email, Password, "VICOPHARMA.VN", model.Order.CustomerInfo.Email, "maiph0978@gmail.com"));
 
                 return RedirectToAction("CheckOutComplete", new { orderId = model.Order.MaDonHang });
             }
-            var cart = ShoppingCart.GetCart(HttpContext);
+            else
+            {
+                foreach (var entry in ModelState)
+                {
+                    var key = entry.Key;
+                    var errors = entry.Value.Errors;
+
+                    foreach (var error in errors)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"ModelState Error - Field: {key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+                var cart = ShoppingCart.GetCart(HttpContext);
             model.CartTotal = cart.GetTotal();
             model.CitySelectList = model.CitySelectList;
             if (model.CityId > 0)

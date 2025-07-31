@@ -7,13 +7,13 @@ namespace Ephyta.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class editdb2 : IMigrationMetadata
+    public sealed partial class createdb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(editdb2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(createdb));
         
         string IMigrationMetadata.Id
         {
-            get { return "202507081615395_edit-db-2"; }
+            get { return "202507170707135_create-db"; }
         }
         
         string IMigrationMetadata.Source

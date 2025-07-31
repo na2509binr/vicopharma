@@ -70,11 +70,9 @@ namespace Ephyta.Models
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
         public int? CityId { get; set; }
-        public int? DistrictId { get; set; }
         public int? WardId { get; set; }
 
         public virtual City City { get; set; }
-        public virtual District District { get; set; }
         public virtual Ward Ward { get; set; }
 
         //public virtual DiscountCode DiscountCode { get; set; }

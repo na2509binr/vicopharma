@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CleanMigration : DbMigration
+    public partial class createdb : DbMigration
     {
         public override void Up()
         {
@@ -184,8 +184,8 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
-                        Sort = c.Int(nullable: false),
-                        Active = c.Boolean(nullable: false),
+                        CitySort = c.Int(nullable: false),
+                        CityActive = c.Boolean(nullable: false),
                         Prefix = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id);
@@ -267,10 +267,10 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
-                        Sort = c.Int(nullable: false),
-                        Active = c.Boolean(nullable: false),
+                        WardSort = c.Int(nullable: false),
+                        WardActive = c.Boolean(nullable: false),
                         Prefix = c.String(maxLength: 20),
-                        ShipFee = c.String(),
+                        ShipFee = c.Int(nullable: false),
                         CityId = c.Int(nullable: false),
                         District_Id = c.Int(),
                     })
@@ -336,15 +336,12 @@
                         OrderMemberId = c.Int(),
                         TotalPropertyPrice = c.Decimal(precision: 18, scale: 2),
                         CityId = c.Int(),
-                        DistrictId = c.Int(),
                         WardId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Cities", t => t.CityId)
-                .ForeignKey("dbo.Districts", t => t.DistrictId)
                 .ForeignKey("dbo.Wards", t => t.WardId)
                 .Index(t => t.CityId)
-                .Index(t => t.DistrictId)
                 .Index(t => t.WardId);
             
             CreateTable(
@@ -384,7 +381,6 @@
             DropForeignKey("dbo.OrderDetails", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Orders", "WardId", "dbo.Wards");
             DropForeignKey("dbo.OrderDetails", "OrderId", "dbo.Orders");
-            DropForeignKey("dbo.Orders", "DistrictId", "dbo.Districts");
             DropForeignKey("dbo.Orders", "CityId", "dbo.Cities");
             DropForeignKey("dbo.Wards", "District_Id", "dbo.Districts");
             DropForeignKey("dbo.Wards", "CityId", "dbo.Cities");
@@ -395,7 +391,6 @@
             DropForeignKey("dbo.Products", "ProductCategoryId", "dbo.ProductCategories");
             DropForeignKey("dbo.Articles", "ArticleCategoryId", "dbo.ArticleCategories");
             DropIndex("dbo.Orders", new[] { "WardId" });
-            DropIndex("dbo.Orders", new[] { "DistrictId" });
             DropIndex("dbo.Orders", new[] { "CityId" });
             DropIndex("dbo.OrderDetails", new[] { "ProductId" });
             DropIndex("dbo.OrderDetails", new[] { "OrderId" });
